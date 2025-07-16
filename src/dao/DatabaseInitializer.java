@@ -16,16 +16,20 @@ public class DatabaseInitializer {
             Statement statement = connection.createStatement();
             
             // Create tables
+            
+            //User schema
             statement.execute("""
                 CREATE TABLE IF NOT EXISTS users (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT NOT NULL,
                     email TEXT UNIQUE NOT NULL,
                     password TEXT NOT NULL,
+                    dateOfBirth TEXT,
                     role TEXT NOT NULL
                 );
             """);
 
+            // Pharmacy schema            
             statement.execute("""
                 CREATE TABLE IF NOT EXISTS pharmacies (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
