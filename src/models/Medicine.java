@@ -11,7 +11,7 @@ public class Medicine {
     private String expiryDate; // format: yyyy-MM-dd
 
     public Medicine(int id, int pharmacyId, String name, String genericName,
-                    String brand, double price, int quantity, String expiryDate) {
+                    double price, int quantity, String expiryDate) {
         this.id = id;
         this.pharmacyId = pharmacyId;
         this.name = name;
