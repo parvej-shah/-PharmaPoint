@@ -14,10 +14,8 @@ public class DatabaseInitializer {
             }
             
             Statement statement = connection.createStatement();
-            
-            // Create tables
-            
-            //User schema
+
+            //User table
             statement.execute("""
                 CREATE TABLE IF NOT EXISTS users (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -29,7 +27,7 @@ public class DatabaseInitializer {
                 );
             """);
 
-            // Pharmacy schema            
+            // Pharmacy table
             statement.execute("""
                 CREATE TABLE IF NOT EXISTS pharmacies (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,7 +39,21 @@ public class DatabaseInitializer {
                 );
             """);
 
-            // You can add medicines, inventory, etc. here
+            // medicine table
+            statement.execute("""
+                CREATE TABLE IF NOT EXISTS medicines (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    pharmacy_id INTEGER NOT NULL,
+                    name TEXT NOT NULL,
+                    generic_name TEXT,
+                    brand TEXT,
+                    price REAL NOT NULL,
+                    quantity INTEGER NOT NULL,
+                    expiry_date TEXT,
+                    FOREIGN KEY (pharmacy_id) REFERENCES pharmacies(id)
+                );
+        """);
+
 
             System.out.println("Database initialized successfully.");
             statement.close();
