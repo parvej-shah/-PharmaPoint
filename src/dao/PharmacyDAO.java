@@ -51,4 +51,28 @@ public class PharmacyDAO {
         }
         return  pharmacies;  // may need to refactor
     }
+
+    public Pharmacy getPharmacyById(int id) {
+        String sql = "SELECT * FROM pharmacies WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection()) {
+            assert conn != null;
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+                stmt.setInt(1, id);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    return new Pharmacy(
+                            rs.getInt("id"),
+                            rs.getInt("user_id"),
+                            rs.getString("name"),
+                            rs.getString("address"),
+                            rs.getString("area")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching pharmacy: " + e.getMessage());
+        }
+        return null;
+    }
 }
