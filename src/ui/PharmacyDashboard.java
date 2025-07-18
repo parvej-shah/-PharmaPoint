@@ -10,7 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PharmacyDashboardUI extends JFrame {
+public class PharmacyDashboard extends JFrame {
     
     private Pharmacy pharmacy;
     private User user;
@@ -26,7 +26,7 @@ public class PharmacyDashboardUI extends JFrame {
     private JPanel mainPanel;
     private JPanel buttonPanel;
     
-    public PharmacyDashboardUI(User user, Pharmacy pharmacy) {
+    public PharmacyDashboard(User user, Pharmacy pharmacy) {
         this.user = user;
         this.pharmacy = pharmacy;
         this.medicineService = new MedicineService();
@@ -45,7 +45,7 @@ public class PharmacyDashboardUI extends JFrame {
     }
     
     // Constructor for user without pharmacy
-    public PharmacyDashboardUI(User user) {
+    public PharmacyDashboard(User user) {
         this(user, null);
     }
     
@@ -266,7 +266,7 @@ public class PharmacyDashboardUI extends JFrame {
             User testUser = new User(1, "Test Pharmacist", "test@pharmacy.com", "password", "1990-01-01", "pharmacist");
             Pharmacy testPharmacy = new Pharmacy(1, 1, "City Pharmacy", "123 Main St", "Downtown");
             
-            new PharmacyDashboardUI(testUser, testPharmacy).setVisible(true);
+            new PharmacyDashboard(testUser, testPharmacy).setVisible(true);
         });
     }
 }
