@@ -21,6 +21,8 @@ public class ViewMedicinesTableUI extends JFrame {
     // UI Components
     private JTable medicinesTable;
     private DefaultTableModel tableModel;
+    private JTextField searchField;
+    private JButton searchButton;
     private JButton refreshButton;
     private JButton closeButton;
     
@@ -46,16 +48,16 @@ public class ViewMedicinesTableUI extends JFrame {
     
     private void initializeComponents() {
         // Create table model
-        String[] columns = {"ID", "Name", "Generic Name", "Brand", "Price", "Quantity", "Expiry Date", "Actions"};
+        String[] columns = {"ID", "Name", "Generic Name", "Brand", "Price", "Quantity", "Expiry Date", "Update", "Delete"};
         tableModel = new DefaultTableModel(columns, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 7; // Only Actions column is editable
+                return column == 7 || column == 8; // Only Update and Delete columns are editable
             }
             
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 7) {
+                if (columnIndex == 7 || columnIndex == 8) {
                     return JButton.class;
                 }
                 return String.class;
@@ -70,23 +72,37 @@ public class ViewMedicinesTableUI extends JFrame {
         
         // Set column widths
         medicinesTable.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
-        medicinesTable.getColumnModel().getColumn(1).setPreferredWidth(150); // Name
-        medicinesTable.getColumnModel().getColumn(2).setPreferredWidth(150); // Generic Name
-        medicinesTable.getColumnModel().getColumn(3).setPreferredWidth(100); // Brand
-        medicinesTable.getColumnModel().getColumn(4).setPreferredWidth(80);  // Price
-        medicinesTable.getColumnModel().getColumn(5).setPreferredWidth(80);  // Quantity
-        medicinesTable.getColumnModel().getColumn(6).setPreferredWidth(100); // Expiry Date
-        medicinesTable.getColumnModel().getColumn(7).setPreferredWidth(80);  // Actions
+        medicinesTable.getColumnModel().getColumn(1).setPreferredWidth(130); // Name
+        medicinesTable.getColumnModel().getColumn(2).setPreferredWidth(130); // Generic Name
+        medicinesTable.getColumnModel().getColumn(3).setPreferredWidth(90);  // Brand
+        medicinesTable.getColumnModel().getColumn(4).setPreferredWidth(70);  // Price
+        medicinesTable.getColumnModel().getColumn(5).setPreferredWidth(70);  // Quantity
+        medicinesTable.getColumnModel().getColumn(6).setPreferredWidth(90);  // Expiry Date
+        medicinesTable.getColumnModel().getColumn(7).setPreferredWidth(80);  // Update
+        medicinesTable.getColumnModel().getColumn(8).setPreferredWidth(80);  // Delete
         
-        // Set custom renderer and editor for Actions column
-        medicinesTable.getColumnModel().getColumn(7).setCellRenderer(new ButtonRenderer());
-        medicinesTable.getColumnModel().getColumn(7).setCellEditor(new ButtonEditor());
+        // Set custom renderer and editor for action columns
+        medicinesTable.getColumnModel().getColumn(7).setCellRenderer(new UpdateButtonRenderer());
+        medicinesTable.getColumnModel().getColumn(7).setCellEditor(new UpdateButtonEditor());
+        medicinesTable.getColumnModel().getColumn(8).setCellRenderer(new DeleteButtonRenderer());
+        medicinesTable.getColumnModel().getColumn(8).setCellEditor(new DeleteButtonEditor());
+        
+        // Search components
+        searchField = new JTextField(20);
+        searchField.setToolTipText("Search by medicine name or generic name");
+        searchButton = new JButton("Search");
         
         // Buttons
         refreshButton = new JButton("Refresh");
         closeButton = new JButton("Close");
         
         // Style buttons
+        searchButton.setBackground(new Color(60, 179, 113));
+        searchButton.setForeground(Color.WHITE);
+        searchButton.setFont(new Font("Arial", Font.BOLD, 12));
+        searchButton.setFocusPainted(false);
+        searchButton.setBorderPainted(false);
+        
         refreshButton.setBackground(new Color(70, 130, 180));
         refreshButton.setForeground(Color.WHITE);
         refreshButton.setFont(new Font("Arial", Font.BOLD, 12));
@@ -115,12 +131,36 @@ public class ViewMedicinesTableUI extends JFrame {
         gbc.insets = new Insets(10, 10, 10, 10);
         add(titleLabel, gbc);
         
+        // Search panel
+        JPanel searchPanel = new JPanel(new GridBagLayout());
+        searchPanel.setBorder(BorderFactory.createTitledBorder("Search Medicines"));
+        GridBagConstraints searchGbc = new GridBagConstraints();
+        searchGbc.insets = new Insets(5, 5, 5, 5);
+        
+        searchGbc.gridx = 0; searchGbc.gridy = 0;
+        searchPanel.add(new JLabel("Search:"), searchGbc);
+        
+        searchGbc.gridx = 1; searchGbc.gridy = 0;
+        searchGbc.fill = GridBagConstraints.HORIZONTAL;
+        searchGbc.weightx = 1.0;
+        searchPanel.add(searchField, searchGbc);
+        
+        searchGbc.gridx = 2; searchGbc.gridy = 0;
+        searchGbc.fill = GridBagConstraints.NONE;
+        searchGbc.weightx = 0;
+        searchPanel.add(searchButton, searchGbc);
+        
+        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0; gbc.weighty = 0;
+        add(searchPanel, gbc);
+        
         // Table in scroll pane
         JScrollPane scrollPane = new JScrollPane(medicinesTable);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Medicines"));
         scrollPane.getViewport().setBackground(Color.WHITE);
         
-        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0; gbc.weighty = 1.0;
         add(scrollPane, gbc);
@@ -136,7 +176,7 @@ public class ViewMedicinesTableUI extends JFrame {
         btnGbc.gridx = 1; btnGbc.gridy = 0;
         buttonPanel.add(closeButton, btnGbc);
         
-        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2;
+        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.weightx = 0; gbc.weighty = 0;
@@ -158,13 +198,41 @@ public class ViewMedicinesTableUI extends JFrame {
                 dispose();
             }
         });
+        
+        searchButton.addActionListener(e -> performSearch());
+        
+        // Add Enter key support for search field
+        searchField.addActionListener(e -> performSearch());
     }
     
     private void loadMedicinesData() {
+        loadMedicinesData(null); // Load all medicines
+    }
+    
+    private void performSearch() {
+        String keyword = searchField.getText().trim();
+        if (keyword.isEmpty()) {
+            loadMedicinesData(); // Load all if search is empty
+        } else {
+            loadMedicinesData(keyword); // Load filtered results
+        }
+    }
+    
+    private void loadMedicinesData(String searchKeyword) {
         tableModel.setRowCount(0); // Clear existing data
         
         try {
-            List<Medicine> medicines = medicineService.getAllMedicines(pharmacy.getId());
+            List<Medicine> medicines;
+            
+            if (searchKeyword == null || searchKeyword.isEmpty()) {
+                medicines = medicineService.getAllMedicines(pharmacy.getId());
+            } else {
+                medicines = medicineService.searchMedicineByName(searchKeyword);
+                // Filter by pharmacy ID since search returns all pharmacies
+                medicines = medicines.stream()
+                    .filter(medicine -> medicine.getPharmacyId() == pharmacy.getId())
+                    .collect(java.util.stream.Collectors.toList());
+            }
             
             for (Medicine medicine : medicines) {
                 Object[] row = {
@@ -175,23 +243,120 @@ public class ViewMedicinesTableUI extends JFrame {
                     String.format("$%.2f", medicine.getPrice()),
                     medicine.getQuantity(),
                     medicine.getExpiryDate(),
+                    "Update",
                     "Delete"
                 };
                 tableModel.addRow(row);
             }
             
             if (medicines.isEmpty()) {
-                Object[] emptyRow = {"No medicines found", "", "", "", "", "", "", ""};
+                String message = searchKeyword != null ? "No medicines found for search: \"" + searchKeyword + "\"" : "No medicines found";
+                Object[] emptyRow = {message, "", "", "", "", "", "", "", ""};
                 tableModel.addRow(emptyRow);
             }
             
             // Update status
-            setTitle("All Medicines - " + pharmacy.getName() + " (" + medicines.size() + " items)");
+            String searchInfo = searchKeyword != null ? " (Search: \"" + searchKeyword + "\")" : "";
+            setTitle("All Medicines - " + pharmacy.getName() + " (" + medicines.size() + " items)" + searchInfo);
             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, 
                 "Error loading medicines: " + e.getMessage(),
                 "Error", 
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void updateMedicine(int medicineId, String medicineName) {
+        try {
+            // Get the medicine details from service
+            Medicine medicine = medicineService.getMedicineById(medicineId);
+            if (medicine != null) {
+                // Create update dialog with pre-filled data
+                JPanel updatePanel = new JPanel(new GridLayout(6, 2, 5, 5));
+                
+                JTextField nameField = new JTextField(medicine.getName());
+                JTextField genericField = new JTextField(medicine.getGenericName());
+                JTextField brandField = new JTextField(medicine.getBrand());
+                JTextField priceField = new JTextField(String.valueOf(medicine.getPrice()));
+                JTextField quantityField = new JTextField(String.valueOf(medicine.getQuantity()));
+                JTextField expiryField = new JTextField(medicine.getExpiryDate());
+                
+                updatePanel.add(new JLabel("Name:"));
+                updatePanel.add(nameField);
+                updatePanel.add(new JLabel("Generic Name:"));
+                updatePanel.add(genericField);
+                updatePanel.add(new JLabel("Brand:"));
+                updatePanel.add(brandField);
+                updatePanel.add(new JLabel("Price:"));
+                updatePanel.add(priceField);
+                updatePanel.add(new JLabel("Quantity:"));
+                updatePanel.add(quantityField);
+                updatePanel.add(new JLabel("Expiry Date (YYYY-MM-DD):"));
+                updatePanel.add(expiryField);
+                
+                int result = JOptionPane.showConfirmDialog(this, updatePanel, 
+                    "Update Medicine: " + medicineName, JOptionPane.OK_CANCEL_OPTION);
+                
+                if (result == JOptionPane.OK_OPTION) {
+                    // Validate and update
+                    String name = nameField.getText().trim();
+                    String generic = genericField.getText().trim();
+                    String brand = brandField.getText().trim();
+                    String priceText = priceField.getText().trim();
+                    String quantityText = quantityField.getText().trim();
+                    String expiry = expiryField.getText().trim();
+                    
+                    if (name.isEmpty() || generic.isEmpty() || brand.isEmpty() || 
+                        priceText.isEmpty() || quantityText.isEmpty() || expiry.isEmpty()) {
+                        JOptionPane.showMessageDialog(this, 
+                            "All fields are required.", 
+                            "Validation Error", 
+                            JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    
+                    try {
+                        double price = Double.parseDouble(priceText);
+                        int quantity = Integer.parseInt(quantityText);
+                        
+                        if (price < 0 || quantity < 0) {
+                            JOptionPane.showMessageDialog(this, 
+                                "Price and quantity must be non-negative.", 
+                                "Validation Error", 
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        // Update the medicine
+                        Medicine updatedMedicine = new Medicine(medicineId, pharmacy.getId(), name, generic, brand, 
+                                                              price, quantity, expiry);
+                        medicineService.updateMedicine(updatedMedicine);
+                        
+                        JOptionPane.showMessageDialog(this, 
+                            "Medicine updated successfully!", 
+                            "Success", 
+                            JOptionPane.INFORMATION_MESSAGE);
+                        
+                        loadMedicinesData(); // Refresh the table
+                        
+                    } catch (NumberFormatException e) {
+                        JOptionPane.showMessageDialog(this, 
+                            "Invalid number format for price or quantity.", 
+                            "Validation Error", 
+                            JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(this,
+                    "Medicine not found. Please refresh the table.",
+                    "Medicine Not Found",
+                    JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                "Error loading medicine details: " + e.getMessage(),
+                "Error",
                 JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -235,9 +400,28 @@ public class ViewMedicinesTableUI extends JFrame {
         }
     }
     
-    // Custom button renderer for Actions column
-    class ButtonRenderer extends JButton implements TableCellRenderer {
-        public ButtonRenderer() {
+    // Custom button renderer for Update column
+    class UpdateButtonRenderer extends JButton implements TableCellRenderer {
+        public UpdateButtonRenderer() {
+            setOpaque(true);
+            setBackground(new Color(60, 179, 113));
+            setForeground(Color.WHITE);
+            setFont(new Font("Arial", Font.BOLD, 10));
+            setFocusPainted(false);
+            setBorderPainted(false);
+        }
+        
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            setText(value != null ? value.toString() : "Update");
+            return this;
+        }
+    }
+    
+    // Custom button renderer for Delete column
+    class DeleteButtonRenderer extends JButton implements TableCellRenderer {
+        public DeleteButtonRenderer() {
             setOpaque(true);
             setBackground(new Color(220, 20, 60));
             setForeground(Color.WHITE);
@@ -254,14 +438,72 @@ public class ViewMedicinesTableUI extends JFrame {
         }
     }
     
-    // Custom button editor for Actions column
-    class ButtonEditor extends DefaultCellEditor {
+    // Custom button editor for Update column
+    class UpdateButtonEditor extends DefaultCellEditor {
         private JButton button;
         private String label;
         private boolean clicked;
         private int selectedRow;
         
-        public ButtonEditor() {
+        public UpdateButtonEditor() {
+            super(new JCheckBox());
+            button = new JButton();
+            button.setOpaque(true);
+            button.setBackground(new Color(60, 179, 113));
+            button.setForeground(Color.WHITE);
+            button.setFont(new Font("Arial", Font.BOLD, 10));
+            button.setFocusPainted(false);
+            button.setBorderPainted(false);
+            
+            button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    fireEditingStopped();
+                }
+            });
+        }
+        
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                boolean isSelected, int row, int column) {
+            label = value != null ? value.toString() : "Update";
+            button.setText(label);
+            selectedRow = row;
+            clicked = true;
+            return button;
+        }
+        
+        @Override
+        public Object getCellEditorValue() {
+            if (clicked) {
+                // Get medicine ID and name from the selected row
+                int medicineId = (Integer) tableModel.getValueAt(selectedRow, 0);
+                String medicineName = (String) tableModel.getValueAt(selectedRow, 1);
+                
+                // Only update if it's not the "No medicines found" row
+                if (!medicineName.startsWith("No medicines found")) {
+                    SwingUtilities.invokeLater(() -> updateMedicine(medicineId, medicineName));
+                }
+            }
+            clicked = false;
+            return label;
+        }
+        
+        @Override
+        public boolean stopCellEditing() {
+            clicked = false;
+            return super.stopCellEditing();
+        }
+    }
+    
+    // Custom button editor for Delete column
+    class DeleteButtonEditor extends DefaultCellEditor {
+        private JButton button;
+        private String label;
+        private boolean clicked;
+        private int selectedRow;
+        
+        public DeleteButtonEditor() {
             super(new JCheckBox());
             button = new JButton();
             button.setOpaque(true);
@@ -297,7 +539,7 @@ public class ViewMedicinesTableUI extends JFrame {
                 String medicineName = (String) tableModel.getValueAt(selectedRow, 1);
                 
                 // Only delete if it's not the "No medicines found" row
-                if (!medicineName.equals("No medicines found")) {
+                if (!medicineName.startsWith("No medicines found")) {
                     SwingUtilities.invokeLater(() -> deleteMedicine(medicineId, medicineName));
                 }
             }

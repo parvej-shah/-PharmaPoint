@@ -2,9 +2,6 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/bb1c211b-a63c-447f-97e1-175d065e20d6/console.sql" dialect="SQLite" />
-    <file url="file://$PROJECT_DIR$/src/dao/DatabaseInitializer.java" dialect="SQLite" />
-    <file url="file://$PROJECT_DIR$/src/dao/PharmacyDAO.java" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/src/dao/UserDAO.java" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/src/services/UserService.java" dialect="GenericSQL" />
     <file url="PROJECT" dialect="SQLite" />
   </component>
