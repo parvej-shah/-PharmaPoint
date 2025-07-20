@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 public class AddMedicineFormUI extends JFrame {
     
     private Pharmacy pharmacy;
-    private PharmacyDashboardUI parentDashboard;
+    private PharmacyDashboard parentDashboard;
     private MedicineService medicineService;
     
     // Form components
@@ -25,7 +25,7 @@ public class AddMedicineFormUI extends JFrame {
     private JButton addButton;
     private JButton cancelButton;
     
-    public AddMedicineFormUI(Pharmacy pharmacy, PharmacyDashboardUI parentDashboard) {
+    public AddMedicineFormUI(Pharmacy pharmacy, PharmacyDashboard parentDashboard) {
         this.pharmacy = pharmacy;
         this.parentDashboard = parentDashboard;
         this.medicineService = new MedicineService();

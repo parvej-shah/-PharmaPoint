@@ -15,7 +15,7 @@ import java.util.List;
 public class ViewMedicinesTableUI extends JFrame {
     
     private Pharmacy pharmacy;
-    private PharmacyDashboardUI parentDashboard;
+    private PharmacyDashboard parentDashboard;
     private MedicineService medicineService;
     
     // UI Components
@@ -24,7 +24,7 @@ public class ViewMedicinesTableUI extends JFrame {
     private JButton refreshButton;
     private JButton closeButton;
     
-    public ViewMedicinesTableUI(Pharmacy pharmacy, PharmacyDashboardUI parentDashboard) {
+    public ViewMedicinesTableUI(Pharmacy pharmacy, PharmacyDashboard parentDashboard) {
         this.pharmacy = pharmacy;
         this.parentDashboard = parentDashboard;
         this.medicineService = new MedicineService();
