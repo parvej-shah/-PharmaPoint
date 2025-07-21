@@ -226,7 +226,7 @@ public class PharmacyDashboard extends JFrame {
     
     private void openCreatePharmacyForm() {
         SwingUtilities.invokeLater(() -> {
-            PharmacyRegistrationFormUI createForm = new PharmacyRegistrationFormUI(user);
+            PharmacyRegistrationFormUI createForm = new PharmacyRegistrationFormUI();
             createForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             createForm.setVisible(true);
             

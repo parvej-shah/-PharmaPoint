@@ -22,8 +22,8 @@ public class PharmacyRegistrationFormUI extends JFrame {
     private PharmacyService pharmacyService;
     
     // Constructor that takes a User parameter
-    public PharmacyRegistrationFormUI(User user) {
-        this.user = user;
+    public PharmacyRegistrationFormUI() {
+        this.user = SessionManager.getCurrentUser();
         pharmacyService = new PharmacyService();
         initializeComponents();
         setupLayout();
@@ -35,12 +35,6 @@ public class PharmacyRegistrationFormUI extends JFrame {
         setSize(400, 300);
         setLocationRelativeTo(null); // Center the window
         setResizable(false);
-    }
-    
-    // Deprecated constructor for backward compatibility
-    @Deprecated
-    public PharmacyRegistrationFormUI() {
-        this(SessionManager.getCurrentUser()); // Use current user from session
     }
     
     private void initializeComponents() {
@@ -226,17 +220,5 @@ public class PharmacyRegistrationFormUI extends JFrame {
                 JOptionPane.ERROR_MESSAGE
             );
         }
-    }
-    
-    // Main method for testing the form
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                // Create a test user for demonstration
-                User testUser = new User(1, "Test User", "test@pharmacy.com", "password", "1990-01-01", "pharmacy");
-                new PharmacyRegistrationFormUI(testUser).setVisible(true);
-            }
-        });
     }
 }
