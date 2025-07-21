@@ -1,7 +1,11 @@
 package ui;
 
 import models.User;
+import models.Pharmacy;
 import services.UserService;
+import services.AuthService;
+import services.PharmacyService;
+import utils.SessionManager;
 import utils.Validator;
 
 import javax.swing.*;
@@ -29,9 +33,13 @@ public class UserAuthUI extends JFrame {
     
     // Services
     private UserService userService;
+    private AuthService authService;
+    private PharmacyService pharmacyService;
     
     public UserAuthUI() {
         userService = new UserService();
+        authService = new AuthService();
+        pharmacyService = new PharmacyService();
         initializeComponents();
         setupLayout();
         setupEventHandlers();
@@ -283,24 +291,79 @@ public class UserAuthUI extends JFrame {
                 return;
             }
             
-            // Attempt login
-            User user = userService.loginUser(email, password);
+            // Validate email format
+            if (!authService.isValidEmail(email)) {
+                showErrorMessage("Please enter a valid email address.");
+                return;
+            }
+            
+            // Attempt authentication using AuthService
+            User user = authService.authenticateUser(email, password);
             
             if (user != null) {
-                showSuccessMessage("Login Successful!", 
-                    "Welcome back, " + user.getName() + "!\n\n" +
-                    "Email: " + user.getEmail() + "\n" +
-                    "Role: " + user.getRole());
+                // Save user in session
+                SessionManager.setCurrentUser(user);
                 
-                // TODO: Navigate to appropriate dashboard based on user role
-                clearLoginForm();
+                // Navigate based on user role
+                if ("pharmacy".equals(user.getRole())) {
+                    openPharmacyDashboard(user);
+                } else if ("patient".equals(user.getRole())) {
+                    openPatientDashboard(user);
+                } else {
+                    showErrorMessage("Unknown user role: " + user.getRole());
+                    SessionManager.clearSession();
+                    return;
+                }
+                
+                // Close login window
+                dispose();
+                
             } else {
                 showErrorMessage("Invalid email or password. Please try again.");
             }
             
         } catch (Exception ex) {
             showErrorMessage("An error occurred during login: " + ex.getMessage());
+            SessionManager.clearSession(); // Clear session on error
         }
+    }
+    
+    private void openPharmacyDashboard(User user) {
+        SwingUtilities.invokeLater(() -> {
+            try {
+                // Try to get pharmacy for this user
+                Pharmacy pharmacy = pharmacyService.getPharmacyByUserId(user.getId());
+                
+                PharmacyDashboard dashboard;
+                if (pharmacy != null) {
+                    dashboard = new PharmacyDashboard(user, pharmacy);
+                } else {
+                    // User doesn't have a pharmacy yet
+                    dashboard = new PharmacyDashboard(user);
+                }
+                
+                dashboard.setVisible(true);
+                
+            } catch (Exception e) {
+                showErrorMessage("Error opening pharmacy dashboard: " + e.getMessage());
+                // Fallback - open dashboard without pharmacy
+                new PharmacyDashboard(user).setVisible(true);
+            }
+        });
+    }
+    
+    private void openPatientDashboard(User user) {
+        SwingUtilities.invokeLater(() -> {
+            // TODO: Create PatientDashboard class
+            showSuccessMessage("Login Successful!", 
+                "Welcome, " + user.getName() + "!\n\n" +
+                "Patient Dashboard is not implemented yet.\n" +
+                "Role: " + user.getRole());
+            
+            // For now, just show success message
+            // When PatientDashboard is created, replace this with:
+            // new PatientDashboard(user).setVisible(true);
+        });
     }
     
     private void clearRegistrationForm() {

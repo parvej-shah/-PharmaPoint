@@ -57,6 +57,33 @@ public class UserDAO {
 
         return null;
     }
+    
+    public User findByEmail(String email) {
+        String sql = "SELECT * FROM users WHERE email = ?";
+
+        try (Connection conn = DBConnection.getConnection()) {
+            assert conn != null;
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setString(1, email);
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    return new User(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("email"),
+                            rs.getString("password"),
+                            rs.getString("dateOfBirth"),
+                            rs.getString("role"));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Find user by email failed: " + e.getMessage());
+        }
+
+        return null;
+    }
 
     public List<User> findAll() {
         List<User> users = new ArrayList<>();

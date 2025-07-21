@@ -16,6 +16,10 @@ public class UserService {
     public User loginUser(String email, String password) {
         return userDAO.findByEmailAndPassword(email, password);
     }
+    
+    public User getUserByEmail(String email) {
+        return userDAO.findByEmail(email);
+    }
 
     public List<User> getAllUsers() {
         return userDAO.findAll();

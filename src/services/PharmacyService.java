@@ -15,7 +15,12 @@ public class PharmacyService {
     public List<Pharmacy> getAllPharmacies() {
         return this.pharmacyDAO.getPharmacies();
     }
+    
     public Pharmacy getPharmacyById(int id) {
         return pharmacyDAO.getPharmacyById(id);
+    }
+    
+    public Pharmacy getPharmacyByUserId(int userId) {
+        return pharmacyDAO.getPharmacyByUserId(userId);
     }
 }

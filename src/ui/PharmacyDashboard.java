@@ -4,6 +4,7 @@ import models.Pharmacy;
 import models.User;
 import services.MedicineService;
 import services.PharmacyService;
+import utils.SessionManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -244,6 +245,9 @@ public class PharmacyDashboard extends JFrame {
         );
         
         if (choice == JOptionPane.YES_OPTION) {
+            // Clear the user session
+            SessionManager.clearSession();
+            
             dispose();
             // Open login window
             SwingUtilities.invokeLater(() -> {
