@@ -1,6 +1,8 @@
 package utils;
+import models.Medicine;
+import models.Pharmacy;
+import models.User;
 
-import models.*;
 import java.util.regex.Pattern;
 
 public class Validator {
@@ -160,7 +162,7 @@ public class Validator {
     public static boolean isValidRole(String role) {
         if (isBlank(role)) return false;
         String normalizedRole = role.trim().toLowerCase();
-        return "pharmacy".equals(normalizedRole) || "patient".equals(normalizedRole);
+        return "pharmacist".equals(normalizedRole) || "patient".equals(normalizedRole);
     }
 
     // Model Validations
