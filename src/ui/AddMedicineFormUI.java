@@ -3,6 +3,7 @@ package ui;
 import models.Medicine;
 import models.Pharmacy;
 import services.MedicineService;
+import utils.Validator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -177,42 +178,35 @@ public class AddMedicineFormUI extends JFrame {
             String quantityText = quantityField.getText().trim();
             String expiryDate = expiryDateField.getText().trim();
             
-            // Basic validation
-            if (name.isEmpty() || genericName.isEmpty() || brand.isEmpty() || 
-                priceText.isEmpty() || quantityText.isEmpty() || expiryDate.isEmpty()) {
-                showErrorMessage("Please fill in all fields.");
-                return;
-            }
-            
-            // Validate and parse numeric values
-            double price;
-            int quantity;
-            
-            try {
-                price = Double.parseDouble(priceText);
-                if (price <= 0) {
-                    throw new NumberFormatException("Price must be positive");
+            // Validate form using centralized Validator
+            if (!Validator.validateMedicineForm(name, genericName, brand, priceText, quantityText, expiryDate)) {
+                if (Validator.isBlank(name) || Validator.isBlank(genericName) || Validator.isBlank(brand) || 
+                    Validator.isBlank(priceText) || Validator.isBlank(quantityText) || Validator.isBlank(expiryDate)) {
+                    showErrorMessage("Please fill in all fields.");
+                    return;
                 }
-            } catch (NumberFormatException ex) {
-                showErrorMessage("Please enter a valid price (positive number).");
-                return;
-            }
-            
-            try {
-                quantity = Integer.parseInt(quantityText);
-                if (quantity <= 0) {
-                    throw new NumberFormatException("Quantity must be positive");
+                
+                if (!Validator.isValidPositiveNumber(priceText)) {
+                    showErrorMessage("Please enter a valid price (positive number).");
+                    return;
                 }
-            } catch (NumberFormatException ex) {
-                showErrorMessage("Please enter a valid quantity (positive integer).");
+                
+                if (!Validator.isValidPositiveInteger(quantityText)) {
+                    showErrorMessage("Please enter a valid quantity (positive integer).");
+                    return;
+                }
+                
+                if (!Validator.isValidDateFormat(expiryDate)) {
+                    showErrorMessage("Please enter expiry date in YYYY-MM-DD format.");
+                    return;
+                }
+                
                 return;
             }
             
-            // Validate date format (basic check)
-            if (!expiryDate.matches("\\d{4}-\\d{2}-\\d{2}")) {
-                showErrorMessage("Please enter expiry date in YYYY-MM-DD format.");
-                return;
-            }
+            // Parse validated values
+            double price = Double.parseDouble(priceText);
+            int quantity = Integer.parseInt(quantityText);
             
             // Create Medicine object
             Medicine medicine = new Medicine(

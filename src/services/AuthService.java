@@ -2,6 +2,7 @@ package services;
 
 import dao.UserDAO;
 import models.User;
+import utils.Validator;
 
 /**
  * AuthService - Handles user authentication and login logic
@@ -21,9 +22,8 @@ public class AuthService {
      * @return User object if authentication succeeds, null otherwise
      */
     public User authenticateUser(String email, String password) {
-        // Input validation
-        if (email == null || email.trim().isEmpty() || 
-            password == null || password.trim().isEmpty()) {
+        // Input validation using centralized Validator
+        if (!Validator.validateLoginForm(email, password)) {
             return null;
         }
         
@@ -46,30 +46,20 @@ public class AuthService {
     }
     
     /**
-     * Validate email format (basic validation)
+     * Validate email format using centralized Validator
      * @param email Email to validate
      * @return true if email format is valid, false otherwise
      */
     public boolean isValidEmail(String email) {
-        if (email == null || email.trim().isEmpty()) {
-            return false;
-        }
-        
-        // Basic email validation
-        return email.contains("@") && email.contains(".") && email.length() > 5;
+        return Validator.isValidEmail(email);
     }
     
     /**
-     * Validate password (basic validation)
+     * Validate password using centralized Validator
      * @param password Password to validate
      * @return true if password is valid, false otherwise
      */
     public boolean isValidPassword(String password) {
-        if (password == null || password.trim().isEmpty()) {
-            return false;
-        }
-        
-        // Basic password validation - at least 4 characters for now
-        return password.length() >= 4;
+        return Validator.isValidPassword(password);
     }
 }

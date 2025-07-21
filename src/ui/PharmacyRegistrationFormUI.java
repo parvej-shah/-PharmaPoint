@@ -4,6 +4,7 @@ import models.Pharmacy;
 import models.User;
 import services.PharmacyService;
 import utils.SessionManager;
+import utils.Validator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -134,39 +135,45 @@ public class PharmacyRegistrationFormUI extends JFrame {
         String address = addressField.getText().trim();
         String area = areaField.getText().trim();
         
-        // Validate input fields
-        if (userIdText.isEmpty() || pharmacyName.isEmpty() || 
-            address.isEmpty() || area.isEmpty()) {
-            
-            JOptionPane.showMessageDialog(
-                this,
-                "Please fill in all fields.",
-                "Validation Error",
-                JOptionPane.ERROR_MESSAGE
-            );
-            return;
-        }
-        
-        // Validate User ID is numeric
-        int userId;
-        try {
-            userId = Integer.parseInt(userIdText);
-            if (userId <= 0) {
-                throw new NumberFormatException("User ID must be positive");
+        // Validate form using centralized Validator
+        if (!Validator.validatePharmacyForm(userIdText, pharmacyName, address, area)) {
+            if (Validator.isBlank(pharmacyName) || Validator.isBlank(address) || Validator.isBlank(area)) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Please fill in all fields.",
+                    "Validation Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+                return;
             }
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(
-                this,
-                "User ID must be a valid positive number.",
-                "Validation Error",
-                JOptionPane.ERROR_MESSAGE
-            );
-            return;
+            
+            if (!Validator.isValidPositiveInteger(userIdText)) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Invalid user ID.",
+                    "Validation Error",
+                    JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
         }
         
+        // Parse validated user ID
+        int userId = Integer.parseInt(userIdText);
         
         // Create Pharmacy object
         Pharmacy pharmacy = new Pharmacy(userId, pharmacyName, address, area);
+        
+        // Validate pharmacy object
+        if (!Validator.validatePharmacy(pharmacy)) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Invalid pharmacy data. Please check your inputs.",
+                "Validation Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
         
         // Attempt to register pharmacy
         try {
@@ -193,10 +200,10 @@ public class PharmacyRegistrationFormUI extends JFrame {
                 // Open PharmacyDashboard with the user and newly created pharmacy
                 SwingUtilities.invokeLater(() -> {
                     if (createdPharmacy != null) {
-                        new PharmacyDashboard(user, createdPharmacy).setVisible(true);
+                        new PharmacyDashboard(createdPharmacy).setVisible(true);
                     } else {
                         // Fallback - open dashboard without pharmacy
-                        new PharmacyDashboard(user).setVisible(true);
+                        new PharmacyDashboard().setVisible(true);
                     }
                 });
                 

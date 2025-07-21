@@ -1,9 +1,6 @@
 package ui;
 
 import models.Pharmacy;
-import models.User;
-import services.MedicineService;
-import services.PharmacyService;
 import utils.SessionManager;
 
 import javax.swing.*;
@@ -14,9 +11,6 @@ import java.awt.event.ActionListener;
 public class PharmacyDashboard extends JFrame {
     
     private Pharmacy pharmacy;
-    private User user;
-    private MedicineService medicineService;
-    private PharmacyService pharmacyService;
     
     // UI Components
     private JLabel welcomeLabel;
@@ -27,11 +21,8 @@ public class PharmacyDashboard extends JFrame {
     private JPanel mainPanel;
     private JPanel buttonPanel;
     
-    public PharmacyDashboard(User user, Pharmacy pharmacy) {
-        this.user = user;
+    public PharmacyDashboard(Pharmacy pharmacy) {
         this.pharmacy = pharmacy;
-        this.medicineService = new MedicineService();
-        this.pharmacyService = new PharmacyService();
         
         initializeComponents();
         setupLayout();
@@ -46,8 +37,8 @@ public class PharmacyDashboard extends JFrame {
     }
     
     // Constructor for user without pharmacy
-    public PharmacyDashboard(User user) {
-        this(user, null);
+    public PharmacyDashboard() {
+        this(null);
     }
     
     private void initializeComponents() {
@@ -229,8 +220,6 @@ public class PharmacyDashboard extends JFrame {
             PharmacyRegistrationFormUI createForm = new PharmacyRegistrationFormUI();
             createForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             createForm.setVisible(true);
-            
-            // Close current dashboard since the registration form will open a new one
             dispose();
         });
     }
@@ -266,11 +255,9 @@ public class PharmacyDashboard extends JFrame {
     // Main method for testing
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            // Test with dummy data
-            User testUser = new User(1, "Test Pharmacist", "test@pharmacy.com", "password", "1990-01-01", "pharmacist");
             Pharmacy testPharmacy = new Pharmacy(1, 1, "City Pharmacy", "123 Main St", "Downtown");
             
-            new PharmacyDashboard(testUser, testPharmacy).setVisible(true);
+            new PharmacyDashboard(testPharmacy).setVisible(true);
         });
     }
 }

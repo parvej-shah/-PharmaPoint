@@ -45,3 +45,5 @@ Stores the application's persistent data, accessed via the DAO layer.
 ---
 
 > **Note:** The bidirectional arrows (⇅) represent the flow of data and requests between layers, ensuring clear separation of concerns.
+
+## find . -name "*.class" -type f -delete

@@ -246,17 +246,41 @@ public class UserAuthUI extends JFrame {
                         monthCombo.getSelectedItem() + "-" +
                         dayCombo.getSelectedItem();
             
-            // Basic validation
-            if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                showErrorMessage("Please fill in all fields.");
+            // Validate form using centralized Validator
+            if (!Validator.validateRegistrationForm(name, email, password, dob, role)) {
+                if (Validator.isBlank(name) || Validator.isBlank(email) || Validator.isBlank(password)) {
+                    showErrorMessage("Please fill in all fields.");
+                    return;
+                }
+                
+                if (!Validator.isValidEmail(email)) {
+                    showErrorMessage(Validator.getEmailErrorMessage(email));
+                    return;
+                }
+                
+                if (!Validator.isValidPassword(password)) {
+                    showErrorMessage(Validator.getPasswordErrorMessage(password));
+                    return;
+                }
+                
+                if (!Validator.isValidRole(role)) {
+                    showErrorMessage("Please select a valid role.");
+                    return;
+                }
+                
+                if (!Validator.isValidDateFormat(dob)) {
+                    showErrorMessage("Invalid date format.");
+                    return;
+                }
+                
                 return;
             }
             
             // Create user object
             User user = new User(name, email, password, dob, role);
             
-            // Validate user
-            if (!Validator.validateUser(user)) {
+            // Additional validation for user registration
+            if (!Validator.validateUserForRegistration(user)) {
                 showErrorMessage("Invalid user data. Please check your inputs.");
                 return;
             }
@@ -317,6 +341,7 @@ public class UserAuthUI extends JFrame {
                 
                 // Close login window
                 dispose();
+                clearLoginForm();
                 
             } else {
                 showErrorMessage("Invalid email or password. Please try again.");
@@ -336,10 +361,10 @@ public class UserAuthUI extends JFrame {
                 
                 PharmacyDashboard dashboard;
                 if (pharmacy != null) {
-                    dashboard = new PharmacyDashboard(user, pharmacy);
+                    dashboard = new PharmacyDashboard(pharmacy);
                 } else {
                     // User doesn't have a pharmacy yet
-                    dashboard = new PharmacyDashboard(user);
+                    dashboard = new PharmacyDashboard();
                 }
                 
                 dashboard.setVisible(true);
@@ -347,7 +372,7 @@ public class UserAuthUI extends JFrame {
             } catch (Exception e) {
                 showErrorMessage("Error opening pharmacy dashboard: " + e.getMessage());
                 // Fallback (it's optional) - open dashboard without pharmacy
-                new PharmacyDashboard(user).setVisible(true);
+                new PharmacyDashboard().setVisible(true);
             }
         });
     }

@@ -3,6 +3,7 @@ package ui;
 import models.Medicine;
 import models.Pharmacy;
 import services.MedicineService;
+import utils.Validator;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -299,7 +300,7 @@ public class ViewMedicinesTableUI extends JFrame {
                     "Update Medicine: " + medicineName, JOptionPane.OK_CANCEL_OPTION);
                 
                 if (result == JOptionPane.OK_OPTION) {
-                    // Validate and update
+                    // Validate and update using centralized Validator
                     String name = nameField.getText().trim();
                     String generic = genericField.getText().trim();
                     String brand = brandField.getText().trim();
@@ -307,26 +308,47 @@ public class ViewMedicinesTableUI extends JFrame {
                     String quantityText = quantityField.getText().trim();
                     String expiry = expiryField.getText().trim();
                     
-                    if (name.isEmpty() || generic.isEmpty() || brand.isEmpty() || 
-                        priceText.isEmpty() || quantityText.isEmpty() || expiry.isEmpty()) {
-                        JOptionPane.showMessageDialog(this, 
-                            "All fields are required.", 
-                            "Validation Error", 
-                            JOptionPane.ERROR_MESSAGE);
+                    // Validate form using centralized Validator
+                    if (!Validator.validateMedicineForm(name, generic, brand, priceText, quantityText, expiry)) {
+                        if (Validator.isBlank(name) || Validator.isBlank(generic) || Validator.isBlank(brand) || 
+                            Validator.isBlank(priceText) || Validator.isBlank(quantityText) || Validator.isBlank(expiry)) {
+                            JOptionPane.showMessageDialog(this, 
+                                "All fields are required.", 
+                                "Validation Error", 
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        if (!Validator.isValidPositiveNumber(priceText)) {
+                            JOptionPane.showMessageDialog(this, 
+                                Validator.getNumberErrorMessage("Price", priceText), 
+                                "Validation Error", 
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        if (!Validator.isValidPositiveInteger(quantityText)) {
+                            JOptionPane.showMessageDialog(this, 
+                                Validator.getNumberErrorMessage("Quantity", quantityText), 
+                                "Validation Error", 
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
+                        if (!Validator.isValidDateFormat(expiry)) {
+                            JOptionPane.showMessageDialog(this, 
+                                "Please enter expiry date in YYYY-MM-DD format.", 
+                                "Validation Error", 
+                                JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        
                         return;
                     }
                     
                     try {
                         double price = Double.parseDouble(priceText);
                         int quantity = Integer.parseInt(quantityText);
-                        
-                        if (price < 0 || quantity < 0) {
-                            JOptionPane.showMessageDialog(this, 
-                                "Price and quantity must be non-negative.", 
-                                "Validation Error", 
-                                JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
                         
                         // Update the medicine
                         Medicine updatedMedicine = new Medicine(medicineId, pharmacy.getId(), name, generic, brand, 
