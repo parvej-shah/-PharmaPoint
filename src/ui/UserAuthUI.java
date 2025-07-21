@@ -305,7 +305,7 @@ public class UserAuthUI extends JFrame {
                 SessionManager.setCurrentUser(user);
                 
                 // Navigate based on user role
-                if ("pharmacy".equals(user.getRole())) {
+                if ("pharmacist".equals(user.getRole())) {
                     openPharmacyDashboard(user);
                 } else if ("patient".equals(user.getRole())) {
                     openPatientDashboard(user);
@@ -346,7 +346,7 @@ public class UserAuthUI extends JFrame {
                 
             } catch (Exception e) {
                 showErrorMessage("Error opening pharmacy dashboard: " + e.getMessage());
-                // Fallback - open dashboard without pharmacy
+                // Fallback (it's optional) - open dashboard without pharmacy
                 new PharmacyDashboard(user).setVisible(true);
             }
         });

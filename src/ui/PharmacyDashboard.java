@@ -226,12 +226,12 @@ public class PharmacyDashboard extends JFrame {
     
     private void openCreatePharmacyForm() {
         SwingUtilities.invokeLater(() -> {
-            PharmacyRegistrationFormUI createForm = new PharmacyRegistrationFormUI();
+            PharmacyRegistrationFormUI createForm = new PharmacyRegistrationFormUI(user);
             createForm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             createForm.setVisible(true);
             
-            // TODO: Add callback to refresh dashboard when pharmacy is created
-            dispose(); // Close current dashboard
+            // Close current dashboard since the registration form will open a new one
+            dispose();
         });
     }
     

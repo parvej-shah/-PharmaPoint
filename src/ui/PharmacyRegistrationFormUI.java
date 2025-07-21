@@ -1,7 +1,9 @@
 package ui;
 
 import models.Pharmacy;
+import models.User;
 import services.PharmacyService;
+import utils.SessionManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +12,7 @@ import java.awt.event.ActionListener;
 
 public class PharmacyRegistrationFormUI extends JFrame {
     
+    private User user; // The user creating the pharmacy
     private JTextField userIdField;
     private JTextField pharmacyNameField;
     private JTextField addressField;
@@ -18,18 +21,26 @@ public class PharmacyRegistrationFormUI extends JFrame {
     
     private PharmacyService pharmacyService;
     
-    public PharmacyRegistrationFormUI() {
+    // Constructor that takes a User parameter
+    public PharmacyRegistrationFormUI(User user) {
+        this.user = user;
         pharmacyService = new PharmacyService();
         initializeComponents();
         setupLayout();
         setupEventHandlers();
         
         // Frame configuration
-        setTitle("Pharmacy Registration Form");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Pharmacy Registration Form - " + user.getName());
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 300);
         setLocationRelativeTo(null); // Center the window
         setResizable(false);
+    }
+    
+    // Deprecated constructor for backward compatibility
+    @Deprecated
+    public PharmacyRegistrationFormUI() {
+        this(SessionManager.getCurrentUser()); // Use current user from session
     }
     
     private void initializeComponents() {
@@ -38,6 +49,13 @@ public class PharmacyRegistrationFormUI extends JFrame {
         addressField = new JTextField(20);
         areaField = new JTextField(20);
         registerButton = new JButton("Register Pharmacy");
+        
+        // Auto-fill user ID from the passed user object
+        if (user != null) {
+            userIdField.setText(String.valueOf(user.getId()));
+            userIdField.setEditable(false); // Make it read-only since it's auto-filled
+            userIdField.setBackground(new Color(240, 240, 240)); // Light gray to indicate read-only
+        }
         
         // Set button style
         registerButton.setBackground(new Color(70, 130, 180));
@@ -55,12 +73,6 @@ public class PharmacyRegistrationFormUI extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.anchor = GridBagConstraints.WEST;
-        add(new JLabel("User ID:"), gbc);
-        
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        add(userIdField, gbc);
         
         // Pharmacy Name Label and Field
         gbc.gridx = 0;
@@ -116,7 +128,6 @@ public class PharmacyRegistrationFormUI extends JFrame {
         
         // Add Enter key support for all text fields
         ActionListener enterKeyListener = e -> handleRegistration();
-        userIdField.addActionListener(enterKeyListener);
         pharmacyNameField.addActionListener(enterKeyListener);
         addressField.addActionListener(enterKeyListener);
         areaField.addActionListener(enterKeyListener);
@@ -124,7 +135,7 @@ public class PharmacyRegistrationFormUI extends JFrame {
     
     private void handleRegistration() {
         // Get input values
-        String userIdText = userIdField.getText().trim();
+        String userIdText = String.valueOf(user.getId());
         String pharmacyName = pharmacyNameField.getText().trim();
         String address = addressField.getText().trim();
         String area = areaField.getText().trim();
@@ -159,6 +170,7 @@ public class PharmacyRegistrationFormUI extends JFrame {
             return;
         }
         
+        
         // Create Pharmacy object
         Pharmacy pharmacy = new Pharmacy(userId, pharmacyName, address, area);
         
@@ -178,8 +190,22 @@ public class PharmacyRegistrationFormUI extends JFrame {
                     JOptionPane.INFORMATION_MESSAGE
                 );
                 
-                // Clear form fields after successful registration
-                clearForm();
+                // Get the newly created pharmacy from database
+                Pharmacy createdPharmacy = pharmacyService.getPharmacyByUserId(userId);
+                
+                // Close this registration form
+                dispose();
+                
+                // Open PharmacyDashboard with the user and newly created pharmacy
+                SwingUtilities.invokeLater(() -> {
+                    if (createdPharmacy != null) {
+                        new PharmacyDashboard(user, createdPharmacy).setVisible(true);
+                    } else {
+                        // Fallback - open dashboard without pharmacy
+                        new PharmacyDashboard(user).setVisible(true);
+                    }
+                });
+                
             } else {
                 JOptionPane.showMessageDialog(
                     this,
@@ -202,20 +228,14 @@ public class PharmacyRegistrationFormUI extends JFrame {
         }
     }
     
-    private void clearForm() {
-        userIdField.setText("");
-        pharmacyNameField.setText("");
-        addressField.setText("");
-        areaField.setText("");
-        userIdField.requestFocus(); // Set focus back to first field
-    }
-    
     // Main method for testing the form
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new PharmacyRegistrationFormUI().setVisible(true);
+                // Create a test user for demonstration
+                User testUser = new User(1, "Test User", "test@pharmacy.com", "password", "1990-01-01", "pharmacy");
+                new PharmacyRegistrationFormUI(testUser).setVisible(true);
             }
         });
     }
