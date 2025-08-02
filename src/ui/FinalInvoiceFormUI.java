@@ -302,9 +302,9 @@ public class FinalInvoiceFormUI extends JDialog {
         );
         
         if (result.hasPdf()) {
-            successMessage += "\n\n✓ PDF Invoice generated successfully!";
+            successMessage += "\n\n✓ Invoice file generated successfully!";
         } else {
-            successMessage += "\n\n⚠ PDF generation failed, but sale was completed.";
+            successMessage += "\n\n⚠ Invoice file generation failed, but sale was completed.";
         }
         
         JOptionPane.showMessageDialog(this,
@@ -315,9 +315,9 @@ public class FinalInvoiceFormUI extends JDialog {
         // Show full invoice
         showFullInvoice(invoice);
         
-        // Offer to open PDF if generated
+        // Offer to open invoice file if generated
         if (result.hasPdf()) {
-            offerToOpenPDF(result.getPdfPath());
+            offerToOpenInvoiceFile(result.getPdfPath());
         }
         
         // Close this window and refresh parent
@@ -380,16 +380,16 @@ public class FinalInvoiceFormUI extends JDialog {
         invoiceDialog.setVisible(true);
     }
     
-    private void offerToOpenPDF(String pdfPath) {
+    private void offerToOpenInvoiceFile(String invoicePath) {
         int choice = JOptionPane.showConfirmDialog(this,
-            "PDF invoice has been saved to:\n" + pdfPath + 
+            "Invoice file has been saved to:\n" + invoicePath + 
             "\n\nWould you like to open it now?",
-            "PDF Generated",
+            "Invoice Generated",
             JOptionPane.YES_NO_OPTION,
             JOptionPane.QUESTION_MESSAGE);
         
         if (choice == JOptionPane.YES_OPTION) {
-            utils.PDFGenerator.openInvoiceFile(pdfPath);
+            utils.PDFGenerator.openInvoiceFile(invoicePath);
         }
     }
 }
