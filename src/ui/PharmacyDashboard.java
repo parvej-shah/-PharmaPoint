@@ -16,6 +16,7 @@ public class PharmacyDashboard extends JFrame {
     private JLabel welcomeLabel;
     private JButton addMedicineButton;
     private JButton viewMedicinesButton;
+    private JButton sellMedicineButton;
     private JButton createPharmacyButton;
     private JButton logoutButton;
     private JPanel mainPanel;
@@ -56,12 +57,14 @@ public class PharmacyDashboard extends JFrame {
         // Buttons
         addMedicineButton = new JButton("Add New Medicine");
         viewMedicinesButton = new JButton("View All Medicines");
+        sellMedicineButton = new JButton("Sell Medicine");
         createPharmacyButton = new JButton("Create Pharmacy");
         logoutButton = new JButton("Logout");
         
         // Style buttons
         styleButton(addMedicineButton, new Color(34, 139, 34)); // Forest Green
         styleButton(viewMedicinesButton, new Color(70, 130, 180)); // Steel Blue
+        styleButton(sellMedicineButton, new Color(138, 43, 226)); // Blue Violet
         styleButton(createPharmacyButton, new Color(255, 140, 0)); // Dark Orange
         styleButton(logoutButton, new Color(220, 20, 60)); // Crimson
         
@@ -84,6 +87,7 @@ public class PharmacyDashboard extends JFrame {
         
         addMedicineButton.setEnabled(hasPharmacy);
         viewMedicinesButton.setEnabled(hasPharmacy);
+        sellMedicineButton.setEnabled(hasPharmacy);
         createPharmacyButton.setVisible(!hasPharmacy);
         
         if (!hasPharmacy) {
@@ -107,6 +111,7 @@ public class PharmacyDashboard extends JFrame {
         if (pharmacy != null) {
             buttonPanel.add(addMedicineButton);
             buttonPanel.add(viewMedicinesButton);
+            buttonPanel.add(sellMedicineButton);
         } else {
             buttonPanel.add(createPharmacyButton);
         }
@@ -186,6 +191,13 @@ public class PharmacyDashboard extends JFrame {
             }
         });
         
+        sellMedicineButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openSellMedicineWindow();
+            }
+        });
+        
         createPharmacyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -212,6 +224,13 @@ public class PharmacyDashboard extends JFrame {
         SwingUtilities.invokeLater(() -> {
             ViewMedicinesTableUI viewWindow = new ViewMedicinesTableUI(pharmacy, this);
             viewWindow.setVisible(true);
+        });
+    }
+    
+    private void openSellMedicineWindow() {
+        SwingUtilities.invokeLater(() -> {
+            SellMedicineUI sellWindow = new SellMedicineUI(pharmacy, this);
+            sellWindow.setVisible(true);
         });
     }
     

@@ -54,6 +54,32 @@ public class DatabaseInitializer {
                 );
         """);
 
+            // invoices table
+            statement.execute("""
+                CREATE TABLE IF NOT EXISTS invoices (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    pharmacy_id INTEGER NOT NULL,
+                    patient_name TEXT NOT NULL,
+                    patient_phone TEXT,
+                    total_amount REAL NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (pharmacy_id) REFERENCES pharmacies(id)
+                );
+            """);
+
+            // invoice_items table
+            statement.execute("""
+                CREATE TABLE IF NOT EXISTS invoice_items (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    invoice_id INTEGER NOT NULL,
+                    medicine_name TEXT NOT NULL,
+                    quantity INTEGER NOT NULL,
+                    price REAL NOT NULL,
+                    subtotal REAL NOT NULL,
+                    FOREIGN KEY (invoice_id) REFERENCES invoices(id)
+                );
+            """);
+
 
             System.out.println("Database initialized successfully.");
             statement.close();
