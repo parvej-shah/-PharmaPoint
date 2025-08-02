@@ -8,12 +8,12 @@ import java.io.*;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Utility class for generating PDF invoices using Java Graphics2D
- * and the built-in printing system to create PDF files
+ * Utility class for generating invoice files
+ * Creates professional text-based invoices that are easily readable and printable
  */
 public class PDFGenerator {
     
-    // These constants are for future PDF enhancement
+    // These constants are reserved for future PDF enhancement if needed
     @SuppressWarnings("unused")
     private static final int PAGE_WIDTH = 612; // 8.5 inches * 72 DPI
     @SuppressWarnings("unused")
@@ -30,33 +30,32 @@ public class PDFGenerator {
     private static final Font SMALL_FONT = new Font("Arial", Font.PLAIN, 9);
     
     /**
-     * Generates a PDF invoice and saves it to the invoices folder
-     * @param invoice The invoice to generate PDF for
-     * @return The file path of the generated PDF, or null if failed
+     * Generates an invoice file and saves it to the invoices folder
+     * @param invoice The invoice to generate file for
+     * @return The file path of the generated invoice, or null if failed
      */
-    public static String generateInvoicePDF(Invoice invoice) {
+    public static String generateInvoiceFile(Invoice invoice) {
         try {
-            String fileName = String.format("Invoice_%d_%s.pdf", 
+            String fileName = String.format("Invoice_%d_%s.txt", 
                 invoice.getId(), 
                 invoice.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")));
             
             String filePath = "invoices/" + fileName;
             File file = new File(filePath);
             
-            // Create a custom PrinterJob that outputs to PDF
-            return createPDFFile(invoice, file);
+            // Create a text-based invoice file (clean and printable)
+            return createInvoiceFile(invoice, file);
             
         } catch (Exception e) {
-            System.err.println("Error generating PDF: " + e.getMessage());
+            System.err.println("Error generating invoice: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
     }
     
-    private static String createPDFFile(Invoice invoice, File outputFile) {
+    private static String createInvoiceFile(Invoice invoice, File outputFile) {
         try {
-            // For now, we'll create a text-based invoice file that can be easily converted to PDF
-            // This approach ensures compatibility without external dependencies
+            // Create a professional text-based invoice file
             
             StringBuilder invoiceContent = new StringBuilder();
             
@@ -132,13 +131,12 @@ public class PDFGenerator {
     }
     
     /**
-     * Enhanced PDF generation using Java2D (for future implementation)
-     * This method can be enhanced with actual PDF libraries if needed
+     * Legacy method name for backward compatibility
+     * @param invoice The invoice to generate file for
+     * @return The file path of the generated invoice
      */
-    public static String generateEnhancedPDF(Invoice invoice) {
-        // This is a placeholder for future PDF enhancement
-        // For now, use the text-based approach above
-        return generateInvoicePDF(invoice);
+    public static String generateInvoicePDF(Invoice invoice) {
+        return generateInvoiceFile(invoice);
     }
     
     private static String truncateString(String str, int maxLength) {
@@ -199,7 +197,7 @@ public class PDFGenerator {
         
         File[] files = invoiceDir.listFiles((dir, name) -> 
             name.toLowerCase().startsWith("invoice_") && 
-            (name.toLowerCase().endsWith(".pdf") || name.toLowerCase().endsWith(".txt")));
+            name.toLowerCase().endsWith(".txt"));
         
         return files != null ? files.length : 0;
     }
