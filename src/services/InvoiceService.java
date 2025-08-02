@@ -50,14 +50,14 @@ public class InvoiceService {
             return new SaveInvoiceResult(false, null, "Failed to save invoice to database");
         }
 
-        // Generate PDF after successful save
-        String pdfPath = PDFGenerator.generateInvoicePDF(invoice);
-        if (pdfPath == null) {
-            // Invoice was saved but PDF generation failed
-            return new SaveInvoiceResult(true, null, "Invoice saved but PDF generation failed");
+        // Generate invoice file after successful save
+        String invoicePath = PDFGenerator.generateInvoiceFile(invoice);
+        if (invoicePath == null) {
+            // Invoice was saved but file generation failed
+            return new SaveInvoiceResult(true, null, "Invoice saved but file generation failed");
         }
 
-        return new SaveInvoiceResult(true, pdfPath, "Invoice saved and PDF generated successfully");
+        return new SaveInvoiceResult(true, invoicePath, "Invoice saved and file generated successfully");
     }
 
     /**
