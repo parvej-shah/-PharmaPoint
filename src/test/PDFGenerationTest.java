@@ -31,40 +31,59 @@ public class PDFGenerationTest {
         Invoice sampleInvoice = createSampleInvoice();
         System.out.println("Sample invoice created with ID: " + sampleInvoice.getId());
         
-        // Test 3: Generate PDF
-        System.out.println("\n3. Generating PDF...");
-        String pdfPath = PDFGenerator.generateInvoicePDF(sampleInvoice);
+        // Test 3: Generate invoice file
+        System.out.println("\n3. Generating invoice file...");
+        String invoicePath = PDFGenerator.generateInvoiceFile(sampleInvoice);
         
-        if (pdfPath != null) {
-            System.out.println("✓ PDF generated successfully!");
-            System.out.println("PDF saved at: " + pdfPath);
+        if (invoicePath != null) {
+            System.out.println("✓ Invoice file generated successfully!");
+            System.out.println("Invoice saved at: " + invoicePath);
             
-            // Check if file exists
-            File pdfFile = new File(pdfPath);
-            if (pdfFile.exists()) {
-                System.out.println("✓ PDF file exists and is accessible");
-                System.out.println("File size: " + pdfFile.length() + " bytes");
+            File invoiceFile = new File(invoicePath);
+            if (invoiceFile.exists()) {
+                System.out.println("✓ Invoice file exists and is accessible");
+                System.out.println("File size: " + invoiceFile.length() + " bytes");
             } else {
-                System.err.println("✗ PDF file was not created");
+                System.out.println("✗ Invoice file not found");
             }
         } else {
-            System.err.println("✗ PDF generation failed");
+            System.out.println("✗ Invoice file generation failed");
         }
         
-        // Test 4: Test invoice service with PDF
-        System.out.println("\n4. Testing InvoiceService with PDF generation...");
+        // Test 4: Test legacy method (backward compatibility)
+        System.out.println("\n4. Testing legacy method (generateInvoicePDF)...");
+        String legacyPath = PDFGenerator.generateInvoicePDF(sampleInvoice);
+        
+        if (legacyPath != null) {
+            System.out.println("✓ Legacy method works correctly!");
+            System.out.println("Legacy saved at: " + legacyPath);
+            
+            // Check if file exists
+            File legacyFile = new File(legacyPath);
+            if (legacyFile.exists()) {
+                System.out.println("✓ Legacy file exists and is accessible");
+                System.out.println("File size: " + legacyFile.length() + " bytes");
+            } else {
+                System.err.println("✗ Legacy file was not created");
+            }
+        } else {
+            System.err.println("✗ Legacy method failed");
+        }
+        
+        // Test 5: Test invoice service with invoice file generation
+        System.out.println("\n5. Testing InvoiceService with invoice file generation...");
         InvoiceService invoiceService = new InvoiceService();
         InvoiceService.SaveInvoiceResult result = invoiceService.saveInvoiceWithPDF(sampleInvoice);
         
         System.out.println("Save result success: " + result.isSuccess());
         System.out.println("Save result message: " + result.getMessage());
-        System.out.println("Has PDF: " + result.hasPdf());
+        System.out.println("Has Invoice File: " + result.hasPdf());
         if (result.hasPdf()) {
-            System.out.println("PDF path: " + result.getPdfPath());
+            System.out.println("Invoice File path: " + result.getPdfPath());
         }
         
-        // Test 5: Check invoice count
-        System.out.println("\n5. Checking invoice count...");
+        // Test 6: Check invoice count
+        System.out.println("\n6. Checking invoice count...");
         int invoiceCount = PDFGenerator.getInvoiceCount();
         System.out.println("Total invoices in directory: " + invoiceCount);
         
