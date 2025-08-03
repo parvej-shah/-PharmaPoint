@@ -12,9 +12,8 @@ public class DatabaseInitializer {
             if (connection == null) {
                 throw new SQLException("Failed to establish database connection");
             }
-            
-            Statement statement = connection.createStatement();
 
+            Statement statement = connection.createStatement();         //statement is an interface,helps run SQL code
             //User table
             statement.execute("""
                 CREATE TABLE IF NOT EXISTS users (
@@ -59,7 +58,7 @@ public class DatabaseInitializer {
             statement.close();
 
         } catch (SQLException e) {
-            System.err.println("Database initialization failed: " + e.getMessage());
+            System.err.println("Couldnt initialize database: " + e.getMessage());
             e.printStackTrace();
             throw new RuntimeException(e);
         } finally {
@@ -67,7 +66,7 @@ public class DatabaseInitializer {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    System.err.println("Error closing database connection: " + e.getMessage());
+                    System.err.println("Couldnt close database connection: " + e.getMessage());
                 }
             }
         }

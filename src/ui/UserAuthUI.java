@@ -54,7 +54,7 @@ public class UserAuthUI extends JFrame {
     
     private void initializeComponents() {
         // Registration components
-        regNameField = new JTextField(20);
+        regNameField = new JTextField(20);      //20 characters wide
         regEmailField = new JTextField(20);
         regPasswordField = new JPasswordField(20);
         

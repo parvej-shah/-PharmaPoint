@@ -23,7 +23,7 @@ public class DBConnection {
             // Ensure the database directory exists
             File dbDir = new File(System.getProperty("user.dir"), DB_DIR);
             if (!dbDir.exists()) {
-                boolean created = dbDir.mkdirs();
+                boolean created = dbDir.mkdirs();   //mkdirs() creates the any necessary files and directories
                 if (created) {
                     System.out.println("Created database directory: " + dbDir.getAbsolutePath());
                 } else {
@@ -33,7 +33,7 @@ public class DBConnection {
             }
 
             // Load the SQLite JDBC driver
-            Class.forName("org.sqlite.JDBC");
+            Class.forName("org.sqlite.JDBC");  //org.sqlite.JDBC is a class inside the SQLite JDBC .jar file.
             
             // Create connection
             Connection connection = DriverManager.getConnection(DB_URL);
