@@ -333,6 +333,8 @@ public class UserAuthUI extends JFrame {
                     openPharmacyDashboard(user);
                 } else if ("patient".equals(user.getRole())) {
                     openPatientDashboard(user);
+                } else if ("admin".equals(user.getRole())) {
+                    openAdminDashboard(user);
                 } else {
                     showErrorMessage("Unknown user role: " + user.getRole());
                     SessionManager.clearSession();
@@ -379,15 +381,14 @@ public class UserAuthUI extends JFrame {
     
     private void openPatientDashboard(User user) {
         SwingUtilities.invokeLater(() -> {
-            // TODO: Create PatientDashboard class
-            showSuccessMessage("Login Successful!", 
-                "Welcome, " + user.getName() + "!\n\n" +
-                "Patient Dashboard is not implemented yet.\n" +
-                "Role: " + user.getRole());
-            
-            // For now, just show success message
-            // When PatientDashboard is created, replace this with:
-            // new PatientDashboard(user).setVisible(true);
+            PatientDashboardUI patientDashboard = new PatientDashboardUI();
+            patientDashboard.setVisible(true);
+        });
+    }
+    
+    private void openAdminDashboard(User user) {
+        SwingUtilities.invokeLater(() -> {
+            AdminDashboard.showAdminDashboard(user);
         });
     }
     
