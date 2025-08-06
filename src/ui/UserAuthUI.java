@@ -357,7 +357,7 @@ public class UserAuthUI extends JFrame {
             }
             
             // Validate email format
-            if (!authService.isValidEmail(email)) {
+            if (!Validator.isValidEmail(email)) {
                 showErrorMessage("Please enter a valid email address.");
                 return;
             }

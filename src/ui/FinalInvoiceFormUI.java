@@ -234,12 +234,24 @@ public class FinalInvoiceFormUI extends JDialog {
         patientPhoneField.addActionListener(e -> confirmSale());
     }
     
+    private String validatePatientInfo(String patientName, String patientPhone) {
+        // Just check if patient name is not empty
+        if (patientName == null || patientName.isEmpty()) {
+            return "Patient name is required.";
+        }
+        if (patientPhone == null || patientPhone.isEmpty()) {
+            return "Patient phone number is required.";
+        }
+        
+        return ""; // No validation errors
+    }
+    
     private void confirmSale() {
         String patientName = patientNameField.getText().trim();
         String patientPhone = patientPhoneField.getText().trim();
         
-        // Use centralized validation with detailed error messages
-        String validationError = invoiceService.getPatientValidationError(patientName, patientPhone);
+        // Validate patient information directly in UI
+        String validationError = validatePatientInfo(patientName, patientPhone);
         if (!validationError.isEmpty()) {
             JOptionPane.showMessageDialog(this, validationError, "Validation Error", JOptionPane.ERROR_MESSAGE);
             if (validationError.contains("name")) {
