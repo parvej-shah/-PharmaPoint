@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import models.Medicine;
 import models.Pharmacy;
@@ -232,14 +234,9 @@ public class MedicineDAO {
         return result;
     }
 
-    /**
-     * Find pharmacies that have the requested medicines with availability counts
-     * @param medicineNames List of medicine names to search for
-     * @return Map of pharmacy to available medicine count and details
-     */
-    public java.util.Map<Pharmacy, java.util.Map<String, Object>> findPharmaciesWithMedicines(List<String> medicineNames) {
-        java.util.Map<Pharmacy, java.util.Map<String, Object>> result = new java.util.HashMap<>();
-        
+    public Map<Pharmacy, Map<String, Object>> findPharmaciesWithMedicines(List<String> medicineNames) {
+        Map<Pharmacy, Map<String, Object>> result = new HashMap<>();
+
         if (medicineNames.isEmpty()) {
             return result;
         }
@@ -301,7 +298,7 @@ public class MedicineDAO {
                     
                     // Add medicine to pharmacy's available list (avoid duplicates)
                     @SuppressWarnings("unchecked")
-                    java.util.List<Medicine> medicines = (java.util.List<Medicine>) result.get(existingPharmacy).get("availableMedicines");
+                    List<Medicine> medicines = (List<Medicine>) result.get(existingPharmacy).get("availableMedicines");
                     
                     Medicine medicine = new Medicine(
                             0, // id not needed for this use case
