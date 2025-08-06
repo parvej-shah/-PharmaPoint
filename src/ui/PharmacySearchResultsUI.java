@@ -29,9 +29,9 @@ public class PharmacySearchResultsUI extends JFrame {
         
         setTitle("Pharmacy Search Results - " + patientName);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(800, 600);
+        setSize(900, 650);
         setLocationRelativeTo(parent);
-        setMinimumSize(new Dimension(600, 400));
+        setMinimumSize(new Dimension(700, 450));
     }
 
     private void initializeComponents() {
@@ -70,15 +70,15 @@ public class PharmacySearchResultsUI extends JFrame {
         panel.setBorder(BorderFactory.createEmptyBorder(10, 15, 15, 15));
         
         JLabel titleLabel = new JLabel("Pharmacy Search Results", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JLabel patientLabel = new JLabel("Patient: " + patientName, SwingConstants.CENTER);
-        patientLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        patientLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         patientLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         JLabel requestLabel = new JLabel("Requested: " + String.join(", ", requestedMedicines), SwingConstants.CENTER);
-        requestLabel.setFont(new Font("Arial", Font.ITALIC, 12));
+        requestLabel.setFont(new Font("Arial", Font.ITALIC, 14));
         requestLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         panel.add(titleLabel);
@@ -112,7 +112,7 @@ public class PharmacySearchResultsUI extends JFrame {
 
     private void addSectionHeader(String text) {
         JLabel headerLabel = new JLabel(text);
-        headerLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        headerLabel.setFont(new Font("Arial", Font.BOLD, 18));
         headerLabel.setForeground(new Color(34, 139, 34));
         headerLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         headerLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
@@ -197,10 +197,10 @@ public class PharmacySearchResultsUI extends JFrame {
     private void styleButton(JButton button, Color color) {
         button.setBackground(color);
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 12));
+        button.setFont(new Font("Arial", Font.BOLD, 16));
         button.setFocusPainted(false);
         button.setBorderPainted(false);
-        button.setPreferredSize(new Dimension(100, 30));
+        button.setPreferredSize(new Dimension(120, 40));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 }

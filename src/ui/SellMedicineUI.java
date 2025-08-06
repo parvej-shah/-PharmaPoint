@@ -50,9 +50,9 @@ public class SellMedicineUI extends JFrame {
         // Frame configuration
         setTitle("Sell Medicine - " + pharmacy.getName());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(900, 700);
+        setSize(1000, 750);
         setLocationRelativeTo(parentDashboard);
-        setMinimumSize(new Dimension(800, 600));
+        setMinimumSize(new Dimension(900, 650));
     }
     
     private void initializeData() {
@@ -66,8 +66,8 @@ public class SellMedicineUI extends JFrame {
     private void initializeComponents() {
         // Medicine search components
         medicineSearchField = new JTextField();
-        medicineSearchField.setFont(new Font("Arial", Font.PLAIN, 14));
-        medicineSearchField.setPreferredSize(new Dimension(0, 30));
+        medicineSearchField.setFont(new Font("Arial", Font.PLAIN, 16));
+        medicineSearchField.setPreferredSize(new Dimension(0, 35));
         
         medicineListModel = new DefaultListModel<>();
         updateMedicineList("");
@@ -77,7 +77,8 @@ public class SellMedicineUI extends JFrame {
         
         // Quantity spinner
         quantitySpinner = new JSpinner(new SpinnerNumberModel(1, 1, 999, 1));
-        quantitySpinner.setPreferredSize(new Dimension(80, 30));
+        quantitySpinner.setPreferredSize(new Dimension(90, 35));
+        quantitySpinner.setFont(new Font("Arial", Font.PLAIN, 14));
         
         // Buttons
         addToCartButton = new JButton("Add to Cart");
@@ -102,11 +103,13 @@ public class SellMedicineUI extends JFrame {
         };
         cartTable = new JTable(cartTableModel);
         cartTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        cartTable.setRowHeight(25);
+        cartTable.setRowHeight(30);
+        cartTable.setFont(new Font("Arial", Font.PLAIN, 13));
+        cartTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
         
         // Total label
         totalLabel = new JLabel("Total: 0.00 BDT");
-        totalLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        totalLabel.setFont(new Font("Arial", Font.BOLD, 18));
         totalLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         
         updateButtonStates();
@@ -115,9 +118,10 @@ public class SellMedicineUI extends JFrame {
     private void styleButton(JButton button, Color backgroundColor) {
         button.setBackground(backgroundColor);
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 12));
+        button.setFont(new Font("Arial", Font.BOLD, 14));
         button.setFocusPainted(false);
         button.setBorderPainted(false);
+        button.setPreferredSize(new Dimension(140, 40));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
@@ -147,21 +151,27 @@ public class SellMedicineUI extends JFrame {
     
     private JPanel createMedicineSelectionPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createTitledBorder("Select Medicine"));
+        panel.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createEtchedBorder(), "Select Medicine", 
+            0, 0, new Font("Arial", Font.BOLD, 16)));
         
         // Search panel
         JPanel searchPanel = new JPanel(new BorderLayout());
-        searchPanel.add(new JLabel("Search Medicine:"), BorderLayout.NORTH);
+        JLabel searchLabel = new JLabel("Search Medicine:");
+        searchLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        searchPanel.add(searchLabel, BorderLayout.NORTH);
         searchPanel.add(medicineSearchField, BorderLayout.CENTER);
         searchPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 10, 5));
         
         // Medicine list
         JScrollPane listScrollPane = new JScrollPane(medicineList);
-        listScrollPane.setPreferredSize(new Dimension(0, 300));
+        listScrollPane.setPreferredSize(new Dimension(0, 350));
         
         // Quantity panel
         JPanel quantityPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        quantityPanel.add(new JLabel("Quantity:"));
+        JLabel qtyLabel = new JLabel("Quantity:");
+        qtyLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        quantityPanel.add(qtyLabel);
         quantityPanel.add(quantitySpinner);
         quantityPanel.add(addToCartButton);
         
@@ -174,7 +184,9 @@ public class SellMedicineUI extends JFrame {
     
     private JPanel createCartPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createTitledBorder("Shopping Cart"));
+        panel.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createEtchedBorder(), "Shopping Cart", 
+            0, 0, new Font("Arial", Font.BOLD, 16)));
         
         // Cart table
         JScrollPane tableScrollPane = new JScrollPane(cartTable);

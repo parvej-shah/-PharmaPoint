@@ -40,9 +40,9 @@ public class AdminPharmaciesPanel extends JPanel {
         // Create table
         pharmaciesTable = new JTable(tableModel);
         pharmaciesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        pharmaciesTable.setRowHeight(25);
-        pharmaciesTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-        pharmaciesTable.setFont(new Font("Arial", Font.PLAIN, 11));
+        pharmaciesTable.setRowHeight(30);
+        pharmaciesTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+        pharmaciesTable.setFont(new Font("Arial", Font.PLAIN, 13));
 
         // Enable sorting
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
@@ -50,11 +50,11 @@ public class AdminPharmaciesPanel extends JPanel {
 
         // Search field
         searchField = new JTextField(20);
-        searchField.setFont(new Font("Arial", Font.PLAIN, 12));
+        searchField.setFont(new Font("Arial", Font.PLAIN, 14));
         
         // Total pharmacies label
         totalPharmaciesLabel = new JLabel("Total Pharmacies: 0");
-        totalPharmaciesLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        totalPharmaciesLabel.setFont(new Font("Arial", Font.BOLD, 14));
     }
 
     private void setupLayout() {
@@ -66,7 +66,9 @@ public class AdminPharmaciesPanel extends JPanel {
         
         // Search panel
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        searchPanel.add(new JLabel("Search Pharmacies:"));
+        JLabel searchLabel = new JLabel("Search Pharmacies:");
+        searchLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        searchPanel.add(searchLabel);
         searchPanel.add(searchField);
         
         JButton refreshButton = new JButton("🔄 Refresh");
@@ -295,10 +297,10 @@ public class AdminPharmaciesPanel extends JPanel {
     private void styleButton(JButton button, Color color) {
         button.setBackground(color);
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 11));
+        button.setFont(new Font("Arial", Font.BOLD, 14));
         button.setFocusPainted(false);
         button.setBorderPainted(false);
-        button.setPreferredSize(new Dimension(130, 30));
+        button.setPreferredSize(new Dimension(140, 35));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 }

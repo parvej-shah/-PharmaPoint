@@ -39,9 +39,9 @@ public class ViewMedicinesTableUI extends JFrame {
         // Frame configuration
         setTitle("All Medicines - " + pharmacy.getName());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(900, 600);
+        setSize(1000, 650);
         setLocationRelativeTo(parentDashboard);
-        setMinimumSize(new Dimension(800, 500));
+        setMinimumSize(new Dimension(900, 550));
         
         // Load initial data
         loadMedicinesData();
@@ -67,8 +67,9 @@ public class ViewMedicinesTableUI extends JFrame {
         
         // Create table
         medicinesTable = new JTable(tableModel);
-        medicinesTable.setRowHeight(35);
-        medicinesTable.setFont(new Font("Arial", Font.PLAIN, 12));
+        medicinesTable.setRowHeight(40);
+        medicinesTable.setFont(new Font("Arial", Font.PLAIN, 13));
+        medicinesTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
         medicinesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
         // Set column widths
@@ -90,6 +91,7 @@ public class ViewMedicinesTableUI extends JFrame {
         
         // Search components
         searchField = new JTextField(20);
+        searchField.setFont(new Font("Arial", Font.PLAIN, 14));
         searchField.setToolTipText("Search by medicine name or generic name");
         searchButton = new JButton("Search");
         
@@ -100,21 +102,27 @@ public class ViewMedicinesTableUI extends JFrame {
         // Style buttons
         searchButton.setBackground(new Color(60, 179, 113));
         searchButton.setForeground(Color.WHITE);
-        searchButton.setFont(new Font("Arial", Font.BOLD, 12));
+        searchButton.setFont(new Font("Arial", Font.BOLD, 14));
         searchButton.setFocusPainted(false);
         searchButton.setBorderPainted(false);
+        searchButton.setPreferredSize(new Dimension(100, 35));
+        searchButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         refreshButton.setBackground(new Color(70, 130, 180));
         refreshButton.setForeground(Color.WHITE);
-        refreshButton.setFont(new Font("Arial", Font.BOLD, 12));
+        refreshButton.setFont(new Font("Arial", Font.BOLD, 14));
         refreshButton.setFocusPainted(false);
         refreshButton.setBorderPainted(false);
+        refreshButton.setPreferredSize(new Dimension(100, 35));
+        refreshButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         closeButton.setBackground(new Color(220, 20, 60));
         closeButton.setForeground(Color.WHITE);
-        closeButton.setFont(new Font("Arial", Font.BOLD, 12));
+        closeButton.setFont(new Font("Arial", Font.BOLD, 14));
         closeButton.setFocusPainted(false);
         closeButton.setBorderPainted(false);
+        closeButton.setPreferredSize(new Dimension(100, 35));
+        closeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
     private void setupLayout() {
@@ -123,7 +131,7 @@ public class ViewMedicinesTableUI extends JFrame {
         
         // Title label
         JLabel titleLabel = new JLabel("Medicines Inventory - " + pharmacy.getName(), SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
         titleLabel.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10));
         
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
@@ -134,12 +142,16 @@ public class ViewMedicinesTableUI extends JFrame {
         
         // Search panel
         JPanel searchPanel = new JPanel(new GridBagLayout());
-        searchPanel.setBorder(BorderFactory.createTitledBorder("Search Medicines"));
+        searchPanel.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createEtchedBorder(), "Search Medicines", 
+            0, 0, new Font("Arial", Font.BOLD, 14)));
         GridBagConstraints searchGbc = new GridBagConstraints();
         searchGbc.insets = new Insets(5, 5, 5, 5);
         
         searchGbc.gridx = 0; searchGbc.gridy = 0;
-        searchPanel.add(new JLabel("Search:"), searchGbc);
+        JLabel searchLabel = new JLabel("Search:");
+        searchLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        searchPanel.add(searchLabel, searchGbc);
         
         searchGbc.gridx = 1; searchGbc.gridy = 0;
         searchGbc.fill = GridBagConstraints.HORIZONTAL;
