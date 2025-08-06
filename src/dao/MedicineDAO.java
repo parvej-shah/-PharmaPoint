@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -229,6 +230,149 @@ public class MedicineDAO {
         }
 
         return result;
+    }
+
+    /**
+     * Find pharmacies that have the requested medicines with availability counts
+     * @param medicineNames List of medicine names to search for
+     * @return Map of pharmacy to available medicine count and details
+     */
+    public java.util.Map<Pharmacy, java.util.Map<String, Object>> findPharmaciesWithMedicines(List<String> medicineNames) {
+        java.util.Map<Pharmacy, java.util.Map<String, Object>> result = new java.util.HashMap<>();
+        
+        if (medicineNames.isEmpty()) {
+            return result;
+        }
+        
+        // Build dynamic SQL with placeholders
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT p.id, p.user_id, p.name, p.address, p.area, ");
+        sql.append("m.name as medicine_name, m.generic_name, m.brand, m.price, m.quantity ");
+        sql.append("FROM pharmacies p ");
+        sql.append("LEFT JOIN medicines m ON p.id = m.pharmacy_id ");
+        sql.append("WHERE m.quantity > 0 AND (");
+        
+        for (int i = 0; i < medicineNames.size(); i++) {
+            if (i > 0) sql.append(" OR ");
+            sql.append("m.name LIKE ? OR m.generic_name LIKE ?");
+        }
+        sql.append(") ORDER BY p.name ASC");
+        
+        try (Connection conn = DBConnection.getConnection()) {
+            assert conn != null;
+            try (PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+                
+                // Set parameters
+                int paramIndex = 1;
+                for (String medicineName : medicineNames) {
+                    String search = "%" + medicineName.trim() + "%";
+                    stmt.setString(paramIndex++, search);
+                    stmt.setString(paramIndex++, search);
+                }
+                
+                ResultSet rs = stmt.executeQuery();
+                while (rs.next()) {
+                    // Create pharmacy object
+                    Pharmacy pharmacy = new Pharmacy(
+                            rs.getInt("id"),
+                            rs.getInt("user_id"),
+                            rs.getString("name"),
+                            rs.getString("address"),
+                            rs.getString("area")
+                    );
+                    
+                    // Group by pharmacy to avoid duplicates
+                    Pharmacy existingPharmacy = null;
+                    for (Pharmacy p : result.keySet()) {
+                        if (p.getId() == pharmacy.getId()) {
+                            existingPharmacy = p;
+                            break;
+                        }
+                    }
+                    
+                    if (existingPharmacy == null) {
+                        // Create new pharmacy entry
+                        java.util.Map<String, Object> data = new java.util.HashMap<>();
+                        data.put("availableMedicines", new java.util.ArrayList<Medicine>());
+                        data.put("count", 0);
+                        result.put(pharmacy, data);
+                        existingPharmacy = pharmacy;
+                    }
+                    
+                    // Add medicine to pharmacy's available list (avoid duplicates)
+                    @SuppressWarnings("unchecked")
+                    java.util.List<Medicine> medicines = (java.util.List<Medicine>) result.get(existingPharmacy).get("availableMedicines");
+                    
+                    Medicine medicine = new Medicine(
+                            0, // id not needed for this use case
+                            rs.getInt("id"),
+                            rs.getString("medicine_name"),
+                            rs.getString("generic_name"),
+                            rs.getString("brand"),
+                            rs.getDouble("price"),
+                            rs.getInt("quantity"),
+                            "" // expiry not needed for this use case
+                    );
+                    
+                    // Check if medicine already exists (avoid duplicates)
+                    boolean exists = false;
+                    for (Medicine m : medicines) {
+                        if (m.getName().equals(medicine.getName()) && m.getBrand().equals(medicine.getBrand())) {
+                            exists = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!exists) {
+                        medicines.add(medicine);
+                        result.get(existingPharmacy).put("count", medicines.size());
+                    }
+                }
+                
+            }
+        } catch (SQLException e) {
+            System.err.println("Error finding pharmacies with medicines: " + e.getMessage());
+        }
+        
+        return result;
+    }
+
+    /**
+     * Get all medicines with pharmacy information, ordered by quantity descending
+     * @return List of all medicines sorted by quantity
+     */
+    public List<Medicine> getAllMedicinesWithPharmacyInfo() {
+        List<Medicine> medicines = new ArrayList<>();
+        String sql = "SELECT m.*, p.name as pharmacy_name " +
+                    "FROM medicines m " +
+                    "LEFT JOIN pharmacies p ON m.pharmacy_id = p.id " +
+                    "ORDER BY m.quantity DESC";
+        
+        try (Connection conn = DBConnection.getConnection()) {
+            assert conn != null;
+            try (Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(sql)) {
+                
+                while (rs.next()) {
+                    Medicine medicine = new Medicine(
+                        rs.getInt("id"),
+                        rs.getInt("pharmacy_id"),
+                        rs.getString("name"),
+                        rs.getString("generic_name"),
+                        rs.getString("brand"),
+                        rs.getDouble("price"),
+                        rs.getInt("quantity"),
+                        rs.getString("expiry_date")
+                    );
+                    medicines.add(medicine);
+                }
+                
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting all medicines: " + e.getMessage());
+        }
+        
+        return medicines;
     }
 
 }
