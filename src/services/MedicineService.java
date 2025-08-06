@@ -32,22 +32,7 @@ public class MedicineService {
         return medicineDAO.updateMedicine(medicine);
     }
 
-    public boolean updateMedicineForSale(Medicine medicine) {
-        // Simple validation for sale updates
-        if (medicine == null || medicine.getId() <= 0) {
-            System.err.println("Invalid medicine for sale update");
-            return false;
-        }
-        
-        if (medicine.getQuantity() < 0) {
-            System.err.println("Medicine quantity cannot be negative");
-            return false;
-        }
-        
-        return medicineDAO.updateMedicine(medicine);
-    }
-
-    public List<Medicine> searchMedicineByName(String keyword) {
+    public List<Medicine> searchMedicineByName(String keyword) {    //returns list of medicines with similar names
         return medicineDAO.searchMedicineByName(keyword);
     }
 

@@ -16,7 +16,7 @@ public class MedicineDAO {
         String sql = "INSERT INTO medicines(pharmacy_id, name, generic_name, brand, price, quantity, expiry_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getConnection()) {
-            assert conn != null;
+            assert conn != null;       //if connection is null, it will throw an Error
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
                 pstmt.setInt(1, medicine.getPharmacyId());
@@ -37,19 +37,18 @@ public class MedicineDAO {
         }
     }
 
-    public List<Medicine> getAllMedicines(int pharmacyId){
+    public List<Medicine> getAllMedicines(int pharmacyId){      //returns an ArrayList of Medicine objects
         List <Medicine> medicines = new ArrayList<>();
         String sql = "SELECT * FROM medicines WHERE pharmacy_id = ?";
-        try( Connection conn = DBConnection.getConnection()
-        ) {
+        try( Connection conn = DBConnection.getConnection()) {
             assert conn != null;
-            try(PreparedStatement pstmt = conn.prepareStatement(sql)
-                    ) {
+            try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setInt(1, pharmacyId);
-                ResultSet rs = pstmt.executeQuery();
+
+                ResultSet rs = pstmt.executeQuery();        //rs is a table with data that we want 
                 while(rs.next()){
                     medicines.add(new Medicine(
-                            rs.getInt("id"),
+                            rs.getInt("id"),                // Get the data from the column "id"
                             rs.getInt("pharmacy_id"),
                             rs.getString("name"),
                             rs.getString("generic_name"),
@@ -199,12 +198,11 @@ public class MedicineDAO {
         String sql = """
         SELECT p.id, p.user_id, p.name, p.address, p.area
         FROM medicines m
-        JOIN pharmacies p ON m.pharmacy_id = p.id
+        JOIN pharmacies p ON m.pharmacy_id = p.id           
         WHERE (m.name LIKE ? OR m.generic_name LIKE ?)
         AND m.quantity > 0
         GROUP BY p.id
-    """;
-
+    """;                                                    //starting from the medicines table, joining it with pharmacies, and returning details of each pharmacy that has at least one matching, in-stock medicine.
         try (Connection conn = DBConnection.getConnection()) {
             assert conn != null;
             try (PreparedStatement stmt = conn.prepareStatement(sql)) {

@@ -29,13 +29,10 @@ public class PharmacyDAO {
     public List<Pharmacy> getPharmacies() {
         List<Pharmacy> pharmacies = new ArrayList<>();
         String sql = "SELECT * FROM pharmacies";
-        try (
-                Connection conn = DBConnection.getConnection();
-        ) {
+        try (Connection conn = DBConnection.getConnection()) {
             assert conn != null;
-            try (Statement stmt = conn.createStatement();
-                 ResultSet result = stmt.executeQuery(sql);
-                    ){
+            try (Statement stmt = conn.createStatement();       //not prepared statement because we dont need to edit the query later
+                 ResultSet result = stmt.executeQuery(sql)) {
                 while (result.next()) {
                     pharmacies.add(new Pharmacy(
                         result.getInt("id"),

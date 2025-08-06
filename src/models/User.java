@@ -4,9 +4,9 @@ public class User {
     private int id;
     private String name;
     private String email;
-    private String password; // must be hashed
+    private String password; 
     private String dateOfBirth;
-    private String role; // "patient" or "pharmacy"
+    private String role; // patient or pharmacy
 
     // Constructor
     public User(int id, String name, String email, String password, String dob,String role) {
@@ -35,7 +35,6 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
-    // Getters and Setters
     public int getId() {
         return id;
     }

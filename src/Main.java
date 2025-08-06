@@ -10,4 +10,4 @@ public class Main {
             new UserAuthUI().setVisible(true);
         });
     }
-}
+} 

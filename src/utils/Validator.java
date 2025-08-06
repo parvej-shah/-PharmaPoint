@@ -16,7 +16,7 @@ public class Validator {
     private static final Pattern DATE_PATTERN = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}$");
 
     // Basic String Validations
-    public static boolean isNotEmpty(String value) {
+    public static boolean isNotEmpty(String value) {  //returns true if the string is not null and not empty
         return value != null && !value.trim().isEmpty();
     }
     
@@ -78,12 +78,10 @@ public class Validator {
         }
     }
 
-    // Email Validations
     public static boolean isValidEmail(String email) {
         if (isBlank(email)) return false;
         
-        // Enhanced email validation using regex
-        return EMAIL_PATTERN.matcher(email.trim()).matches();
+        return EMAIL_PATTERN.matcher(email.trim()).matches();       //returns true if the email matches the regex pattern
     }
 
 
@@ -102,12 +100,12 @@ public class Validator {
         boolean hasUpper = password.chars().anyMatch(Character::isUpperCase);
         boolean hasLower = password.chars().anyMatch(Character::isLowerCase);
         boolean hasDigit = password.chars().anyMatch(Character::isDigit);
-        boolean hasSpecial = password.chars().anyMatch(ch -> "!@#$%^&*()_+-=[]{}|;:,.<>?".indexOf(ch) >= 0);
+        boolean hasSpecial = password.chars().anyMatch(ch -> "!@#$%^&*()_+-=[]{}|;:,.<>?".indexOf(ch) >= 0);  //if ch exists in the special characters string
+                                                                                                           //index of ch will be >= 0
         
         return hasUpper && hasLower && hasDigit && hasSpecial;
     }
 
-    // Date Validations
     public static boolean isValidDateFormat(String date) {
         if (isBlank(date)) return false;
         return DATE_PATTERN.matcher(date.trim()).matches();
@@ -130,14 +128,12 @@ public class Validator {
         }
     }
 
-    // Role Validations
     public static boolean isValidRole(String role) {
         if (isBlank(role)) return false;
         String normalizedRole = role.trim().toLowerCase();
         return "pharmacist".equals(normalizedRole) || "patient".equals(normalizedRole);
     }
 
-    // Model Validations
     public static boolean validateUser(User user) {
         if (user == null) return false;
         
