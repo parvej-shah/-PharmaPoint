@@ -32,18 +32,11 @@ public class Validator {
     public static boolean isPositiveNumber(double value) {
         return value > 0;
     }
-    
-    public static boolean isNonNegativeNumber(double value) {
-        return value >= 0;
-    }
 
     public static boolean isPositiveInteger(int value) {
         return value > 0;
     }
-    
-    public static boolean isNonNegativeInteger(int value) {
-        return value >= 0;
-    }
+
     
     public static boolean isValidNumber(String value) {
         if (isBlank(value)) return false;
@@ -84,16 +77,6 @@ public class Validator {
             return false;
         }
     }
-    
-    public static boolean isValidNonNegativeNumber(String value) {
-        if (!isValidNumber(value)) return false;
-        try {
-            double num = Double.parseDouble(value.trim());
-            return num >= 0;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
 
     // Email Validations
     public static boolean isValidEmail(String email) {
@@ -102,18 +85,7 @@ public class Validator {
         // Enhanced email validation using regex
         return EMAIL_PATTERN.matcher(email.trim()).matches();
     }
-    
-    public static boolean isBasicValidEmail(String email) {
-        if (isBlank(email)) return false;
-        
-        // Basic email validation (fallback)
-        String trimmedEmail = email.trim();
-        return trimmedEmail.contains("@") && 
-               trimmedEmail.contains(".") && 
-               trimmedEmail.length() > 5 &&
-               trimmedEmail.indexOf("@") > 0 &&
-               trimmedEmail.lastIndexOf(".") > trimmedEmail.indexOf("@");
-    }
+
 
     // Password Validations
     public static boolean isValidPassword(String password) {
@@ -177,11 +149,7 @@ public class Validator {
     }
     
     public static boolean validateUserForRegistration(User user) {
-        if (!validateUser(user)) return false;
-        
-        // Additional validation for registration
-        return isValidDateFormat(user.getDateOfBirth()) &&
-               isValidDateRange(user.getDateOfBirth(), 1900, 2010); // Reasonable age range
+        return validateUser(user);
     }
 
     public static boolean validatePharmacy(Pharmacy pharmacy) {
@@ -272,6 +240,72 @@ public class Validator {
         if (isBlank(value)) return fieldName + " is required.";
         if (!isValidNumber(value)) return fieldName + " must be a valid number.";
         if (!isValidPositiveNumber(value)) return fieldName + " must be positive.";
+        return "";
+    }
+
+    // Invoice and Patient Validations (Simplified)
+    public static boolean isValidPatientName(String name) {
+        return isNotEmpty(name) && name.trim().length() >= 2 && name.trim().length() <= 100;
+    }
+    
+    public static boolean isValidPatientPhone(String phone) {
+        if (isBlank(phone)) return true; // Phone is optional
+        
+        // Simple Bangladesh phone validation - just check length and basic format
+        phone = phone.trim();
+        return phone.length() <= 20 && phone.matches("[0-9\\+\\-\\s\\(\\)]+");
+    }
+    
+    public static boolean isValidMedicineForSale(models.Medicine medicine) {
+        return medicine != null && 
+               medicine.getId() > 0 && 
+               isNotEmpty(medicine.getName()) && 
+               medicine.getPrice() > 0 && 
+               medicine.getQuantity() >= 0; // Allow 0 for out of stock check
+    }
+    
+    public static boolean isValidSaleItem(models.SaleItem item) {
+        return item != null && 
+               isValidMedicineForSale(item.getMedicine()) && 
+               item.getQuantity() > 0;
+    }
+    
+    public static boolean isValidInvoiceBasic(models.Invoice invoice) {
+        return invoice != null && 
+               invoice.getPharmacyId() > 0 && 
+               isValidPatientName(invoice.getPatientName()) && 
+               isValidPatientPhone(invoice.getPatientPhone()) && 
+               invoice.getItems() != null && 
+               !invoice.getItems().isEmpty() && 
+               invoice.getTotalAmount() > 0;
+    }
+    
+    public static boolean hasStockAvailable(models.Medicine medicine, int requestedQuantity) {
+        return medicine != null && medicine.getQuantity() >= requestedQuantity;
+    }
+    
+    // Error message methods for invoice validation
+    public static String getPatientNameError(String name) {
+        if (isBlank(name)) return "Patient name is required";
+        if (name.trim().length() < 2) return "Patient name must be at least 2 characters";
+        if (name.trim().length() > 100) return "Patient name is too long (max 100 characters)";
+        return "";
+    }
+    
+    public static String getPatientPhoneError(String phone) {
+        if (phone != null && !isValidPatientPhone(phone)) {
+            return "Please enter a valid phone number (numbers, spaces, +, -, (), only)";
+        }
+        return "";
+    }
+    
+    public static String getMedicineStockError(models.Medicine medicine, int requestedQuantity) {
+        if (medicine == null) return "Medicine not found";
+        if (!isValidMedicineForSale(medicine)) return "Invalid medicine data";
+        if (!hasStockAvailable(medicine, requestedQuantity)) {
+            return String.format("Insufficient stock for %s. Available: %d, Requested: %d", 
+                medicine.getName(), medicine.getQuantity(), requestedQuantity);
+        }
         return "";
     }
 }
