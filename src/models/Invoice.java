@@ -15,7 +15,7 @@ public class Invoice {
     private String pharmacyName;
     private String pharmacyArea;
 
-    // Constructor for new invoices (before saving to DB)
+    // Constructor (before saving to DB)
     public Invoice(int pharmacyId, String patientName, String patientPhone, 
                    List<SaleItem> items, String pharmacyName, String pharmacyArea) {
         this.pharmacyId = pharmacyId;
@@ -28,7 +28,7 @@ public class Invoice {
         this.pharmacyArea = pharmacyArea;
     }
 
-    // Constructor for invoices loaded from DB
+    // Constructor for invoices loaded from DB(after searching by ID)
     public Invoice(int id, int pharmacyId, String patientName, String patientPhone, 
                    double totalAmount, LocalDateTime createdAt, List<SaleItem> items) {
         this.id = id;
@@ -49,7 +49,14 @@ public class Invoice {
     }
 
     private double calculateTotalAmount() {
-        return items != null ? items.stream().mapToDouble(SaleItem::getSubtotal).sum() : 0.0;
+        // return items != null ? items.stream().mapToDouble(SaleItem::getSubtotal).sum() : 0.0;
+        double total = 0.0;
+        if (items != null) {
+            for (SaleItem item : items) {
+                total += item.getSubtotal();
+            }
+        }
+        return total;
     }
 
     // Getters

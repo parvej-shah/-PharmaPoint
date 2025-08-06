@@ -7,27 +7,9 @@ import java.awt.*;
 import java.io.*;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Utility class for generating invoice files
- * Creates professional text-based invoices that are easily readable and printable
- */
 public class PDFGenerator {
     
-    // These constants are reserved for future PDF enhancement if needed
-    @SuppressWarnings("unused")
-    private static final int PAGE_WIDTH = 612; // 8.5 inches * 72 DPI
-    @SuppressWarnings("unused")
-    private static final int PAGE_HEIGHT = 792; // 11 inches * 72 DPI
-    @SuppressWarnings("unused")
-    private static final int MARGIN = 50;
-    @SuppressWarnings("unused")
-    private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 18);
-    @SuppressWarnings("unused")
-    private static final Font HEADER_FONT = new Font("Arial", Font.BOLD, 12);
-    @SuppressWarnings("unused")
-    private static final Font NORMAL_FONT = new Font("Arial", Font.PLAIN, 10);
-    @SuppressWarnings("unused")
-    private static final Font SMALL_FONT = new Font("Arial", Font.PLAIN, 9);
+    
     
     /**
      * Generates an invoice file and saves it to the invoices folder

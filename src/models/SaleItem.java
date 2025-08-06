@@ -9,7 +9,6 @@ public class SaleItem {
         this.quantity = quantity;
     }
 
-    // Getters
     public Medicine getMedicine() {
         return medicine;
     }
@@ -22,7 +21,6 @@ public class SaleItem {
         return medicine.getPrice() * quantity;
     }
 
-    // Setters
     public void setMedicine(Medicine medicine) {
         this.medicine = medicine;
     }
