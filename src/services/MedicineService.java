@@ -5,7 +5,6 @@ import models.Medicine;
 import models.Pharmacy;
 import models.SaleItem;
 import models.Invoice;
-import utils.Validator;
 
 import java.util.List;
 
@@ -25,10 +24,6 @@ public class MedicineService {
     }
 
     public boolean updateMedicine(Medicine medicine) {
-        if (!Validator.validateMedicine(medicine)) {
-            System.err.println("Invalid medicine input for update.");
-            return false;
-        }
         return medicineDAO.updateMedicine(medicine);
     }
 

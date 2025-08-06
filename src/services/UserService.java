@@ -9,7 +9,6 @@ public class UserService {
     private final UserDAO userDAO = new UserDAO();
 
     public boolean registerUser(User user) {
-        // You could add extra validation here
         return userDAO.save(user);
     }
 
