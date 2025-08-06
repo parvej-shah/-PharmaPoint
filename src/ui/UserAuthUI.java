@@ -47,16 +47,22 @@ public class UserAuthUI extends JFrame {
         // Frame configuration
         setTitle("PharmaPoint - User Authentication");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(600, 550);
+        setSize(700, 600);
         setLocationRelativeTo(null);
         setResizable(false);
     }
     
     private void initializeComponents() {
         // Registration components
-        regNameField = new JTextField(20);      //20 characters wide
+        regNameField = new JTextField(20);
         regEmailField = new JTextField(20);
         regPasswordField = new JPasswordField(20);
+        
+        // Set larger font for text fields
+        Font fieldFont = new Font("Arial", Font.PLAIN, 14);
+        regNameField.setFont(fieldFont);
+        regEmailField.setFont(fieldFont);
+        regPasswordField.setFont(fieldFont);
         
         // Date of Birth Components
         dayCombo = new JComboBox<>();
@@ -65,6 +71,12 @@ public class UserAuthUI extends JFrame {
                 "07", "08", "09", "10", "11", "12"
         });
         yearCombo = new JComboBox<>();
+        
+        // Set font for combo boxes
+        Font comboFont = new Font("Arial", Font.PLAIN, 14);
+        dayCombo.setFont(comboFont);
+        monthCombo.setFont(comboFont);
+        yearCombo.setFont(comboFont);
         
         // Populate day combo
         for (int i = 1; i <= 31; i++) {
@@ -77,11 +89,14 @@ public class UserAuthUI extends JFrame {
         }
         
         regRoleCombo = new JComboBox<>(new String[]{"patient", "pharmacist"});
+        regRoleCombo.setFont(comboFont);
         regButton = new JButton("Register");
         
         // Login components
         loginEmailField = new JTextField(20);
         loginPasswordField = new JPasswordField(20);
+        loginEmailField.setFont(fieldFont);
+        loginPasswordField.setFont(fieldFont);
         loginButton = new JButton("Login");
         
         // Style buttons
@@ -92,14 +107,16 @@ public class UserAuthUI extends JFrame {
     private void styleButton(JButton button) {
         button.setBackground(new Color(70, 130, 180));
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 12));
+        button.setFont(new Font("Arial", Font.BOLD, 16));
         button.setFocusPainted(false);
         button.setBorderPainted(false);
-        button.setPreferredSize(new Dimension(120, 30));
+        button.setPreferredSize(new Dimension(140, 40));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
     private void setupLayout() {
         JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.setFont(new Font("Arial", Font.BOLD, 16));
         
         // Create registration panel
         JPanel registerPanel = createRegistrationPanel();
@@ -123,34 +140,50 @@ public class UserAuthUI extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.WEST;
         
+        Font labelFont = new Font("Arial", Font.BOLD, 14);
+        
         // Name field
         gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0;
-        panel.add(new JLabel("Name:"), gbc);
+        JLabel nameLabel = new JLabel("Name:");
+        nameLabel.setFont(labelFont);
+        panel.add(nameLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 0; gbc.weightx = 1.0;
         panel.add(regNameField, gbc);
         
         // Email field
         gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0;
-        panel.add(new JLabel("Email:"), gbc);
+        JLabel emailLabel = new JLabel("Email:");
+        emailLabel.setFont(labelFont);
+        panel.add(emailLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 1; gbc.weightx = 1.0;
         panel.add(regEmailField, gbc);
         
         // Password field
         gbc.gridx = 0; gbc.gridy = 2; gbc.weightx = 0;
-        panel.add(new JLabel("Password:"), gbc);
+        JLabel passwordLabel = new JLabel("Password:");
+        passwordLabel.setFont(labelFont);
+        panel.add(passwordLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 2; gbc.weightx = 1.0;
         panel.add(regPasswordField, gbc);
         
         // Date of Birth field
         gbc.gridx = 0; gbc.gridy = 3; gbc.weightx = 0;
-        panel.add(new JLabel("Date of Birth:"), gbc);
+        JLabel dobLabel = new JLabel("Date of Birth:");
+        dobLabel.setFont(labelFont);
+        panel.add(dobLabel, gbc);
         
         JPanel dobPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        dobPanel.add(new JLabel("Day:"));
+        JLabel dayLabel = new JLabel("Day:");
+        dayLabel.setFont(labelFont);
+        dobPanel.add(dayLabel);
         dobPanel.add(dayCombo);
-        dobPanel.add(new JLabel("Month:"));
+        JLabel monthLabel = new JLabel("Month:");
+        monthLabel.setFont(labelFont);
+        dobPanel.add(monthLabel);
         dobPanel.add(monthCombo);
-        dobPanel.add(new JLabel("Year:"));
+        JLabel yearLabel = new JLabel("Year:");
+        yearLabel.setFont(labelFont);
+        dobPanel.add(yearLabel);
         dobPanel.add(yearCombo);
         
         gbc.gridx = 1; gbc.gridy = 3; gbc.weightx = 1.0;
@@ -158,7 +191,9 @@ public class UserAuthUI extends JFrame {
         
         // Role field
         gbc.gridx = 0; gbc.gridy = 4; gbc.weightx = 0;
-        panel.add(new JLabel("Role:"), gbc);
+        JLabel roleLabel = new JLabel("Role:");
+        roleLabel.setFont(labelFont);
+        panel.add(roleLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 4; gbc.weightx = 1.0;
         panel.add(regRoleCombo, gbc);
         
@@ -181,15 +216,21 @@ public class UserAuthUI extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.WEST;
         
+        Font labelFont = new Font("Arial", Font.BOLD, 14);
+        
         // Email field
         gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0;
-        panel.add(new JLabel("Email:"), gbc);
+        JLabel emailLabel = new JLabel("Email:");
+        emailLabel.setFont(labelFont);
+        panel.add(emailLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 0; gbc.weightx = 1.0;
         panel.add(loginEmailField, gbc);
         
         // Password field
         gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0;
-        panel.add(new JLabel("Password:"), gbc);
+        JLabel passwordLabel = new JLabel("Password:");
+        passwordLabel.setFont(labelFont);
+        panel.add(passwordLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 1; gbc.weightx = 1.0;
         panel.add(loginPasswordField, gbc);
         

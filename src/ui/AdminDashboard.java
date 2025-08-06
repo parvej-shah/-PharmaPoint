@@ -48,7 +48,7 @@ public class AdminDashboard extends JFrame {
         tabbedPane.addTab("💊 Medicines", medicinesPanel);
         
         // Style the tabbed pane
-        tabbedPane.setFont(new Font("Arial", Font.BOLD, 14));
+        tabbedPane.setFont(new Font("Arial", Font.BOLD, 16));
         tabbedPane.setTabPlacement(JTabbedPane.TOP);
     }
 
@@ -74,11 +74,11 @@ public class AdminDashboard extends JFrame {
         
         // Title and admin info
         JLabel titleLabel = new JLabel("PharmaPoint Admin Dashboard");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
         titleLabel.setForeground(Color.WHITE);
         
         JLabel adminLabel = new JLabel("Welcome, " + currentAdmin.getName());
-        adminLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        adminLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         adminLabel.setForeground(Color.WHITE);
         
         JPanel leftPanel = new JPanel();
@@ -104,7 +104,7 @@ public class AdminDashboard extends JFrame {
         panel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         
         JLabel footerLabel = new JLabel("PharmaPoint Admin System © 2025");
-        footerLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        footerLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         footerLabel.setForeground(Color.WHITE);
         
         panel.add(footerLabel);
@@ -154,10 +154,10 @@ public class AdminDashboard extends JFrame {
     private void styleButton(JButton button, Color color) {
         button.setBackground(color);
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 12));
+        button.setFont(new Font("Arial", Font.BOLD, 14));
         button.setFocusPainted(false);
         button.setBorderPainted(false);
-        button.setPreferredSize(new Dimension(80, 35));
+        button.setPreferredSize(new Dimension(90, 40));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
