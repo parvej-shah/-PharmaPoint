@@ -82,38 +82,4 @@ public class InvoiceService {
         
         return new Invoice(pharmacyId, patientName, patientPhone, items, pharmacyName, pharmacyArea);
     }
-
-    public Invoice getInvoiceById(int invoiceId) {
-        if (invoiceId <= 0) {
-            System.err.println("Invalid invoice ID");
-            return null;
-        }
-        
-        return invoiceDAO.getInvoiceById(invoiceId);
-    }
-
-
-    public List<Invoice> getInvoicesByPharmacyId(int pharmacyId) {
-        if (pharmacyId <= 0) {
-            System.err.println("Invalid pharmacy ID");
-            return List.of(); // Return empty list
-        }
-        
-        return invoiceDAO.getInvoicesByPharmacyId(pharmacyId);
-    }
-
-    public boolean deleteInvoice(int invoiceId) {
-        if (invoiceId <= 0) {
-            System.err.println("Invalid invoice ID");
-            return false;
-        }
-        
-        return invoiceDAO.deleteInvoice(invoiceId);
-    }
-
-
-    public double getTotalSales(int pharmacyId) {
-        List<Invoice> invoices = getInvoicesByPharmacyId(pharmacyId);
-        return invoices.stream().mapToDouble(Invoice::getTotalAmount).sum();
-    }
 }
