@@ -33,7 +33,7 @@ public class PharmacyRegistrationFormUI extends JFrame {
         // Frame configuration
         setTitle("Pharmacy Registration Form - " + user.getName());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(400, 300);
+        setSize(500, 350);
         setLocationRelativeTo(null); // Center the window
         setResizable(false);
     }
@@ -45,6 +45,13 @@ public class PharmacyRegistrationFormUI extends JFrame {
         areaField = new JTextField(20);
         registerButton = new JButton("Register Pharmacy");
         
+        // Set larger fonts
+        Font fieldFont = new Font("Arial", Font.PLAIN, 14);
+        userIdField.setFont(fieldFont);
+        pharmacyNameField.setFont(fieldFont);
+        addressField.setFont(fieldFont);
+        areaField.setFont(fieldFont);
+        
         // Auto-fill user ID from the passed user object
         if (user != null) {
             userIdField.setText(String.valueOf(user.getId()));
@@ -55,7 +62,11 @@ public class PharmacyRegistrationFormUI extends JFrame {
         // Set button style
         registerButton.setBackground(new Color(70, 130, 180));
         registerButton.setForeground(Color.WHITE);
-        registerButton.setFont(new Font("Arial", Font.BOLD, 12));
+        registerButton.setFont(new Font("Arial", Font.BOLD, 16));
+        registerButton.setPreferredSize(new Dimension(180, 40));
+        registerButton.setFocusPainted(false);
+        registerButton.setBorderPainted(false);
+        registerButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
     private void setupLayout() {
@@ -64,16 +75,24 @@ public class PharmacyRegistrationFormUI extends JFrame {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         
-        // User ID Label and Field
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.WEST;
+        Font labelFont = new Font("Arial", Font.BOLD, 14);
+        
+        // Title
+        JLabel titleLabel = new JLabel("Pharmacy Registration", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2; gbc.weightx = 1.0;
+        add(titleLabel, gbc);
+        
+        // Reset gridwidth
+        gbc.gridwidth = 1;
         
         // Pharmacy Name Label and Field
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.weightx = 0;
-        add(new JLabel("Pharmacy Name:"), gbc);
+        JLabel nameLabel = new JLabel("Pharmacy Name:");
+        nameLabel.setFont(labelFont);
+        add(nameLabel, gbc);
         
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -84,7 +103,9 @@ public class PharmacyRegistrationFormUI extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.weightx = 0;
-        add(new JLabel("Address:"), gbc);
+        JLabel addressLabel = new JLabel("Address:");
+        addressLabel.setFont(labelFont);
+        add(addressLabel, gbc);
         
         gbc.gridx = 1;
         gbc.gridy = 2;
@@ -95,7 +116,9 @@ public class PharmacyRegistrationFormUI extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.weightx = 0;
-        add(new JLabel("Area:"), gbc);
+        JLabel areaLabel = new JLabel("Area:");
+        areaLabel.setFont(labelFont);
+        add(areaLabel, gbc);
         
         gbc.gridx = 1;
         gbc.gridy = 3;

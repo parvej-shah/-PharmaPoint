@@ -41,9 +41,9 @@ public class AdminMedicinesPanel extends JPanel {
         // Create table
         medicinesTable = new JTable(tableModel);
         medicinesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        medicinesTable.setRowHeight(25);
-        medicinesTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-        medicinesTable.setFont(new Font("Arial", Font.PLAIN, 11));
+        medicinesTable.setRowHeight(30);
+        medicinesTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+        medicinesTable.setFont(new Font("Arial", Font.PLAIN, 13));
 
         // Enable sorting
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
@@ -51,7 +51,7 @@ public class AdminMedicinesPanel extends JPanel {
 
         // Search field
         searchField = new JTextField(20);
-        searchField.setFont(new Font("Arial", Font.PLAIN, 12));
+        searchField.setFont(new Font("Arial", Font.PLAIN, 14));
         
         // Sort combo box
         sortComboBox = new JComboBox<>(new String[]{
@@ -62,11 +62,11 @@ public class AdminMedicinesPanel extends JPanel {
             "Price (High to Low)",
             "Price (Low to High)"
         });
-        sortComboBox.setFont(new Font("Arial", Font.PLAIN, 12));
+        sortComboBox.setFont(new Font("Arial", Font.PLAIN, 14));
         
         // Total medicines label
         totalMedicinesLabel = new JLabel("Total Medicines: 0");
-        totalMedicinesLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        totalMedicinesLabel.setFont(new Font("Arial", Font.BOLD, 14));
     }
 
     private void setupLayout() {
@@ -78,10 +78,14 @@ public class AdminMedicinesPanel extends JPanel {
         
         // Search and sort panel
         JPanel controlsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        controlsPanel.add(new JLabel("Search:"));
+        JLabel searchLabel = new JLabel("Search:");
+        searchLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        controlsPanel.add(searchLabel);
         controlsPanel.add(searchField);
         controlsPanel.add(Box.createHorizontalStrut(15));
-        controlsPanel.add(new JLabel("Sort by:"));
+        JLabel sortLabel = new JLabel("Sort by:");
+        sortLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        controlsPanel.add(sortLabel);
         controlsPanel.add(sortComboBox);
         
         JButton refreshButton = new JButton("🔄 Refresh");
@@ -366,10 +370,10 @@ public class AdminMedicinesPanel extends JPanel {
     private void styleButton(JButton button, Color color) {
         button.setBackground(color);
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 11));
+        button.setFont(new Font("Arial", Font.BOLD, 14));
         button.setFocusPainted(false);
         button.setBorderPainted(false);
-        button.setPreferredSize(new Dimension(130, 30));
+        button.setPreferredSize(new Dimension(140, 35));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 }

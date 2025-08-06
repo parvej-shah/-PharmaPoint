@@ -38,9 +38,9 @@ public class AddMedicineFormUI extends JFrame {
         // Frame configuration
         setTitle("Add New Medicine - " + pharmacy.getName());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(450, 400);
+        setSize(500, 450);
         setLocationRelativeTo(parentDashboard);
-        setMinimumSize(new Dimension(400, 350));
+        setMinimumSize(new Dimension(450, 400));
     }
     
     private void initializeComponents() {
@@ -52,6 +52,15 @@ public class AddMedicineFormUI extends JFrame {
         quantityField = new JTextField(20);
         expiryDateField = new JTextField(20);
         
+        // Set larger font for text fields
+        Font fieldFont = new Font("Arial", Font.PLAIN, 14);
+        nameField.setFont(fieldFont);
+        genericNameField.setFont(fieldFont);
+        brandField.setFont(fieldFont);
+        priceField.setFont(fieldFont);
+        quantityField.setFont(fieldFont);
+        expiryDateField.setFont(fieldFont);
+        
         // Buttons
         addButton = new JButton("Add Medicine");
         cancelButton = new JButton("Cancel");
@@ -59,15 +68,19 @@ public class AddMedicineFormUI extends JFrame {
         // Style buttons
         addButton.setBackground(new Color(34, 139, 34));
         addButton.setForeground(Color.WHITE);
-        addButton.setFont(new Font("Arial", Font.BOLD, 12));
+        addButton.setFont(new Font("Arial", Font.BOLD, 16));
         addButton.setFocusPainted(false);
         addButton.setBorderPainted(false);
+        addButton.setPreferredSize(new Dimension(140, 40));
+        addButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         cancelButton.setBackground(new Color(220, 20, 60));
         cancelButton.setForeground(Color.WHITE);
-        cancelButton.setFont(new Font("Arial", Font.BOLD, 12));
+        cancelButton.setFont(new Font("Arial", Font.BOLD, 16));
         cancelButton.setFocusPainted(false);
         cancelButton.setBorderPainted(false);
+        cancelButton.setPreferredSize(new Dimension(140, 40));
+        cancelButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         // Set placeholder text for expiry date
         expiryDateField.setToolTipText("Format: YYYY-MM-DD (e.g., 2025-12-31)");
@@ -81,7 +94,7 @@ public class AddMedicineFormUI extends JFrame {
         
         // Title label
         JLabel titleLabel = new JLabel("Add New Medicine", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
         titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
         
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2; gbc.weightx = 1.0;
@@ -91,39 +104,53 @@ public class AddMedicineFormUI extends JFrame {
         gbc.gridwidth = 1;
         gbc.weightx = 0;
         
+        Font labelFont = new Font("Arial", Font.BOLD, 14);
+        
         // Medicine Name
         gbc.gridx = 0; gbc.gridy = 1; gbc.anchor = GridBagConstraints.WEST;
-        add(new JLabel("Medicine Name:"), gbc);
+        JLabel nameLabel = new JLabel("Medicine Name:");
+        nameLabel.setFont(labelFont);
+        add(nameLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 1; gbc.weightx = 1.0;
         add(nameField, gbc);
         
         // Generic Name
         gbc.gridx = 0; gbc.gridy = 2; gbc.weightx = 0;
-        add(new JLabel("Generic Name:"), gbc);
+        JLabel genericLabel = new JLabel("Generic Name:");
+        genericLabel.setFont(labelFont);
+        add(genericLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 2; gbc.weightx = 1.0;
         add(genericNameField, gbc);
         
         // Brand
         gbc.gridx = 0; gbc.gridy = 3; gbc.weightx = 0;
-        add(new JLabel("Brand:"), gbc);
+        JLabel brandLabel = new JLabel("Brand:");
+        brandLabel.setFont(labelFont);
+        add(brandLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 3; gbc.weightx = 1.0;
         add(brandField, gbc);
         
         // Price
         gbc.gridx = 0; gbc.gridy = 4; gbc.weightx = 0;
-        add(new JLabel("Price ($):"), gbc);
+        JLabel priceLabel = new JLabel("Price (BDT):");
+        priceLabel.setFont(labelFont);
+        add(priceLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 4; gbc.weightx = 1.0;
         add(priceField, gbc);
         
         // Quantity
         gbc.gridx = 0; gbc.gridy = 5; gbc.weightx = 0;
-        add(new JLabel("Quantity:"), gbc);
+        JLabel quantityLabel = new JLabel("Quantity:");
+        quantityLabel.setFont(labelFont);
+        add(quantityLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 5; gbc.weightx = 1.0;
         add(quantityField, gbc);
         
         // Expiry Date
         gbc.gridx = 0; gbc.gridy = 6; gbc.weightx = 0;
-        add(new JLabel("Expiry Date:"), gbc);
+        JLabel expiryLabel = new JLabel("Expiry Date:");
+        expiryLabel.setFont(labelFont);
+        add(expiryLabel, gbc);
         gbc.gridx = 1; gbc.gridy = 6; gbc.weightx = 1.0;
         add(expiryDateField, gbc);
         

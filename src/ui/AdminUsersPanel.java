@@ -40,9 +40,9 @@ public class AdminUsersPanel extends JPanel {
         // Create table
         usersTable = new JTable(tableModel);
         usersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        usersTable.setRowHeight(25);
-        usersTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-        usersTable.setFont(new Font("Arial", Font.PLAIN, 11));
+        usersTable.setRowHeight(30);
+        usersTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+        usersTable.setFont(new Font("Arial", Font.PLAIN, 13));
 
         // Enable sorting
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
@@ -50,11 +50,11 @@ public class AdminUsersPanel extends JPanel {
 
         // Search field
         searchField = new JTextField(20);
-        searchField.setFont(new Font("Arial", Font.PLAIN, 12));
+        searchField.setFont(new Font("Arial", Font.PLAIN, 14));
         
         // Total users label
         totalUsersLabel = new JLabel("Total Users: 0");
-        totalUsersLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        totalUsersLabel.setFont(new Font("Arial", Font.BOLD, 14));
     }
 
     private void setupLayout() {
@@ -66,7 +66,9 @@ public class AdminUsersPanel extends JPanel {
         
         // Search panel
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        searchPanel.add(new JLabel("Search Users:"));
+        JLabel searchLabel = new JLabel("Search Users:");
+        searchLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        searchPanel.add(searchLabel);
         searchPanel.add(searchField);
         
         JButton refreshButton = new JButton("🔄 Refresh");
@@ -271,10 +273,10 @@ public class AdminUsersPanel extends JPanel {
     private void styleButton(JButton button, Color color) {
         button.setBackground(color);
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 11));
+        button.setFont(new Font("Arial", Font.BOLD, 14));
         button.setFocusPainted(false);
         button.setBorderPainted(false);
-        button.setPreferredSize(new Dimension(120, 30));
+        button.setPreferredSize(new Dimension(130, 35));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 }

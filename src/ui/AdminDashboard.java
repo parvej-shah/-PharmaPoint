@@ -5,12 +5,7 @@ import utils.SessionManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-/**
- * AdminDashboard - Main dashboard for admin users with tabbed interface
- */
 public class AdminDashboard extends JFrame {
     private User currentAdmin;
     private JTabbedPane tabbedPane;

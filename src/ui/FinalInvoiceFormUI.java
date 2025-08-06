@@ -41,20 +41,20 @@ public class FinalInvoiceFormUI extends JDialog {
         
         // Frame configuration
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        setSize(700, 600);
+        setSize(800, 650);
         setLocationRelativeTo(parentWindow);
-        setMinimumSize(new Dimension(600, 500));
+        setMinimumSize(new Dimension(700, 550));
     }
     
     private void initializeComponents() {
         // Patient information fields
         patientNameField = new JTextField();
-        patientNameField.setFont(new Font("Arial", Font.PLAIN, 14));
-        patientNameField.setPreferredSize(new Dimension(0, 30));
+        patientNameField.setFont(new Font("Arial", Font.PLAIN, 16));
+        patientNameField.setPreferredSize(new Dimension(0, 35));
         
         patientPhoneField = new JTextField();
-        patientPhoneField.setFont(new Font("Arial", Font.PLAIN, 14));
-        patientPhoneField.setPreferredSize(new Dimension(0, 30));
+        patientPhoneField.setFont(new Font("Arial", Font.PLAIN, 16));
+        patientPhoneField.setPreferredSize(new Dimension(0, 35));
         
         // Medicines table (non-editable)
         String[] columnNames = {"Medicine", "Brand", "Quantity", "Unit Price", "Subtotal"};
@@ -65,13 +65,15 @@ public class FinalInvoiceFormUI extends JDialog {
             }
         };
         medicinesTable = new JTable(tableModel);
-        medicinesTable.setRowHeight(25);
+        medicinesTable.setRowHeight(30);
+        medicinesTable.setFont(new Font("Arial", Font.PLAIN, 13));
+        medicinesTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
         medicinesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
         // Total amount label
         double totalAmount = saleItems.stream().mapToDouble(SaleItem::getSubtotal).sum();
         totalAmountLabel = new JLabel("Total Amount: " + String.format("%.2f BDT", totalAmount));
-        totalAmountLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        totalAmountLabel.setFont(new Font("Arial", Font.BOLD, 18));
         totalAmountLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         
         // Pharmacy info label
@@ -79,7 +81,7 @@ public class FinalInvoiceFormUI extends JDialog {
                                                     pharmacy.getName(), 
                                                     pharmacy.getAddress(), 
                                                     pharmacy.getArea()));
-        pharmacyInfoLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        pharmacyInfoLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         pharmacyInfoLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         // Buttons
@@ -93,10 +95,10 @@ public class FinalInvoiceFormUI extends JDialog {
     private void styleButton(JButton button, Color backgroundColor) {
         button.setBackground(backgroundColor);
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setFont(new Font("Arial", Font.BOLD, 16));
         button.setFocusPainted(false);
         button.setBorderPainted(false);
-        button.setPreferredSize(new Dimension(150, 40));
+        button.setPreferredSize(new Dimension(160, 45));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
@@ -109,7 +111,9 @@ public class FinalInvoiceFormUI extends JDialog {
         
         // Top panel - Pharmacy info
         JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBorder(BorderFactory.createTitledBorder("Pharmacy Information"));
+        topPanel.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createEtchedBorder(), "Pharmacy Information", 
+            0, 0, new Font("Arial", Font.BOLD, 16)));
         topPanel.add(pharmacyInfoLabel, BorderLayout.CENTER);
         
         // Center panel - Patient info and medicines
@@ -136,15 +140,21 @@ public class FinalInvoiceFormUI extends JDialog {
     
     private JPanel createPatientInfoPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBorder(BorderFactory.createTitledBorder("Patient Information"));
+        panel.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createEtchedBorder(), "Patient Information", 
+            0, 0, new Font("Arial", Font.BOLD, 16)));
         
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.WEST;
         
+        Font labelFont = new Font("Arial", Font.BOLD, 14);
+        
         // Patient Name
         gbc.gridx = 0; gbc.gridy = 0;
-        panel.add(new JLabel("Patient Name: *"), gbc);
+        JLabel nameLabel = new JLabel("Patient Name: *");
+        nameLabel.setFont(labelFont);
+        panel.add(nameLabel, gbc);
         
         gbc.gridx = 1; gbc.gridy = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -155,7 +165,9 @@ public class FinalInvoiceFormUI extends JDialog {
         gbc.gridx = 0; gbc.gridy = 1;
         gbc.fill = GridBagConstraints.NONE;
         gbc.weightx = 0.0;
-        panel.add(new JLabel("Phone Number:"), gbc);
+        JLabel phoneLabel = new JLabel("Phone Number:");
+        phoneLabel.setFont(labelFont);
+        panel.add(phoneLabel, gbc);
         
         gbc.gridx = 1; gbc.gridy = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -167,10 +179,12 @@ public class FinalInvoiceFormUI extends JDialog {
     
     private JPanel createMedicinesPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createTitledBorder("Medicines"));
+        panel.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createEtchedBorder(), "Medicines", 
+            0, 0, new Font("Arial", Font.BOLD, 16)));
         
         JScrollPane scrollPane = new JScrollPane(medicinesTable);
-        scrollPane.setPreferredSize(new Dimension(0, 200));
+        scrollPane.setPreferredSize(new Dimension(0, 250));
         
         panel.add(scrollPane, BorderLayout.CENTER);
         
@@ -220,12 +234,24 @@ public class FinalInvoiceFormUI extends JDialog {
         patientPhoneField.addActionListener(e -> confirmSale());
     }
     
+    private String validatePatientInfo(String patientName, String patientPhone) {
+        // Just check if patient name is not empty
+        if (patientName == null || patientName.isEmpty()) {
+            return "Patient name is required.";
+        }
+        if (patientPhone == null || patientPhone.isEmpty()) {
+            return "Patient phone number is required.";
+        }
+        
+        return ""; // No validation errors
+    }
+    
     private void confirmSale() {
         String patientName = patientNameField.getText().trim();
         String patientPhone = patientPhoneField.getText().trim();
         
-        // Use centralized validation with detailed error messages
-        String validationError = invoiceService.getPatientValidationError(patientName, patientPhone);
+        // Validate patient information directly in UI
+        String validationError = validatePatientInfo(patientName, patientPhone);
         if (!validationError.isEmpty()) {
             JOptionPane.showMessageDialog(this, validationError, "Validation Error", JOptionPane.ERROR_MESSAGE);
             if (validationError.contains("name")) {

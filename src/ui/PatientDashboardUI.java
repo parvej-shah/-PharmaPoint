@@ -30,9 +30,9 @@ public class PatientDashboardUI extends JFrame {
 
         setTitle("Patient Dashboard - Add Desired Medicines");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(500, 500);
+        setSize(600, 550);
         setLocationRelativeTo(null);
-        setMinimumSize(new Dimension(400, 400));
+        setMinimumSize(new Dimension(500, 450));
     }
 
     private void initializeComponents() {
@@ -42,7 +42,7 @@ public class PatientDashboardUI extends JFrame {
 
         scrollPane = new JScrollPane(medicineListPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setPreferredSize(new Dimension(450, 300));
+        scrollPane.setPreferredSize(new Dimension(500, 350));
 
         addMedicineButton = new JButton("Add Another Medicine");
         styleButton(addMedicineButton, new Color(70, 130, 180));
@@ -55,10 +55,10 @@ public class PatientDashboardUI extends JFrame {
     private void styleButton(JButton button, Color color) {
         button.setBackground(color);
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 13));
+        button.setFont(new Font("Arial", Font.BOLD, 16));
         button.setFocusPainted(false);
         button.setBorderPainted(false);
-        button.setPreferredSize(new Dimension(180, 35));
+        button.setPreferredSize(new Dimension(200, 40));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
@@ -72,12 +72,12 @@ public class PatientDashboardUI extends JFrame {
         topPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 
         JLabel nameLabel = new JLabel("Logged in as: " + (patientName.isEmpty() ? "Patient" : patientName), SwingConstants.CENTER);
-        nameLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+        nameLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         nameLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
 
         JLabel titleLabel = new JLabel("Patient Dashboard - Add Desired Medicines", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         topPanel.add(nameLabel);
@@ -170,14 +170,25 @@ public class PatientDashboardUI extends JFrame {
 
         public MedicineInputRow() {
             setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
-            setMaximumSize(new Dimension(1000, 40));
+            setMaximumSize(new Dimension(1000, 50));
 
             medicineNameField = new JTextField(15);
             quantityField = new JTextField(5);
+            
+            // Set larger fonts
+            Font fieldFont = new Font("Arial", Font.PLAIN, 14);
+            Font labelFont = new Font("Arial", Font.BOLD, 14);
+            medicineNameField.setFont(fieldFont);
+            quantityField.setFont(fieldFont);
 
-            add(new JLabel("Medicine Name:"));
+            JLabel nameLabel = new JLabel("Medicine Name:");
+            nameLabel.setFont(labelFont);
+            JLabel qtyLabel = new JLabel("Quantity:");
+            qtyLabel.setFont(labelFont);
+
+            add(nameLabel);
             add(medicineNameField);
-            add(new JLabel("Quantity:"));
+            add(qtyLabel);
             add(quantityField);
         }
 

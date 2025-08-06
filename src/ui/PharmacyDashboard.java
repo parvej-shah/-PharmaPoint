@@ -32,9 +32,9 @@ public class PharmacyDashboard extends JFrame {
         // Frame configuration
         setTitle("Pharmacy Dashboard - PharmaPoint");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(900, 650);
         setLocationRelativeTo(null);
-        setMinimumSize(new Dimension(600, 400));
+        setMinimumSize(new Dimension(700, 500));
     }
     
     // Constructor for user without pharmacy
@@ -51,7 +51,7 @@ public class PharmacyDashboard extends JFrame {
             welcomeLabel = new JLabel("Welcome to Pharmacy Dashboard", 
                                     SwingConstants.CENTER);
         }
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
         welcomeLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
         
         // Buttons
@@ -75,10 +75,10 @@ public class PharmacyDashboard extends JFrame {
     private void styleButton(JButton button, Color backgroundColor) {
         button.setBackground(backgroundColor);
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setFont(new Font("Arial", Font.BOLD, 16));
         button.setFocusPainted(false);
         button.setBorderPainted(false);
-        button.setPreferredSize(new Dimension(200, 50));
+        button.setPreferredSize(new Dimension(220, 55));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
     
@@ -132,8 +132,10 @@ public class PharmacyDashboard extends JFrame {
     
     private JPanel createPharmacyInfoPanel() {
         JPanel infoPanel = new JPanel(new GridBagLayout());
-        infoPanel.setBorder(BorderFactory.createTitledBorder("Pharmacy Information"));
-        infoPanel.setPreferredSize(new Dimension(250, 0));
+        infoPanel.setBorder(BorderFactory.createTitledBorder(
+            BorderFactory.createEtchedBorder(), "Pharmacy Information", 
+            0, 0, new Font("Arial", Font.BOLD, 16)));
+        infoPanel.setPreferredSize(new Dimension(280, 0));
         
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 10, 5, 10);
@@ -148,7 +150,7 @@ public class PharmacyDashboard extends JFrame {
         JLabel idLabel = new JLabel("ID: " + pharmacy.getId());
         
         // Style labels
-        Font labelFont = new Font("Arial", Font.PLAIN, 12);
+        Font labelFont = new Font("Arial", Font.PLAIN, 14);
         nameLabel.setFont(labelFont);
         addressLabel.setFont(labelFont);
         areaLabel.setFont(labelFont);
