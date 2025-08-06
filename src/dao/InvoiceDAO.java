@@ -19,15 +19,15 @@ public class InvoiceDAO {
         Connection connection = null;
         try {
             connection = DBConnection.getConnection();
-            connection.setAutoCommit(false); // Start transaction
-            
+            connection.setAutoCommit(false);        // Disables auto-save so you can manually control when changes are committed to the database.
+
             // Insert into invoices table
             String invoiceSQL = """
                 INSERT INTO invoices (pharmacy_id, patient_name, patient_phone, total_amount, created_at)
                 VALUES (?, ?, ?, ?, ?)
             """;
             
-            PreparedStatement invoiceStmt = connection.prepareStatement(invoiceSQL, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement invoiceStmt = connection.prepareStatement(invoiceSQL, Statement.RETURN_GENERATED_KEYS);       //statement.RETURN_GENERATED_KEYS allows you to retrieve the auto-generated keys (like ID) after insertion which will be needed to insert in that rows later
             invoiceStmt.setInt(1, invoice.getPharmacyId());
             invoiceStmt.setString(2, invoice.getPatientName());
             invoiceStmt.setString(3, invoice.getPatientPhone());
@@ -36,15 +36,15 @@ public class InvoiceDAO {
             
             int rowsAffected = invoiceStmt.executeUpdate();
             if (rowsAffected == 0) {
-                connection.rollback();
+                connection.rollback();      //undo changes after last commit if couldnt execute the query
                 return false;
             }
             
             // Get generated invoice ID
-            ResultSet generatedKeys = invoiceStmt.getGeneratedKeys();
+            ResultSet generatedKeys = invoiceStmt.getGeneratedKeys();  // generatedKeys is a table that contains the auto-generated keys
             int invoiceId;
             if (generatedKeys.next()) {
-                invoiceId = generatedKeys.getInt(1);
+                invoiceId = generatedKeys.getInt(1);    //get the value of the first column 
                 invoice.setId(invoiceId); // Set the generated ID back to the invoice
             } else {
                 connection.rollback();
