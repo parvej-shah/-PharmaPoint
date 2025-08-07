@@ -14,6 +14,7 @@ public class PharmacySearchResultsUI extends JFrame {
     private JScrollPane scrollPane;
     private PharmacySearchResult searchResult;
     private List<String> requestedMedicines;
+    @SuppressWarnings("unused")
     private List<String> quantities;
     private String patientName;
 
