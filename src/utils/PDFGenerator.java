@@ -112,11 +112,7 @@ public class PDFGenerator {
         }
     }
     
-    /**
-     * Legacy method name for backward compatibility
-     * @param invoice The invoice to generate file for
-     * @return The file path of the generated invoice
-     */
+
     public static String generateInvoicePDF(Invoice invoice) {
         return generateInvoiceFile(invoice);
     }
@@ -127,10 +123,6 @@ public class PDFGenerator {
         return str.substring(0, maxLength - 3) + "...";
     }
     
-    /**
-     * Opens the generated invoice file with the system's default application
-     * @param filePath Path to the invoice file
-     */
     public static void openInvoiceFile(String filePath) {
         try {
             if (Desktop.isDesktopSupported()) {
@@ -144,10 +136,6 @@ public class PDFGenerator {
         }
     }
     
-    /**
-     * Validates that the invoices directory exists and is writable
-     * @return true if directory is ready for use
-     */
     public static boolean isInvoiceDirectoryReady() {
         File invoiceDir = new File("invoices");
         
@@ -167,20 +155,5 @@ public class PDFGenerator {
         return true;
     }
     
-    /**
-     * Gets the total number of invoices in the invoices directory
-     * @return number of invoice files
-     */
-    public static int getInvoiceCount() {
-        File invoiceDir = new File("invoices");
-        if (!invoiceDir.exists() || !invoiceDir.isDirectory()) {
-            return 0;
-        }
-        
-        File[] files = invoiceDir.listFiles((dir, name) -> 
-            name.toLowerCase().startsWith("invoice_") && 
-            name.toLowerCase().endsWith(".txt"));
-        
-        return files != null ? files.length : 0;
-    }
+
 }
