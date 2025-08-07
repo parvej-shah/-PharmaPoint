@@ -94,7 +94,7 @@ public class PharmacySearchResultsUI extends JFrame {
     private void populateResults() {
         // Show combined ranked results
         if (!searchResult.getRankedPharmacies().isEmpty()) {
-            addSectionHeader("🏥 Pharmacies ranked by medicine availability:");
+            addSectionHeader("Pharmacies ranked by medicine availability:");
             
             int count = 0;
             for (PharmacyAvailability availability : searchResult.getRankedPharmacies()) {

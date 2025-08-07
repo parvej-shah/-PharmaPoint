@@ -30,7 +30,7 @@ public class AdminMedicinesPanel extends JPanel {
 
     private void initializeComponents() {
         // Create table model with columns
-        String[] columnNames = {"Rank", "Medicine Name", "Generic Name", "Brand", "Pharmacy", "Quantity", "Price", "Expiry Date"};
+        String[] columnNames = {"Rank", "Medicine Name", "Generic Name", "Brand", "Pharmacy", "Quantity", "Price"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -223,7 +223,6 @@ public class AdminMedicinesPanel extends JPanel {
                 // Add medicines to table with ranking
                 for (int i = 0; i < medicines.size(); i++) {
                     Medicine medicine = medicines.get(i);
-                    
                     Object[] rowData = {
                         i + 1, // Rank
                         medicine.getName(),
@@ -231,8 +230,7 @@ public class AdminMedicinesPanel extends JPanel {
                         medicine.getBrand(),
                         "Pharmacy " + medicine.getPharmacyId(), // Placeholder - could be improved
                         medicine.getQuantity(),
-                        String.format("৳%.2f", medicine.getPrice()),
-                        medicine.getExpiryDate()
+                        String.format("৳%.2f", medicine.getPrice())
                     };
                     tableModel.addRow(rowData);
                 }
@@ -294,18 +292,15 @@ public class AdminMedicinesPanel extends JPanel {
         gbc.insets = new Insets(5, 10, 5, 10);
         gbc.anchor = GridBagConstraints.WEST;
 
-        String[] labels = {"Rank:", "Medicine Name:", "Generic Name:", "Brand:", "Pharmacy:", "Quantity:", "Price:", "Expiry Date:"};
-        
+        String[] labels = {"Rank:", "Medicine Name:", "Generic Name:", "Brand:", "Pharmacy:", "Quantity:", "Price:"};
         for (int i = 0; i < labels.length; i++) {
             gbc.gridx = 0; gbc.gridy = i;
             JLabel label = new JLabel(labels[i]);
             label.setFont(new Font("Arial", Font.BOLD, 12));
             panel.add(label, gbc);
-            
             gbc.gridx = 1;
             JLabel value = new JLabel(medicineData[i] != null ? medicineData[i].toString() : "N/A");
             value.setFont(new Font("Arial", Font.PLAIN, 12));
-            
             // Highlight low stock in red
             if (i == 5 && medicineData[i] != null) { // Quantity column
                 try {
@@ -316,7 +311,6 @@ public class AdminMedicinesPanel extends JPanel {
                     }
                 } catch (Exception ignored) {}
             }
-            
             panel.add(value, gbc);
         }
 

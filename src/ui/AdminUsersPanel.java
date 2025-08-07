@@ -29,7 +29,7 @@ public class AdminUsersPanel extends JPanel {
 
     private void initializeComponents() {
         // Create table model with columns
-        String[] columnNames = {"ID", "Name", "Email", "Date of Birth", "Role", "Registration Date"};
+        String[] columnNames = {"ID", "Name", "Email", "Date of Birth", "Role"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -172,8 +172,7 @@ public class AdminUsersPanel extends JPanel {
                         user.getName(),
                         user.getEmail(),
                         user.getDateOfBirth(),
-                        capitalize(user.getRole()),
-                        "N/A" // Registration date not stored in current schema
+                        capitalize(user.getRole())
                     };
                     tableModel.addRow(rowData);
                 }
@@ -233,14 +232,12 @@ public class AdminUsersPanel extends JPanel {
         gbc.insets = new Insets(5, 10, 5, 10);
         gbc.anchor = GridBagConstraints.WEST;
 
-        String[] labels = {"ID:", "Name:", "Email:", "Date of Birth:", "Role:", "Registration:"};
-        
+        String[] labels = {"ID:", "Name:", "Email:", "Date of Birth:", "Role:"};
         for (int i = 0; i < labels.length; i++) {
             gbc.gridx = 0; gbc.gridy = i;
             JLabel label = new JLabel(labels[i]);
             label.setFont(new Font("Arial", Font.BOLD, 12));
             panel.add(label, gbc);
-            
             gbc.gridx = 1;
             JLabel value = new JLabel(userData[i] != null ? userData[i].toString() : "N/A");
             value.setFont(new Font("Arial", Font.PLAIN, 12));
