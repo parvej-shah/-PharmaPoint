@@ -14,7 +14,7 @@ This project follows a **layered architecture** to ensure modularity, maintainab
           ⇅
 ┌─────────────────────┐
 │   Service Layer     │
-│   (Business Logic)  │
+│      (API)          │
 └─────────────────────┘
           ⇅
 ┌─────────────────────┐
@@ -43,8 +43,6 @@ Handles data access operations, executing SQL queries to interact with the MySQL
 Stores the application's persistent data, accessed via the DAO layer.
 
 ---
-
-> **Note:** The bidirectional arrows (⇅) represent the flow of data and requests between layers, ensuring clear separation of concerns.
 
 ## find . -name "*.class" -type f -delete
 ## javac -d out src/*.java src/dao/*.java src/models/*.java src/services/*.java src/ui/*.java src/utils/*.java && java -cp "out:src/lib/sqlite-jdbc-3.45.3.0.jar:src/lib/slf4j-api-2.0.13.jar" Main
