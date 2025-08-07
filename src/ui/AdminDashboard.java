@@ -148,9 +148,6 @@ public class AdminDashboard extends JFrame {
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
-    /**
-     * Show the admin dashboard if user is admin, otherwise show error
-     */
     public static void showAdminDashboard(User user) {
         if (user != null && "admin".equalsIgnoreCase(user.getRole())) {
             SwingUtilities.invokeLater(() -> {
