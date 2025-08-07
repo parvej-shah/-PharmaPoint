@@ -9,7 +9,21 @@ import java.time.format.DateTimeFormatter;
 
 public class PDFGenerator {
     
-    
+    // These constants are reserved for future PDF enhancement if needed
+    @SuppressWarnings("unused")
+    private static final int PAGE_WIDTH = 612; // 8.5 inches * 72 DPI
+    @SuppressWarnings("unused")
+    private static final int PAGE_HEIGHT = 792; // 11 inches * 72 DPI
+    @SuppressWarnings("unused")
+    private static final int MARGIN = 50;
+    @SuppressWarnings("unused")
+    private static final Font TITLE_FONT = new Font("Arial", Font.BOLD, 18);
+    @SuppressWarnings("unused")
+    private static final Font HEADER_FONT = new Font("Arial", Font.BOLD, 12);
+    @SuppressWarnings("unused")
+    private static final Font NORMAL_FONT = new Font("Arial", Font.PLAIN, 10);
+    @SuppressWarnings("unused")
+    private static final Font SMALL_FONT = new Font("Arial", Font.PLAIN, 9);
     
     /**
      * Generates an invoice file and saves it to the invoices folder
@@ -37,8 +51,7 @@ public class PDFGenerator {
     
     private static String createInvoiceFile(Invoice invoice, File outputFile) {
         try {
-            // Create a professional text-based invoice file
-            
+
             StringBuilder invoiceContent = new StringBuilder();
             
             // Header
@@ -111,12 +124,7 @@ public class PDFGenerator {
             return null;
         }
     }
-    
 
-    public static String generateInvoicePDF(Invoice invoice) {
-        return generateInvoiceFile(invoice);
-    }
-    
     private static String truncateString(String str, int maxLength) {
         if (str == null) return "";
         if (str.length() <= maxLength) return str;
@@ -135,25 +143,5 @@ public class PDFGenerator {
             System.out.println("Invoice saved at: " + filePath);
         }
     }
-    
-    public static boolean isInvoiceDirectoryReady() {
-        File invoiceDir = new File("invoices");
-        
-        if (!invoiceDir.exists()) {
-            boolean created = invoiceDir.mkdirs();
-            if (!created) {
-                System.err.println("Failed to create invoices directory");
-                return false;
-            }
-        }
-        
-        if (!invoiceDir.canWrite()) {
-            System.err.println("Cannot write to invoices directory");
-            return false;
-        }
-        
-        return true;
-    }
-    
 
 }

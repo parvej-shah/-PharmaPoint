@@ -37,10 +37,10 @@ public class AdminDashboard extends JFrame {
         pharmaciesPanel = new AdminPharmaciesPanel();
         medicinesPanel = new AdminMedicinesPanel();
         
-        // Add tabs with icons
-        tabbedPane.addTab("👥 Users", usersPanel);
-        tabbedPane.addTab("🏥 Pharmacies", pharmaciesPanel);
-        tabbedPane.addTab("💊 Medicines", medicinesPanel);
+        // Add tabs
+        tabbedPane.addTab("Users", usersPanel);
+        tabbedPane.addTab("Pharmacies", pharmaciesPanel);
+        tabbedPane.addTab("Medicines", medicinesPanel);
         
         // Style the tabbed pane
         tabbedPane.setFont(new Font("Arial", Font.BOLD, 16));
@@ -86,6 +86,20 @@ public class AdminDashboard extends JFrame {
         // Logout button
         JButton logoutButton = new JButton("Logout");
         styleButton(logoutButton, new Color(231, 76, 60));
+        logoutButton.addActionListener(e -> {
+            int option = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to logout?",
+                "Confirm Logout",
+                JOptionPane.YES_NO_OPTION
+            );
+            
+            if (option == JOptionPane.YES_OPTION) {
+                SessionManager.clearSession();
+                dispose();
+                new UserAuthUI().setVisible(true);
+            }
+        });
         
         panel.add(leftPanel, BorderLayout.WEST);
         panel.add(logoutButton, BorderLayout.EAST);
@@ -107,28 +121,6 @@ public class AdminDashboard extends JFrame {
     }
 
     private void setupEventHandlers() {
-        // Logout button handler
-        Component[] components = ((JPanel) getContentPane().getComponent(0)).getComponents();
-        for (Component comp : components) {
-            if (comp instanceof JButton && ((JButton) comp).getText().equals("Logout")) {
-                ((JButton) comp).addActionListener(e -> {
-                    int option = JOptionPane.showConfirmDialog(
-                        this,
-                        "Are you sure you want to logout?",
-                        "Confirm Logout",
-                        JOptionPane.YES_NO_OPTION
-                    );
-                    
-                    if (option == JOptionPane.YES_OPTION) {
-                        SessionManager.clearSession();
-                        dispose();
-                        new UserAuthUI().setVisible(true);
-                    }
-                });
-                break;
-            }
-        }
-        
         // Tab change listener to refresh data
         tabbedPane.addChangeListener(e -> {
             int selectedIndex = tabbedPane.getSelectedIndex();
@@ -156,9 +148,6 @@ public class AdminDashboard extends JFrame {
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
-    /**
-     * Show the admin dashboard if user is admin, otherwise show error
-     */
     public static void showAdminDashboard(User user) {
         if (user != null && "admin".equalsIgnoreCase(user.getRole())) {
             SwingUtilities.invokeLater(() -> {

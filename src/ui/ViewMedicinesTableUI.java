@@ -52,7 +52,7 @@ public class ViewMedicinesTableUI extends JFrame {
     // Create all the UI components
     private void createComponents() {
         // Create simple table with column names
-        String[] columns = {"ID", "Name", "Generic Name", "Brand", "Price", "Quantity", "Expiry Date"};
+        String[] columns = {"ID", "Name", "Generic Name", "Brand", "Price", "Quantity"};
         tableModel = new DefaultTableModel(columns, 0);
         
         // Create the table
@@ -68,7 +68,6 @@ public class ViewMedicinesTableUI extends JFrame {
         medicinesTable.getColumnModel().getColumn(3).setPreferredWidth(100); // Brand
         medicinesTable.getColumnModel().getColumn(4).setPreferredWidth(80);  // Price
         medicinesTable.getColumnModel().getColumn(5).setPreferredWidth(80);  // Quantity
-        medicinesTable.getColumnModel().getColumn(6).setPreferredWidth(100); // Expiry Date
         
         // Create search components
         searchField = new JTextField(20);
@@ -207,15 +206,14 @@ public class ViewMedicinesTableUI extends JFrame {
                     medicine.getGenericName(),
                     medicine.getBrand(),
                     "$" + medicine.getPrice(),
-                    medicine.getQuantity(),
-                    medicine.getExpiryDate()
+                    medicine.getQuantity()
                 };
                 tableModel.addRow(row);
             }
             
             // Show message if no medicines found
             if (medicines.isEmpty()) {
-                Object[] emptyRow = {"No medicines found", "", "", "", "", "", ""};
+                Object[] emptyRow = {"No medicines found", "", "", "", "", ""};
                 tableModel.addRow(emptyRow);
             }
             
@@ -257,8 +255,7 @@ public class ViewMedicinesTableUI extends JFrame {
                         medicine.getGenericName(),
                         medicine.getBrand(),
                         "$" + medicine.getPrice(),
-                        medicine.getQuantity(),
-                        medicine.getExpiryDate()
+                        medicine.getQuantity()
                     };
                     tableModel.addRow(row);
                     count++;
@@ -267,7 +264,7 @@ public class ViewMedicinesTableUI extends JFrame {
             
             // Show message if no medicines found
             if (count == 0) {
-                Object[] emptyRow = {"No medicines found for: " + searchText, "", "", "", "", "", ""};
+                Object[] emptyRow = {"No medicines found for: " + searchText, "", "", "", "", ""};
                 tableModel.addRow(emptyRow);
             }
             
@@ -390,14 +387,12 @@ public class ViewMedicinesTableUI extends JFrame {
             
             // Create simple input dialog
             JPanel panel = new JPanel(new GridLayout(6, 2, 5, 5));
-            
             JTextField nameField = new JTextField(medicine.getName());
             JTextField genericField = new JTextField(medicine.getGenericName());
             JTextField brandField = new JTextField(medicine.getBrand());
             JTextField priceField = new JTextField(String.valueOf(medicine.getPrice()));
             JTextField quantityField = new JTextField(String.valueOf(medicine.getQuantity()));
             JTextField expiryField = new JTextField(medicine.getExpiryDate());
-            
             panel.add(new JLabel("Name:"));
             panel.add(nameField);
             panel.add(new JLabel("Generic Name:"));
@@ -423,7 +418,6 @@ public class ViewMedicinesTableUI extends JFrame {
                 String priceText = priceField.getText().trim();
                 String quantityText = quantityField.getText().trim();
                 String expiry = expiryField.getText().trim();
-                
                 // Simple validation
                 if (name.isEmpty() || generic.isEmpty() || brand.isEmpty() || 
                     priceText.isEmpty() || quantityText.isEmpty() || expiry.isEmpty()) {
@@ -433,12 +427,10 @@ public class ViewMedicinesTableUI extends JFrame {
                         JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                
                 try {
                     // Convert price and quantity
                     double price = Double.parseDouble(priceText);
                     int quantity = Integer.parseInt(quantityText);
-                    
                     if (price < 0 || quantity < 0) {
                         JOptionPane.showMessageDialog(this, 
                             "Price and quantity must be positive numbers!", 
@@ -446,22 +438,17 @@ public class ViewMedicinesTableUI extends JFrame {
                             JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    
-                    // Create updated medicine
+                    // Create updated medicine (expiry editable)
                     Medicine updatedMedicine = new Medicine(medicineId, pharmacy.getId(), 
                         name, generic, brand, price, quantity, expiry);
-                    
                     // Update in database
                     medicineService.updateMedicine(updatedMedicine);
-                    
                     JOptionPane.showMessageDialog(this, 
                         "Medicine updated successfully!", 
                         "Success", 
                         JOptionPane.INFORMATION_MESSAGE);
-                    
                     // Refresh the table
                     loadAllMedicines();
-                    
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(this, 
                         "Please enter valid numbers for price and quantity!", 

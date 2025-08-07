@@ -89,49 +89,16 @@ public class Validator {
     public static boolean isValidPassword(String password) {
         return isNotEmpty(password) && password.length() >= 6;
     }
-    
-    public static boolean isBasicValidPassword(String password) {
-        return isNotEmpty(password) && password.length() >= 4;
-    }
-    
-    public static boolean isStrongPassword(String password) {
-        if (isBlank(password) || password.length() < 8) return false;
-        
-        boolean hasUpper = password.chars().anyMatch(Character::isUpperCase);
-        boolean hasLower = password.chars().anyMatch(Character::isLowerCase);
-        boolean hasDigit = password.chars().anyMatch(Character::isDigit);
-        boolean hasSpecial = password.chars().anyMatch(ch -> "!@#$%^&*()_+-=[]{}|;:,.<>?".indexOf(ch) >= 0);  //if ch exists in the special characters string
-                                                                                                           //index of ch will be >= 0
-        
-        return hasUpper && hasLower && hasDigit && hasSpecial;
-    }
 
     public static boolean isValidDateFormat(String date) {
         if (isBlank(date)) return false;
         return DATE_PATTERN.matcher(date.trim()).matches();
     }
-    
-    public static boolean isValidDateRange(String date, int minYear, int maxYear) {
-        if (!isValidDateFormat(date)) return false;
-        
-        try {
-            String[] parts = date.trim().split("-");
-            int year = Integer.parseInt(parts[0]);
-            int month = Integer.parseInt(parts[1]);
-            int day = Integer.parseInt(parts[2]);
-            
-            return year >= minYear && year <= maxYear &&
-                   month >= 1 && month <= 12 &&
-                   day >= 1 && day <= 31;
-        } catch (Exception e) {
-            return false;
-        }
-    }
 
     public static boolean isValidRole(String role) {
         if (isBlank(role)) return false;
         String normalizedRole = role.trim().toLowerCase();
-        return "pharmacist".equals(normalizedRole) || "patient".equals(normalizedRole);
+        return "pharmacist".equals(normalizedRole) || "patient".equals(normalizedRole) || "admin".equals(normalizedRole);
     }
 
     public static boolean validateUser(User user) {
@@ -155,18 +122,6 @@ public class Validator {
                 isNotEmpty(pharmacy.getName()) &&
                 isNotEmpty(pharmacy.getAddress()) &&
                 isNotEmpty(pharmacy.getArea());
-    }
-
-    public static boolean validateMedicine(Medicine medicine) {
-        if (medicine == null) return false;
-        
-        return isPositiveInteger(medicine.getPharmacyId()) &&
-                isNotEmpty(medicine.getName()) &&
-                isNotEmpty(medicine.getGenericName()) &&
-                isNotEmpty(medicine.getBrand()) &&
-                isPositiveNumber(medicine.getPrice()) &&
-                isPositiveInteger(medicine.getQuantity()) &&
-                isValidDateFormat(medicine.getExpiryDate());
     }
     
     // Form Field Validations (for UI components)
@@ -194,10 +149,7 @@ public class Validator {
         
         return isValidPositiveInteger(userId);
     }
-    
-    public static boolean validateLoginForm(String email, String password) {
-        return isNotEmpty(email) && isNotEmpty(password);
-    }
+
     
     public static boolean validateRegistrationForm(String name, String email, String password, 
                                                  String dateOfBirth, String role) {
@@ -211,14 +163,6 @@ public class Validator {
                isValidRole(role) &&
                isValidDateFormat(dateOfBirth);
     }
-
-    // Utility methods for error messages
-    public static String getValidationErrorMessage(String fieldName, String value) {
-        if (isBlank(value)) {
-            return fieldName + " is required.";
-        }
-        return fieldName + " is invalid.";
-    }
     
     public static String getEmailErrorMessage(String email) {
         if (isBlank(email)) return "Email is required.";
@@ -231,77 +175,5 @@ public class Validator {
         if (!isValidPassword(password)) return "Password must be at least 6 characters long.";
         return "";
     }
-    
-    public static String getNumberErrorMessage(String fieldName, String value) {
-        if (isBlank(value)) return fieldName + " is required.";
-        if (!isValidNumber(value)) return fieldName + " must be a valid number.";
-        if (!isValidPositiveNumber(value)) return fieldName + " must be positive.";
-        return "";
-    }
 
-    // Invoice and Patient Validations (Simplified)
-    public static boolean isValidPatientName(String name) {
-        return isNotEmpty(name) && name.trim().length() >= 2 && name.trim().length() <= 100;
-    }
-    
-    public static boolean isValidPatientPhone(String phone) {
-        if (isBlank(phone)) return true; // Phone is optional
-        
-        // Simple Bangladesh phone validation - just check length and basic format
-        phone = phone.trim();
-        return phone.length() <= 20 && phone.matches("[0-9\\+\\-\\s\\(\\)]+");
-    }
-    
-    public static boolean isValidMedicineForSale(models.Medicine medicine) {
-        return medicine != null && 
-               medicine.getId() > 0 && 
-               isNotEmpty(medicine.getName()) && 
-               medicine.getPrice() > 0 && 
-               medicine.getQuantity() >= 0; // Allow 0 for out of stock check
-    }
-    
-    public static boolean isValidSaleItem(models.SaleItem item) {
-        return item != null && 
-               isValidMedicineForSale(item.getMedicine()) && 
-               item.getQuantity() > 0;
-    }
-    
-    public static boolean isValidInvoiceBasic(models.Invoice invoice) {
-        return invoice != null && 
-               invoice.getPharmacyId() > 0 && 
-               isValidPatientName(invoice.getPatientName()) && 
-               isValidPatientPhone(invoice.getPatientPhone()) && 
-               invoice.getItems() != null && 
-               !invoice.getItems().isEmpty() && 
-               invoice.getTotalAmount() > 0;
-    }
-    
-    public static boolean hasStockAvailable(models.Medicine medicine, int requestedQuantity) {
-        return medicine != null && medicine.getQuantity() >= requestedQuantity;
-    }
-    
-    // Error message methods for invoice validation
-    public static String getPatientNameError(String name) {
-        if (isBlank(name)) return "Patient name is required";
-        if (name.trim().length() < 2) return "Patient name must be at least 2 characters";
-        if (name.trim().length() > 100) return "Patient name is too long (max 100 characters)";
-        return "";
-    }
-    
-    public static String getPatientPhoneError(String phone) {
-        if (phone != null && !isValidPatientPhone(phone)) {
-            return "Please enter a valid phone number (numbers, spaces, +, -, (), only)";
-        }
-        return "";
-    }
-    
-    public static String getMedicineStockError(models.Medicine medicine, int requestedQuantity) {
-        if (medicine == null) return "Medicine not found";
-        if (!isValidMedicineForSale(medicine)) return "Invalid medicine data";
-        if (!hasStockAvailable(medicine, requestedQuantity)) {
-            return String.format("Insufficient stock for %s. Available: %d, Requested: %d", 
-                medicine.getName(), medicine.getQuantity(), requestedQuantity);
-        }
-        return "";
-    }
 }

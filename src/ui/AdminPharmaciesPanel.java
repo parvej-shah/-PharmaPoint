@@ -29,7 +29,7 @@ public class AdminPharmaciesPanel extends JPanel {
 
     private void initializeComponents() {
         // Create table model with columns
-        String[] columnNames = {"ID", "Pharmacy Name", "Owner/Manager", "Address", "Area", "Status"};
+        String[] columnNames = {"ID", "Pharmacy Name", "Address", "Area", "Status"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -172,13 +172,9 @@ public class AdminPharmaciesPanel extends JPanel {
                 
                 // Add pharmacies to table
                 for (Pharmacy pharmacy : pharmacies) {
-                    // Get owner name (you might need to implement this in PharmacyDAO)
-                    String ownerName = "N/A"; // Placeholder
-                    
                     Object[] rowData = {
                         pharmacy.getId(),
                         pharmacy.getName(),
-                        ownerName,
                         pharmacy.getAddress(),
                         pharmacy.getArea(),
                         "Active" // Status placeholder
@@ -241,14 +237,12 @@ public class AdminPharmaciesPanel extends JPanel {
         gbc.insets = new Insets(5, 10, 5, 10);
         gbc.anchor = GridBagConstraints.WEST;
 
-        String[] labels = {"ID:", "Pharmacy Name:", "Owner/Manager:", "Address:", "Area:", "Status:"};
-        
+        String[] labels = {"ID:", "Pharmacy Name:", "Address:", "Area:", "Status:"};
         for (int i = 0; i < labels.length; i++) {
             gbc.gridx = 0; gbc.gridy = i;
             JLabel label = new JLabel(labels[i]);
             label.setFont(new Font("Arial", Font.BOLD, 12));
             panel.add(label, gbc);
-            
             gbc.gridx = 1;
             JLabel value = new JLabel(pharmacyData[i] != null ? pharmacyData[i].toString() : "N/A");
             value.setFont(new Font("Arial", Font.PLAIN, 12));
