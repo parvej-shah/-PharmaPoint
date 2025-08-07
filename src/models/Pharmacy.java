@@ -15,7 +15,7 @@ public class Pharmacy {
         this.area = area;
     }
 
-    // Constructor without ID (for creation)
+    // Constructor without ID
     public Pharmacy(int userId, String name, String address, String area) {
         this.userId = userId;
         this.name = name;
@@ -31,7 +31,6 @@ public class Pharmacy {
     public String getArea() { return area; }
 
     public void setId(int id) { this.id = id; }
-    public void setUserId(int userId) { this.userId = userId; }
     public void setName(String name) { this.name = name; }
     public void setAddress(String address) { this.address = address; }
     public void setArea(String area) { this.area = area; }

@@ -8,7 +8,7 @@ public class Medicine {
     private String brand;
     private double price;
     private int quantity;
-    private String expiryDate; // format: yyyy-MM-dd
+    private String expiryDate; //yyyy-MM-dd
 
     public Medicine(int id, int pharmacyId, String name, String genericName,
                     String brand, double price, int quantity, String expiryDate) {
@@ -22,7 +22,7 @@ public class Medicine {
         this.expiryDate = expiryDate;
     }
 
-    // Constructor without ID (for creation)
+    // Constructor without ID
     public Medicine(int pharmacyId, String name, String genericName,
                     String brand, double price, int quantity, String expiryDate) {
         this.pharmacyId = pharmacyId;

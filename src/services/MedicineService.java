@@ -4,8 +4,6 @@ import dao.MedicineDAO;
 import models.Medicine;
 import models.Pharmacy;
 import models.SaleItem;
-import models.Invoice;
-
 import java.util.List;
 
 public class MedicineService {
@@ -58,10 +56,6 @@ public class MedicineService {
             System.err.println("Error processing sale: " + e.getMessage());
             return false;
         }
-    }
-
-    public Invoice createInvoice(List<SaleItem> saleItems, String pharmacistName, String pharmacyName) {
-        return new Invoice(saleItems, pharmacistName, pharmacyName);
     }
 
 }

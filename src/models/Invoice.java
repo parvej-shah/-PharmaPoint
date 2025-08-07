@@ -40,14 +40,6 @@ public class Invoice {
         this.items = items;
     }
 
-    // Legacy constructor for backward compatibility
-    public Invoice(List<SaleItem> items, String pharmacistName, String pharmacyName) {
-        this.items = items;
-        this.pharmacyName = pharmacyName;
-        this.totalAmount = calculateTotalAmount();
-        this.createdAt = LocalDateTime.now();
-    }
-
     private double calculateTotalAmount() {
         return items != null ? items.stream().mapToDouble(SaleItem::getSubtotal).sum() : 0.0;
     }
@@ -96,39 +88,6 @@ public class Invoice {
     // Setters
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setPharmacyId(int pharmacyId) {
-        this.pharmacyId = pharmacyId;
-    }
-
-    public void setPatientName(String patientName) {
-        this.patientName = patientName;
-    }
-
-    public void setPatientPhone(String patientPhone) {
-        this.patientPhone = patientPhone;
-    }
-
-    public void setItems(List<SaleItem> items) {
-        this.items = items;
-        this.totalAmount = calculateTotalAmount();
-    }
-
-    public void setPharmacyName(String pharmacyName) {
-        this.pharmacyName = pharmacyName;
-    }
-
-    public void setPharmacyArea(String pharmacyArea) {
-        this.pharmacyArea = pharmacyArea;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setTotalAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
     }
 
     @Override
@@ -183,23 +142,4 @@ public class Invoice {
         return sb.toString();
     }
 
-    // Method to generate a simple summary for display
-    public String getSimpleSummary() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Invoice Summary:\n\n");
-        
-        if (items != null) {
-            for (SaleItem item : items) {
-                sb.append(item.getMedicine().getName())
-                  .append(" x ").append(item.getQuantity())
-                  .append(" @ ").append(String.format("%.2f", item.getMedicine().getPrice()))
-                  .append(" = ").append(String.format("%.2f", item.getSubtotal()))
-                  .append(" BDT\n");
-            }
-        }
-        
-        sb.append("\nTotal: ").append(String.format("%.2f", getTotalAmount())).append(" BDT");
-        
-        return sb.toString();
-    }
 }
