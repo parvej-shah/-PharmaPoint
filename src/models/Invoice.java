@@ -15,7 +15,7 @@ public class Invoice {
     private String pharmacyName;
     private String pharmacyArea;
 
-    // Constructor (before saving to DB)
+    // Constructor (before saving invoice to DB)
     public Invoice(int pharmacyId, String patientName, String patientPhone, 
                    List<SaleItem> items, String pharmacyName, String pharmacyArea) {
         this.pharmacyId = pharmacyId;
@@ -40,7 +40,7 @@ public class Invoice {
         this.items = items;
     }
 
-    // Legacy constructor for backward compatibility
+    // creating invoice to  (this was called in medicineService.java)
     public Invoice(List<SaleItem> items, String pharmacistName, String pharmacyName) {
         this.items = items;
         this.pharmacyName = pharmacyName;

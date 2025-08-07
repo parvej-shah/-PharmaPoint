@@ -55,7 +55,7 @@ public class MedicineService {
 
             return true;
         } catch (Exception e) {
-            System.err.println("Error processing sale: " + e.getMessage());
+            System.err.println("Couldn't process sale: " + e.getMessage());
             return false;
         }
     }

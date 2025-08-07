@@ -108,6 +108,7 @@ public class PharmacySearchService {
             }
         }
     }
+ 
     
     public static class PharmacySearchResult {
         private List<PharmacyAvailability> completePharmacies = new ArrayList<>();

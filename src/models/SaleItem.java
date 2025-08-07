@@ -43,7 +43,7 @@ public class SaleItem {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode() {             //have to Override hashCode() when  overriding equals() to ensure objects work correctly in hash-based collections.
         return Integer.hashCode(medicine.getId());
     }
 }
