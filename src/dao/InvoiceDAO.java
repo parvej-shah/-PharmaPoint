@@ -1,16 +1,15 @@
 package dao;
 
+import java.sql.*;
 import models.Invoice;
 import models.SaleItem;
-
-import java.sql.*;
 
 public class InvoiceDAO {
     public boolean saveInvoice(Invoice invoice) {
         Connection connection = null;
         try {
             connection = DBConnection.getConnection();
-            connection.setAutoCommit(false);        // Disables auto-save so you can manually control when changes are committed to the database.
+            connection.setAutoCommit(false);        // Disables auto-save so we can manually control when changes are committed to the database.
 
             // Insert into invoices table
             String invoiceSQL = """
@@ -18,7 +17,9 @@ public class InvoiceDAO {
                 VALUES (?, ?, ?, ?, ?)
             """;
             
-            PreparedStatement invoiceStmt = connection.prepareStatement(invoiceSQL, Statement.RETURN_GENERATED_KEYS);       //statement.RETURN_GENERATED_KEYS allows you to retrieve the auto-generated keys (like ID) after insertion which will be needed to insert in that rows later
+            PreparedStatement invoiceStmt = connection.prepareStatement(invoiceSQL, Statement.RETURN_GENERATED_KEYS);
+                                //statement.RETURN_GENERATED_KEYS allows you to retrieve the auto-generated keys (like ID) after insertion
+                                    // which will be needed to insert in that rows later
             invoiceStmt.setInt(1, invoice.getPharmacyId());
             invoiceStmt.setString(2, invoice.getPatientName());
             invoiceStmt.setString(3, invoice.getPatientPhone());
@@ -50,8 +51,8 @@ public class InvoiceDAO {
             
             PreparedStatement itemStmt = connection.prepareStatement(itemSQL);
             
-            for (SaleItem item : invoice.getItems()) {
-                itemStmt.setInt(1, invoiceId);
+            for (SaleItem item : invoice.getItems()) {      //getItems() returns a list of SaleItem objects 
+                itemStmt.setInt(1, invoiceId);      //invoiceId will be same for all items in one invoice
                 itemStmt.setString(2, item.getMedicine().getName());
                 itemStmt.setInt(3, item.getQuantity());
                 itemStmt.setDouble(4, item.getMedicine().getPrice());

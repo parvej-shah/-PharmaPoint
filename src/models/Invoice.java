@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+//in this file, there is constuctor to make invoice(not in DB). and the formal of invoice output as toString() method
+
+
 public class Invoice {
     private int id;
     private int pharmacyId;
@@ -29,6 +32,7 @@ public class Invoice {
     }
 
     // Constructor for invoices loaded from DB(after searching by ID)
+    //notUsed
     public Invoice(int id, int pharmacyId, String patientName, String patientPhone, 
                    double totalAmount, LocalDateTime createdAt, List<SaleItem> items) {
         this.id = id;
@@ -41,6 +45,7 @@ public class Invoice {
     }
 
     // Legacy constructor for backward compatibility
+    // notUsed
     public Invoice(List<SaleItem> items, String pharmacistName, String pharmacyName) {
         this.items = items;
         this.pharmacyName = pharmacyName;

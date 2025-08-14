@@ -1,12 +1,11 @@
 package services;
 
 import dao.InvoiceDAO;
-import models.Invoice;
-import models.SaleItem;
-import models.Pharmacy;
-import utils.PDFGenerator;
-
 import java.util.List;
+import models.Invoice;
+import models.Pharmacy;
+import models.SaleItem;
+import utils.PDFGenerator;
 
 public class InvoiceService {
     private final InvoiceDAO invoiceDAO = new InvoiceDAO();
@@ -15,13 +14,14 @@ public class InvoiceService {
 
     public boolean saveInvoice(Invoice invoice) {
         // Process the medicine sale (update inventory)
-        if (!medicineService.sellMedicines(invoice.getItems())) {
+        if (!medicineService.sellMedicines(invoice.getItems())) {           //calling sellMedicines method which will update in the DB 
+                                                                            // like reduce the quantity of medicines sold
             System.err.println("Failed to update medicine inventory");
             return false;
         }
 
         // Save invoice to database
-        boolean saved = invoiceDAO.saveInvoice(invoice);
+        boolean saved = invoiceDAO.saveInvoice(invoice);      // calling saveInvoice method which will insert the invoice and items into the DB
         if (!saved) {
             System.err.println("Failed to save invoice to database");
             return false;
@@ -30,8 +30,8 @@ public class InvoiceService {
         return true;
     }
 
-    public SaveInvoiceResult saveInvoiceWithPDF(Invoice invoice) {
-        // First save the invoice normally
+    public SaveInvoiceResult saveInvoiceWithPDF(Invoice invoice) {  //this method will be called from finalInvoiceUI
+        // First save the invoice normally in DB
         boolean saved = saveInvoice(invoice);
         if (!saved) {
             return new SaveInvoiceResult(false, null, "Failed to save invoice to database");
