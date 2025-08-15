@@ -1,19 +1,18 @@
 package utils;
 
-import models.Invoice;
-import models.SaleItem;
-
 import java.awt.*;
 import java.io.*;
 import java.time.format.DateTimeFormatter;
+import models.Invoice;
+import models.SaleItem;
 
 public class PDFGenerator {
     
-    // These constants are reserved for future PDF enhancement if needed
+    // These constants are kept for future PDF making feature if needed
     @SuppressWarnings("unused")
-    private static final int PAGE_WIDTH = 612; // 8.5 inches * 72 DPI
+    private static final int PAGE_WIDTH = 612;
     @SuppressWarnings("unused")
-    private static final int PAGE_HEIGHT = 792; // 11 inches * 72 DPI
+    private static final int PAGE_HEIGHT = 792;
     @SuppressWarnings("unused")
     private static final int MARGIN = 50;
     @SuppressWarnings("unused")
@@ -32,15 +31,14 @@ public class PDFGenerator {
      */
     public static String generateInvoiceFile(Invoice invoice) {
         try {
-            String fileName = String.format("Invoice_%d_%s.txt", 
+            String fileName = String.format("Invoice_%d_%s.txt",    //for example: Invoice_123_20231001_123456.txt
                 invoice.getId(), 
                 invoice.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")));
             
             String filePath = "invoices/" + fileName;
-            File file = new File(filePath);
+            File file = new File(filePath);    //just create an object,not actual file
             
-            // Create a text-based invoice file (clean and printable)
-            return createInvoiceFile(invoice, file);
+            return createInvoiceFile(invoice, file);    //this creates the actual file
             
         } catch (Exception e) {
             System.err.println("Error generating invoice: " + e.getMessage());
@@ -69,21 +67,19 @@ public class PDFGenerator {
             invoiceContent.append("PHARMACY DETAILS:\n");
             invoiceContent.append("-".repeat(50)).append("\n");
             invoiceContent.append(String.format("Name: %s\n", invoice.getPharmacyName()));
-            if (invoice.getPharmacyArea() != null) {
-                invoiceContent.append(String.format("Area: %s\n", invoice.getPharmacyArea()));
-            }
+            invoiceContent.append(String.format("Area: %s\n", invoice.getPharmacyArea()));
+            
             invoiceContent.append("\n");
             
             // Patient details
             invoiceContent.append("PATIENT DETAILS:\n");
             invoiceContent.append("-".repeat(50)).append("\n");
             invoiceContent.append(String.format("Name: %s\n", invoice.getPatientName()));
-            if (invoice.getPatientPhone() != null && !invoice.getPatientPhone().isEmpty()) {
-                invoiceContent.append(String.format("Phone: %s\n", invoice.getPatientPhone()));
-            }
+            invoiceContent.append(String.format("Phone: %s\n", invoice.getPatientPhone()));
+            
             invoiceContent.append("\n");
             
-            // Items header
+            // Items
             invoiceContent.append("MEDICINES:\n");
             invoiceContent.append("-".repeat(80)).append("\n");
             invoiceContent.append(String.format("%-30s %-15s %-8s %-12s %-12s\n", 
@@ -93,8 +89,8 @@ public class PDFGenerator {
             // Items
             for (SaleItem item : invoice.getItems()) {
                 invoiceContent.append(String.format("%-30s %-15s %-8d %-12.2f %-12.2f\n",
-                    truncateString(item.getMedicine().getName(), 29),
-                    truncateString(item.getMedicine().getBrand(), 14),
+                    item.getMedicine().getName(),
+                    item.getMedicine().getBrand(),
                     item.getQuantity(),
                     item.getMedicine().getPrice(),
                     item.getSubtotal()));
@@ -113,10 +109,10 @@ public class PDFGenerator {
             
             // Write to file
             try (FileWriter writer = new FileWriter(outputFile)) {
-                writer.write(invoiceContent.toString());
+                writer.write(invoiceContent.toString());        //.write() expects string, not stringbuilder
             }
             
-            System.out.println("Invoice saved: " + outputFile.getAbsolutePath());
+            System.out.println("Invoice saved in: " + outputFile.getAbsolutePath());
             return outputFile.getAbsolutePath();
             
         } catch (IOException e) {
@@ -125,11 +121,6 @@ public class PDFGenerator {
         }
     }
 
-    private static String truncateString(String str, int maxLength) {
-        if (str == null) return "";
-        if (str.length() <= maxLength) return str;
-        return str.substring(0, maxLength - 3) + "...";
-    }
     
     public static void openInvoiceFile(String filePath) {
         try {

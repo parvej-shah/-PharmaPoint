@@ -111,7 +111,7 @@ public class Invoice {
     }
 
     @Override
-    public String toString() {
+    public String toString() {  //this is used in FinalInvoiceFormUI/showFullInvoice method to show the invoice in text area
         StringBuilder sb = new StringBuilder();
         sb.append("================== INVOICE ==================\n");
         
