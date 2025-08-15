@@ -289,7 +289,7 @@ public class UserAuthUI extends JFrame {
             
             // Validate form using centralized Validator
             if (!Validator.validateRegistrationForm(name, email, password, dob, role)) {
-                if (Validator.isBlank(name) || Validator.isBlank(email) || Validator.isBlank(password)) {
+                if (!Validator.isNotEmpty(name) || !Validator.isNotEmpty(email) || !Validator.isNotEmpty(password)) {
                     showErrorMessage("Please fill in all fields.");
                     return;
                 }

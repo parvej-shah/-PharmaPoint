@@ -160,7 +160,7 @@ public class PharmacyRegistrationFormUI extends JFrame {
         
         // Validate form using centralized Validator
         if (!Validator.validatePharmacyForm(userIdText, pharmacyName, address, area)) {
-            if (Validator.isBlank(pharmacyName) || Validator.isBlank(address) || Validator.isBlank(area)) {
+            if (!Validator.isNotEmpty(pharmacyName) || !Validator.isNotEmpty(address) || !Validator.isNotEmpty(area)) {
                 JOptionPane.showMessageDialog(
                     this,
                     "Please fill in all fields.",
@@ -170,7 +170,7 @@ public class PharmacyRegistrationFormUI extends JFrame {
                 return;
             }
             
-            if (!Validator.isValidPositiveInteger(userIdText)) {
+            if (!Validator.isValidNumber(userIdText, true)) {
                 JOptionPane.showMessageDialog(
                     this,
                     "Invalid user ID.",

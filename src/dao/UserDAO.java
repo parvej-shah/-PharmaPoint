@@ -2,6 +2,9 @@ package dao;
 
 import models.User;
 import java.sql.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +19,9 @@ public class UserDAO {
 
                 pstmt.setString(1, user.getName());
                 pstmt.setString(2, user.getEmail());
-                pstmt.setString(3, user.getPassword());
+                // Hash the password before storing
+                String hashed = hashPassword(user.getPassword());
+                pstmt.setString(3, hashed);
                 pstmt.setString(4, user.getDateOfBirth());
                 pstmt.setString(5, user.getRole());
 
@@ -38,7 +43,8 @@ public class UserDAO {
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
                 pstmt.setString(1, email);
-                pstmt.setString(2, password);
+                // Hash the provided password so it matches the stored hash
+                pstmt.setString(2, hashPassword(password));
                 ResultSet rs = pstmt.executeQuery();
 
                 if (rs.next()) {
@@ -110,5 +116,21 @@ public class UserDAO {
         }
 
         return users;
+    }
+
+    // Helper to hash passwords using SHA-256
+    private static String hashPassword(String password) {
+        if (password == null) return null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashedBytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedBytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("SHA-256 algorithm not available", e);
+        }
     }
 }
