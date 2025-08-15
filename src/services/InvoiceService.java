@@ -13,7 +13,7 @@ public class InvoiceService {
 
 
     public boolean saveInvoice(Invoice invoice) {
-        // Process the medicine sale (update inventory)
+
         if (!medicineService.sellMedicines(invoice.getItems())) {           //calling sellMedicines method which will update in the DB 
                                                                             // like reduce the quantity of medicines sold
             System.err.println("Failed to update medicine inventory");
@@ -30,7 +30,9 @@ public class InvoiceService {
         return true;
     }
 
-    public SaveInvoiceResult saveInvoiceWithPDF(Invoice invoice) {  //this method will be called from finalInvoiceUI
+    
+    //save invoice in DB by calling saveInvoice and then generate PDF file by calling generateInvoiceFile
+    public SaveInvoiceResult saveInvoiceWithPDF(Invoice invoice) {
         // First save the invoice normally in DB
         boolean saved = saveInvoice(invoice);
         if (!saved) {
@@ -46,6 +48,8 @@ public class InvoiceService {
 
         return new SaveInvoiceResult(true, invoicePath, "Invoice saved and file generated successfully");
     }
+
+
     public static class SaveInvoiceResult {
         private final boolean success;
         private final String pdfPath;
@@ -75,6 +79,9 @@ public class InvoiceService {
     }
 
 
+
+            //to create an invoice object from raw data from the UI,
+            //then we may send the invoice object to do other staffs like saving in DB or generating PDF
     public Invoice createInvoice(int pharmacyId, String patientName, String patientPhone, 
                                 List<SaleItem> items, Pharmacy pharmacy) {
         String pharmacyName = pharmacy != null ? pharmacy.getName() : "Unknown Pharmacy";

@@ -8,6 +8,7 @@ import models.SaleItem;
 
 public class PDFGenerator {
 
+     //first we make a file with appropriate name
     public static String generateInvoiceFile(Invoice invoice) {
         try {
             String fileName = String.format("Invoice_%d_%s.txt",    //for example: Invoice_123_20231001_123456.txt
@@ -25,7 +26,8 @@ public class PDFGenerator {
             return null;
         }
     }
-    
+
+    //now we write inside the file
     private static String createInvoiceFile(Invoice invoice, File outputFile) {
         try {
 
@@ -100,7 +102,7 @@ public class PDFGenerator {
         }
     }
 
-    
+     //try to open the invoice automatically
     public static void openInvoiceFile(String filePath) {
         try {
             if (Desktop.isDesktopSupported()) {
