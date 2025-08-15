@@ -207,18 +207,18 @@ public class AddMedicineFormUI extends JFrame {
             
             // Validate form using centralized Validator
             if (!Validator.validateMedicineForm(name, genericName, brand, priceText, quantityText, expiryDate)) {
-                if (Validator.isBlank(name) || Validator.isBlank(genericName) || Validator.isBlank(brand) || 
-                    Validator.isBlank(priceText) || Validator.isBlank(quantityText) || Validator.isBlank(expiryDate)) {
+                if (!Validator.isNotEmpty(name) || !Validator.isNotEmpty(genericName) || !Validator.isNotEmpty(brand) || 
+                    !Validator.isNotEmpty(priceText) || !Validator.isNotEmpty(quantityText) || !Validator.isNotEmpty(expiryDate)) {
                     showErrorMessage("Please fill in all fields.");
                     return;
                 }
                 
-                if (!Validator.isValidPositiveNumber(priceText)) {
+                if (!Validator.isValidNumber(priceText, true)) {
                     showErrorMessage("Please enter a valid price (positive number).");
                     return;
                 }
                 
-                if (!Validator.isValidPositiveInteger(quantityText)) {
+                if (!Validator.isValidNumber(quantityText, true)) {
                     showErrorMessage("Please enter a valid quantity (positive integer).");
                     return;
                 }
