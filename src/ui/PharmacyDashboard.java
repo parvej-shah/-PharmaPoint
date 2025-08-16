@@ -39,7 +39,7 @@ public class PharmacyDashboard extends JFrame {
     
     // Constructor for user without pharmacy
     public PharmacyDashboard() {
-        this(null);
+        this(null);     //this is like  PharmacyDashboard(null)  calling previous constructor,
     }
     
     private void initializeComponents() {

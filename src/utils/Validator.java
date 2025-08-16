@@ -61,8 +61,6 @@ public class Validator {
         return EMAIL_PATTERN.matcher(email.trim()).matches();       //returns true if the email matches the regex pattern
     }
 
-
-    // Password Validations
     public static boolean isValidPassword(String password) {
         return isNotEmpty(password) && password.length() >= 6;
     }
@@ -81,20 +79,8 @@ public class Validator {
         }
         return false;
     }
-
-    public static boolean validateUser(User user) {
-        if (user == null) return false;
-        
-        return isNotEmpty(user.getName()) &&
-                isValidEmail(user.getEmail()) &&
-                isValidPassword(user.getPassword()) &&
-                isNotEmpty(user.getDateOfBirth()) &&
-                isValidRole(user.getRole());
-    }
     
-    public static boolean validateUserForRegistration(User user) {
-        return validateUser(user);
-    }
+
 
     public static boolean validatePharmacy(Pharmacy pharmacy) {
         if (pharmacy == null) return false;
