@@ -21,7 +21,7 @@ public class InvoiceService {
         }
 
         // Save invoice to database
-        boolean saved = invoiceDAO.saveInvoice(invoice);      // calling saveInvoice method which will insert the invoice and items into the DB
+        boolean saved = invoiceDAO.saveInvoice(invoice);
         if (!saved) {
             System.err.println("Failed to save invoice to database");
             return false;

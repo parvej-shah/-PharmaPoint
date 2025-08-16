@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import models.Medicine;
 import models.Pharmacy;
 
@@ -267,7 +266,7 @@ public class MedicineDAO {
                     stmt.setString(paramIndex++, search);
                 }
                 
-                ResultSet rs = stmt.executeQuery();
+                ResultSet rs = stmt.executeQuery();     //rs returns a hybrid table -> pharmacy(id, user_id, name, address, area) + medicine(medicine_name, generic_name, brand, price, quantity)
                 while (rs.next()) {
                     // Create pharmacy object
                     Pharmacy pharmacy = new Pharmacy(
@@ -276,11 +275,11 @@ public class MedicineDAO {
                             rs.getString("name"),
                             rs.getString("address"),
                             rs.getString("area")
-                    );
+                        );
                     
                     // Group by pharmacy to avoid duplicates
                     Pharmacy existingPharmacy = null;
-                    for (Pharmacy p : result.keySet()) {
+                    for (Pharmacy p : result.keySet()) {    //keySet() returns a array of pharmacy which are the key if result map
                         if (p.getId() == pharmacy.getId()) {
                             existingPharmacy = p;
                             break;
@@ -290,16 +289,17 @@ public class MedicineDAO {
                     if (existingPharmacy == null) {
                         // Create new pharmacy entry
                         java.util.Map<String, Object> data = new java.util.HashMap<>();
-                        data.put("availableMedicines", new java.util.ArrayList<Medicine>());
-                        data.put("count", 0);
+                        data.put("availableMedicines", new java.util.ArrayList<Medicine>());    //arraylist is an object
+                        data.put("count", 0);       // integer is an object too
                         result.put(pharmacy, data);
                         existingPharmacy = pharmacy;
                     }
                     
-                    // Add medicine to pharmacy's available list (avoid duplicates)
+                    // Add the medicines availble in the pharmacy that we were searching in the pharmacies
                     @SuppressWarnings("unchecked")
                     List<Medicine> medicines = (List<Medicine>) result.get(existingPharmacy).get("availableMedicines");
-                    
+                            // .get(abc) returns the value associated with the abc key
+
                     Medicine medicine = new Medicine(
                             0, // id not needed for this use case
                             rs.getInt("id"),
@@ -311,7 +311,7 @@ public class MedicineDAO {
                             "" // expiry not needed for this use case
                     );
                     
-                    // Check if medicine already exists (avoid duplicates)
+                    // Check if medicine already exists
                     boolean exists = false;
                     for (Medicine m : medicines) {
                         if (m.getName().equals(medicine.getName()) && m.getBrand().equals(medicine.getBrand())) {
@@ -333,6 +333,7 @@ public class MedicineDAO {
         
         return result;
     }
+
 
     /**
      * Get all medicines with pharmacy information, ordered by quantity descending

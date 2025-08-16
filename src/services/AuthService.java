@@ -3,7 +3,7 @@ package services;
 import dao.UserDAO;
 import models.User;
 
-
+//just taking email and pass, returning the user object if user is in the DB
 public class AuthService {
     
     private UserDAO userDAO;

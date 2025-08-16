@@ -32,10 +32,10 @@ public class MedicineService {
     public Medicine getMedicineById(int medicineId) {
         return medicineDAO.getMedicineById(medicineId);
     }
+
     public List<Pharmacy> getPharmaciesWithMedicine(String keyword) {
         return medicineDAO.findPharmaciesWithMedicine(keyword);
     }
-
 
     public boolean sellMedicines(List<SaleItem> saleItems) {
         try {

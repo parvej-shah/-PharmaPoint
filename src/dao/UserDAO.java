@@ -43,7 +43,7 @@ public class UserDAO {
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
                 pstmt.setString(1, email);
-                // Hash the provided password so it matches the stored hash
+                // Hash the given password so it matches the stored hash
                 pstmt.setString(2, hashPassword(password));
                 ResultSet rs = pstmt.executeQuery();
 
