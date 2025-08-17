@@ -201,6 +201,8 @@ public class UserAuthUI extends JFrame {
         gbc.fill = GridBagConstraints.NONE;     //dont stretch
         gbc.insets = new Insets(20, 8, 8, 8);       //margins
         panel.add(regButton, gbc);
+
+
         
         return panel;
     }

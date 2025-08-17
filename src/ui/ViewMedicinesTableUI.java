@@ -26,9 +26,10 @@ public class ViewMedicinesTableUI extends JFrame {
     private JTextField searchField;
     private JButton searchButton;
     private JButton refreshButton;
-    private JButton closeButton;
     private JButton updateButton;
     private JButton deleteButton;
+    private JButton closeButton;
+
     
     public ViewMedicinesTableUI(Pharmacy pharmacy, PharmacyDashboard parentDashboard) {
         this.pharmacy = pharmacy;
@@ -44,8 +45,7 @@ public class ViewMedicinesTableUI extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(1000, 650);
         setLocationRelativeTo(parentDashboard);
-        
-        // Load medicines when window opens
+
         loadAllMedicines();
     }
     
@@ -58,8 +58,8 @@ public class ViewMedicinesTableUI extends JFrame {
         // Create the table
         medicinesTable = new JTable(tableModel);
         medicinesTable.setRowHeight(30);
-        medicinesTable.setFont(new Font("Arial", Font.PLAIN, 13));
-        medicinesTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
+        medicinesTable.setFont(new Font("Arial", Font.PLAIN, 22));
+        medicinesTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 25));
         
         // Set column widths
         medicinesTable.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
@@ -70,8 +70,8 @@ public class ViewMedicinesTableUI extends JFrame {
         medicinesTable.getColumnModel().getColumn(5).setPreferredWidth(80);  // Quantity
         
         // Create search components
-        searchField = new JTextField(20);
-        searchField.setFont(new Font("Arial", Font.PLAIN, 14));
+        searchField = new JTextField(40);
+        searchField.setFont(new Font("Arial", Font.PLAIN, 25));
         searchButton = new JButton("Search");
         
         // Create action buttons

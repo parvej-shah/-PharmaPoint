@@ -38,22 +38,22 @@ public class AddMedicineFormUI extends JFrame {
         // Frame configuration
         setTitle("Add New Medicine - " + pharmacy.getName());
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(500, 450);
+        setSize(1200, 800);
         setLocationRelativeTo(parentDashboard);
-        setMinimumSize(new Dimension(450, 400));
+        setMinimumSize(new Dimension(450, 500));
     }
     
     private void initializeComponents() {
         // Text fields
-        nameField = new JTextField(20);
-        genericNameField = new JTextField(20);
-        brandField = new JTextField(20);
-        priceField = new JTextField(20);
-        quantityField = new JTextField(20);
-        expiryDateField = new JTextField(20);
+        nameField = new JTextField(40);
+        genericNameField = new JTextField(40);
+        brandField = new JTextField(40);
+        priceField = new JTextField(40);
+        quantityField = new JTextField(40);
+        expiryDateField = new JTextField(40);
         
         // Set larger font for text fields
-        Font fieldFont = new Font("Arial", Font.PLAIN, 14);
+        Font fieldFont = new Font("Arial", Font.PLAIN, 30);
         nameField.setFont(fieldFont);
         genericNameField.setFont(fieldFont);
         brandField.setFont(fieldFont);
@@ -68,17 +68,17 @@ public class AddMedicineFormUI extends JFrame {
         // Style buttons
         addButton.setBackground(new Color(34, 139, 34));
         addButton.setForeground(Color.WHITE);
-        addButton.setFont(new Font("Arial", Font.BOLD, 16));
+        addButton.setFont(new Font("Arial", Font.BOLD, 25));
         addButton.setFocusPainted(false);
-        addButton.setBorderPainted(false);
+        addButton.setBorderPainted(true);
         addButton.setPreferredSize(new Dimension(140, 40));
         addButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         cancelButton.setBackground(new Color(220, 20, 60));
         cancelButton.setForeground(Color.WHITE);
-        cancelButton.setFont(new Font("Arial", Font.BOLD, 16));
+        cancelButton.setFont(new Font("Arial", Font.BOLD, 25));
         cancelButton.setFocusPainted(false);
-        cancelButton.setBorderPainted(false);
+        cancelButton.setBorderPainted(true);
         cancelButton.setPreferredSize(new Dimension(140, 40));
         cancelButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
@@ -94,7 +94,7 @@ public class AddMedicineFormUI extends JFrame {
         
         // Title label
         JLabel titleLabel = new JLabel("Add New Medicine", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 40));
         titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
         
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2; gbc.weightx = 1.0;
@@ -104,7 +104,7 @@ public class AddMedicineFormUI extends JFrame {
         gbc.gridwidth = 1;
         gbc.weightx = 0;
         
-        Font labelFont = new Font("Arial", Font.BOLD, 14);
+        Font labelFont = new Font("Arial", Font.BOLD, 30);
         
         // Medicine Name
         gbc.gridx = 0; gbc.gridy = 1; gbc.anchor = GridBagConstraints.WEST;
@@ -155,7 +155,7 @@ public class AddMedicineFormUI extends JFrame {
         add(expiryDateField, gbc);
         
         // Buttons panel
-        JPanel buttonPanel = new JPanel(new FlowLayout());
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
         buttonPanel.add(addButton);
         buttonPanel.add(cancelButton);
         
@@ -207,11 +207,6 @@ public class AddMedicineFormUI extends JFrame {
             
             // Validate form using centralized Validator
             if (!Validator.validateMedicineForm(name, genericName, brand, priceText, quantityText, expiryDate)) {
-                if (!Validator.isNotEmpty(name) || !Validator.isNotEmpty(genericName) || !Validator.isNotEmpty(brand) || 
-                    !Validator.isNotEmpty(priceText) || !Validator.isNotEmpty(quantityText) || !Validator.isNotEmpty(expiryDate)) {
-                    showErrorMessage("Please fill in all fields.");
-                    return;
-                }
                 
                 if (!Validator.isValidNumber(priceText, true)) {
                     showErrorMessage("Please enter a valid price (positive number).");
@@ -235,18 +230,9 @@ public class AddMedicineFormUI extends JFrame {
             double price = Double.parseDouble(priceText);
             int quantity = Integer.parseInt(quantityText);
             
-            // Create Medicine object
-            Medicine medicine = new Medicine(
-                pharmacy.getId(),
-                name,
-                genericName,
-                brand,
-                price,
-                quantity,
-                expiryDate
-            );
-            
-            // Add medicine using service
+
+            Medicine medicine = new Medicine(pharmacy.getId(), name, genericName, brand, price, quantity, expiryDate);
+
             if (medicineService.addMedicine(medicine)) {
                 showSuccessMessage("Medicine Added Successfully!", 
                     "Medicine '" + name + "' has been added to " + pharmacy.getName() + " inventory.");
@@ -256,7 +242,7 @@ public class AddMedicineFormUI extends JFrame {
                     parentDashboard.refreshDashboard();
                 }
                 
-                // Clear form for next entry
+
                 clearForm();
             } else {
                 showErrorMessage("Failed to add medicine. Please try again.");
