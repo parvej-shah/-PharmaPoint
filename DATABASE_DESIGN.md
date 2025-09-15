@@ -157,5 +157,3 @@ Medicine ID = 10 (Napa)
 5. **Medicine Search**: System searches across all pharmacy inventories for medicine availability
 
 ---
-
-> **Note:** This database design ensures scalability, data integrity, and efficient querying for the PharmaPoint application's core functionalities.
