@@ -43,7 +43,8 @@ public class UserDAO {
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
                 pstmt.setString(1, email);
-                // Hash the provided password so it matches the stored hash
+                
+                // First try with hashed password (for new users)
                 pstmt.setString(2, hashPassword(password));
                 ResultSet rs = pstmt.executeQuery();
 
@@ -55,6 +56,22 @@ public class UserDAO {
                             rs.getString("password"),
                             rs.getString("dateOfBirth"),
                             rs.getString("role"));
+                }
+                
+                // If not found, try with plain text password (for existing users)
+                pstmt.setString(2, password);
+                rs = pstmt.executeQuery();
+                
+                if (rs.next()) {
+                    // Found with plain text password, return user
+                    User user = new User(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("email"),
+                            rs.getString("password"),
+                            rs.getString("dateOfBirth"),
+                            rs.getString("role"));             
+                    return user;
                 }
             }
         } catch (SQLException e) {
@@ -133,4 +150,6 @@ public class UserDAO {
             throw new RuntimeException("SHA-256 algorithm not available", e);
         }
     }
+
+  
 }

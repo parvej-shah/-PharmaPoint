@@ -6,7 +6,7 @@ public class User {
     private String email;
     private String password; 
     private String dateOfBirth;
-    private String role; // patient or pharmacy
+    private String role; // patient or pharmacy or admin
 
     // Constructor
     public User(int id, String name, String email, String password, String dob,String role) {

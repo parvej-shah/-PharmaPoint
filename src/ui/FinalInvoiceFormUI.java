@@ -303,10 +303,10 @@ public class FinalInvoiceFormUI extends JDialog {
                 try {
                     InvoiceService.SaveInvoiceResult result = get();
                     
-                    if (result.isSuccess()) {
+                    if (result.success()) {
                         handleSaleSuccess(invoice, result);
                     } else {
-                        handleSaleFailure(result.getMessage());
+                        handleSaleFailure(result.message());
                     }
                     
                 } catch (Exception e) {
@@ -343,7 +343,7 @@ public class FinalInvoiceFormUI extends JDialog {
         
         // Offer to open invoice file if generated
         if (result.hasPdf()) {
-            offerToOpenInvoiceFile(result.getPdfPath());
+            offerToOpenInvoiceFile(result.pdfPath());
         }
         
         // Close this window and refresh parent

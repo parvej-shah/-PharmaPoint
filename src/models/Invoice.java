@@ -31,30 +31,7 @@ public class Invoice {
         this.pharmacyArea = pharmacyArea;
     }
 
-    // Constructor for invoices loaded from DB(after searching by ID)
-    //notUsed
-    public Invoice(int id, int pharmacyId, String patientName, String patientPhone, 
-                   double totalAmount, LocalDateTime createdAt, List<SaleItem> items) {
-        this.id = id;
-        this.pharmacyId = pharmacyId;
-        this.patientName = patientName;
-        this.patientPhone = patientPhone;
-        this.totalAmount = totalAmount;
-        this.createdAt = createdAt;
-        this.items = items;
-    }
-
-    // Legacy constructor for backward compatibility
-    // notUsed
-    public Invoice(List<SaleItem> items, String pharmacistName, String pharmacyName) {
-        this.items = items;
-        this.pharmacyName = pharmacyName;
-        this.totalAmount = calculateTotalAmount();
-        this.createdAt = LocalDateTime.now();
-    }
-
     private double calculateTotalAmount() {
-        // return items != null ? items.stream().mapToDouble(SaleItem::getSubtotal).sum() : 0.0;
         double total = 0.0;
         if (items != null) {
             for (SaleItem item : items) {

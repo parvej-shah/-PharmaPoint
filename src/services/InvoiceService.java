@@ -50,33 +50,12 @@ public class InvoiceService {
     }
 
 
-    public static class SaveInvoiceResult {
-        private final boolean success;
-        private final String pdfPath;
-        private final String message;
-
-        public SaveInvoiceResult(boolean success, String pdfPath, String message) {
-            this.success = success;
-            this.pdfPath = pdfPath;
-            this.message = message;
-        }
-
-        public boolean isSuccess() {
-            return success;
-        }
-
-        public String getPdfPath() {
-            return pdfPath;
-        }
-
-        public String getMessage() {
-            return message;
-        }
+    public record SaveInvoiceResult(boolean success, String pdfPath, String message) {
 
         public boolean hasPdf() {
-            return pdfPath != null && !pdfPath.isEmpty();
+                return pdfPath != null && !pdfPath.isEmpty();
+            }
         }
-    }
 
 
 
@@ -86,7 +65,7 @@ public class InvoiceService {
                                 List<SaleItem> items, Pharmacy pharmacy) {
         String pharmacyName = pharmacy != null ? pharmacy.getName() : "Unknown Pharmacy";
         String pharmacyArea = pharmacy != null ? pharmacy.getArea() : "Unknown Area";
-        
+
         return new Invoice(pharmacyId, patientName, patientPhone, items, pharmacyName, pharmacyArea);
     }
 }

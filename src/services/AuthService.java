@@ -6,7 +6,7 @@ import models.User;
 
 public class AuthService {
     
-    private UserDAO userDAO;
+    private final UserDAO userDAO;
     
     public AuthService() {
         this.userDAO = new UserDAO();
