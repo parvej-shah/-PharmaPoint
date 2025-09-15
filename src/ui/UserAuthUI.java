@@ -1,18 +1,17 @@
 package ui;
 
-import models.User;
-import models.Pharmacy;
-import services.UserService;
-import services.AuthService;
-import services.PharmacyService;
-import utils.SessionManager;
-import utils.Validator;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Objects;
+import javax.swing.*;
+import models.Pharmacy;
+import models.User;
+import services.AuthService;
+import services.PharmacyService;
+import services.UserService;
+import utils.SessionManager;
+import utils.Validator;
 
 public class UserAuthUI extends JFrame {
     
@@ -47,19 +46,19 @@ public class UserAuthUI extends JFrame {
         // Frame configuration
         setTitle("PharmaPoint - User Authentication");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(700, 600);
-        setLocationRelativeTo(null);
-        setResizable(false);
+        setSize(1200, 800);
+        setLocationRelativeTo(null);    // Center the frame on the screen
+        setResizable(true);
     }
     
     private void initializeComponents() {
         // Registration components
-        regNameField = new JTextField(20);
-        regEmailField = new JTextField(20);
-        regPasswordField = new JPasswordField(20);
+        regNameField = new JTextField(40);
+        regEmailField = new JTextField(40);
+        regPasswordField = new JPasswordField(40);
         
         // Set larger font for text fields
-        Font fieldFont = new Font("Arial", Font.PLAIN, 14);
+        Font fieldFont = new Font("Arial", Font.PLAIN, 30);
         regNameField.setFont(fieldFont);
         regEmailField.setFont(fieldFont);
         regPasswordField.setFont(fieldFont);
@@ -73,7 +72,7 @@ public class UserAuthUI extends JFrame {
         yearCombo = new JComboBox<>();
         
         // Set font for combo boxes
-        Font comboFont = new Font("Arial", Font.PLAIN, 14);
+        Font comboFont = new Font("Arial", Font.PLAIN, 26);
         dayCombo.setFont(comboFont);
         monthCombo.setFont(comboFont);
         yearCombo.setFont(comboFont);
@@ -93,8 +92,8 @@ public class UserAuthUI extends JFrame {
         regButton = new JButton("Register");
         
         // Login components
-        loginEmailField = new JTextField(20);
-        loginPasswordField = new JPasswordField(20);
+        loginEmailField = new JTextField(40);
+        loginPasswordField = new JPasswordField(40);
         loginEmailField.setFont(fieldFont);
         loginPasswordField.setFont(fieldFont);
         loginButton = new JButton("Login");
@@ -107,7 +106,7 @@ public class UserAuthUI extends JFrame {
     private void styleButton(JButton button) {
         button.setBackground(new Color(70, 130, 180));
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 16));
+        button.setFont(new Font("Arial", Font.BOLD, 20));
         button.setFocusPainted(false);
         button.setBorderPainted(false);
         button.setPreferredSize(new Dimension(140, 40));
@@ -115,8 +114,8 @@ public class UserAuthUI extends JFrame {
     }
     
     private void setupLayout() {
-        JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.setFont(new Font("Arial", Font.BOLD, 16));
+        JTabbedPane tabbedPane = new JTabbedPane();     //JTabbedPane is a container that let us have multiple panel in a page
+        tabbedPane.setFont(new Font("Arial", Font.BOLD, 20));
         
         // Create registration panel
         JPanel registerPanel = createRegistrationPanel();
@@ -136,18 +135,18 @@ public class UserAuthUI extends JFrame {
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(8, 8, 8, 8);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(8, 8, 8, 8);  //8px margin around each component
+        gbc.fill = GridBagConstraints.HORIZONTAL;       //Makes components expand horizontally to fill their cell
+        gbc.anchor = GridBagConstraints.WEST;           //Aligns components to the left (west)
         
-        Font labelFont = new Font("Arial", Font.BOLD, 14);
+        Font labelFont = new Font("Arial", Font.BOLD, 30);
         
         // Name field
-        gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0;
+        gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0;      //row=0, column = 0, weightx = 0 means it wont expand or shrink
         JLabel nameLabel = new JLabel("Name:");
         nameLabel.setFont(labelFont);
         panel.add(nameLabel, gbc);
-        gbc.gridx = 1; gbc.gridy = 0; gbc.weightx = 1.0;
+        gbc.gridx = 1; gbc.gridy = 0; gbc.weightx = 1.0;    //row=0, column = 1, weightx = 1.0 means it will expand to fill the space
         panel.add(regNameField, gbc);
         
         // Email field
@@ -172,20 +171,19 @@ public class UserAuthUI extends JFrame {
         dobLabel.setFont(labelFont);
         panel.add(dobLabel, gbc);
         
-        JPanel dobPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        JLabel dayLabel = new JLabel("Day:");
-        dayLabel.setFont(labelFont);
-        dobPanel.add(dayLabel);
-        dobPanel.add(dayCombo);
-        JLabel monthLabel = new JLabel("Month:");
-        monthLabel.setFont(labelFont);
-        dobPanel.add(monthLabel);
-        dobPanel.add(monthCombo);
-        JLabel yearLabel = new JLabel("Year:");
-        yearLabel.setFont(labelFont);
-        dobPanel.add(yearLabel);
-        dobPanel.add(yearCombo);
-        
+        JPanel dobPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0)); //just put elements side by side
+            JLabel dayLabel = new JLabel("Day:");
+            dayLabel.setFont(labelFont);
+            dobPanel.add(dayLabel);
+            dobPanel.add(dayCombo);
+            JLabel monthLabel = new JLabel("Month:");
+            monthLabel.setFont(labelFont);
+            dobPanel.add(monthLabel);
+            dobPanel.add(monthCombo);
+            JLabel yearLabel = new JLabel("Year:");
+            yearLabel.setFont(labelFont);
+            dobPanel.add(yearLabel);
+            dobPanel.add(yearCombo);
         gbc.gridx = 1; gbc.gridy = 3; gbc.weightx = 1.0;
         panel.add(dobPanel, gbc);
         
@@ -200,9 +198,11 @@ public class UserAuthUI extends JFrame {
         // Register button
         gbc.gridx = 0; gbc.gridy = 5; gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.insets = new Insets(20, 8, 8, 8);
+        gbc.fill = GridBagConstraints.NONE;     //dont stretch
+        gbc.insets = new Insets(20, 8, 8, 8);       //margins
         panel.add(regButton, gbc);
+
+
         
         return panel;
     }
@@ -216,7 +216,7 @@ public class UserAuthUI extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.WEST;
         
-        Font labelFont = new Font("Arial", Font.BOLD, 14);
+        Font labelFont = new Font("Arial", Font.BOLD, 30);
         
         // Email field
         gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0;
@@ -266,7 +266,7 @@ public class UserAuthUI extends JFrame {
     }
     
     private void addEnterKeySupport() {
-        ActionListener regEnterListener = e -> handleRegistration();
+        ActionListener regEnterListener = e -> handleRegistration();    //JTextField's default feature,if press Enter inside it, it fires an ActionEvent.
         regNameField.addActionListener(regEnterListener);
         regEmailField.addActionListener(regEnterListener);
         regPasswordField.addActionListener(regEnterListener);
@@ -319,12 +319,7 @@ public class UserAuthUI extends JFrame {
             
             // Create user object
             User user = new User(name, email, password, dob, role);
-            
-            // Additional validation for user registration
-            if (!Validator.validateUserForRegistration(user)) {
-                showErrorMessage("Invalid user data. Please check your inputs.");
-                return;
-            }
+
             
             // Register user
             if (userService.registerUser(user)) {
@@ -398,10 +393,11 @@ public class UserAuthUI extends JFrame {
     
     private void openPharmacyDashboard(User user) {
         SwingUtilities.invokeLater(() -> {
+                            //telling EDT to execute the GUI as soon as its available, (EDT is the thread where UI happen)
             try {
                 // Try to get pharmacy for this user
                 Pharmacy pharmacy = pharmacyService.getPharmacyByUserId(user.getId());
-                
+
                 PharmacyDashboard dashboard;
                 if (pharmacy != null) {
                     dashboard = new PharmacyDashboard(pharmacy);
@@ -414,7 +410,7 @@ public class UserAuthUI extends JFrame {
                 
             } catch (Exception e) {
                 showErrorMessage("Error opening pharmacy dashboard: " + e.getMessage());
-                // Fallback (it's optional) - open dashboard without pharmacy
+                //(it's optional) - open dashboard without pharmacy
                 new PharmacyDashboard().setVisible(true);
             }
         });
@@ -467,7 +463,8 @@ public class UserAuthUI extends JFrame {
             JOptionPane.ERROR_MESSAGE
         );
     }
-    
+
+       //for testing the UI
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override

@@ -5,6 +5,8 @@ import models.Invoice;
 import models.SaleItem;
 
 public class InvoiceDAO {
+
+    //recieves an invoice object, then save it into invoices table, and invoice_items table
     public boolean saveInvoice(Invoice invoice) {
         Connection connection = null;
         try {

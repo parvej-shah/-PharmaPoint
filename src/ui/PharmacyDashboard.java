@@ -39,7 +39,7 @@ public class PharmacyDashboard extends JFrame {
     
     // Constructor for user without pharmacy
     public PharmacyDashboard() {
-        this(null);
+        this(null);     //this is like  PharmacyDashboard(null)  calling previous constructor,
     }
     
     private void initializeComponents() {
@@ -51,15 +51,16 @@ public class PharmacyDashboard extends JFrame {
             welcomeLabel = new JLabel("Welcome to Pharmacy Dashboard", 
                                     SwingConstants.CENTER);
         }
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 30));
         welcomeLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
         
         // Buttons
+        createPharmacyButton = new JButton("Create Pharmacy");
+        logoutButton = new JButton("Logout");
         addMedicineButton = new JButton("Add New Medicine");
         viewMedicinesButton = new JButton("View All Medicines");
         sellMedicineButton = new JButton("Sell Medicine");
-        createPharmacyButton = new JButton("Create Pharmacy");
-        logoutButton = new JButton("Logout");
+
         
         // Style buttons
         styleButton(addMedicineButton, new Color(34, 139, 34)); // Forest Green
@@ -75,9 +76,9 @@ public class PharmacyDashboard extends JFrame {
     private void styleButton(JButton button, Color backgroundColor) {
         button.setBackground(backgroundColor);
         button.setForeground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 16));
+        button.setFont(new Font("Arial", Font.BOLD, 40));
         button.setFocusPainted(false);
-        button.setBorderPainted(false);
+        button.setBorderPainted(true);
         button.setPreferredSize(new Dimension(220, 55));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
@@ -92,7 +93,7 @@ public class PharmacyDashboard extends JFrame {
         
         if (!hasPharmacy) {
             welcomeLabel.setText("<html><center>Welcome to Pharmacy Dashboard<br>" +
-                               "<small>Please create a pharmacy to start managing medicines</small></center></html>");
+                               "<big>Please create a pharmacy to start managing medicines</big></center></html>");
         }
     }
     
@@ -119,7 +120,7 @@ public class PharmacyDashboard extends JFrame {
         
         // Pharmacy info panel (if pharmacy exists)
         if (pharmacy != null) {
-            JPanel infoPanel = createPharmacyInfoPanel();
+            JPanel infoPanel = createPharmacyInfoPanel();   //is user has pharmacy, then show info at the right
             mainPanel.add(infoPanel, BorderLayout.EAST);
         }
         
@@ -134,7 +135,7 @@ public class PharmacyDashboard extends JFrame {
         JPanel infoPanel = new JPanel(new GridBagLayout());
         infoPanel.setBorder(BorderFactory.createTitledBorder(
             BorderFactory.createEtchedBorder(), "Pharmacy Information", 
-            0, 0, new Font("Arial", Font.BOLD, 16)));
+            0, 0, new Font("Arial", Font.BOLD, 25)));
         infoPanel.setPreferredSize(new Dimension(280, 0));
         
         GridBagConstraints gbc = new GridBagConstraints();
@@ -150,7 +151,7 @@ public class PharmacyDashboard extends JFrame {
         JLabel idLabel = new JLabel("ID: " + pharmacy.getId());
         
         // Style labels
-        Font labelFont = new Font("Arial", Font.PLAIN, 14);
+        Font labelFont = new Font("Arial", Font.PLAIN, 20);
         nameLabel.setFont(labelFont);
         addressLabel.setFont(labelFont);
         areaLabel.setFont(labelFont);
@@ -173,14 +174,14 @@ public class PharmacyDashboard extends JFrame {
         gbc.gridy = 4;
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
-        infoPanel.add(Box.createVerticalGlue(), gbc);
+        infoPanel.add(Box.createVerticalGlue(), gbc);       //creates an invisible and stretchable box at the bottom
         
         return infoPanel;
     }
     
     private void setupEventHandlers() {
         addMedicineButton.addActionListener(new ActionListener() {
-            @Override
+            @Override   //actionListener is an interface, so we must override its method
             public void actionPerformed(ActionEvent e) {
                 openAddMedicineForm();
             }
@@ -268,7 +269,6 @@ public class PharmacyDashboard extends JFrame {
     
     // Method to refresh the dashboard (useful when medicines are added/removed)
     public void refreshDashboard() {
-        // This can be called from child windows to refresh the dashboard
         repaint();
         revalidate();
     }

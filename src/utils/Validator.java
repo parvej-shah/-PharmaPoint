@@ -61,8 +61,6 @@ public class Validator {
         return EMAIL_PATTERN.matcher(email.trim()).matches();       //returns true if the email matches the regex pattern
     }
 
-
-    // Password Validations
     public static boolean isValidPassword(String password) {
         return isNotEmpty(password) && password.length() >= 6;
     }
@@ -81,20 +79,8 @@ public class Validator {
         }
         return false;
     }
-
-    public static boolean validateUser(User user) {
-        if (user == null) return false;
-        
-        return isNotEmpty(user.getName()) &&
-                isValidEmail(user.getEmail()) &&
-                isValidPassword(user.getPassword()) &&
-                isNotEmpty(user.getDateOfBirth()) &&
-                isValidRole(user.getRole());
-    }
     
-    public static boolean validateUserForRegistration(User user) {
-        return validateUser(user);
-    }
+
 
     public static boolean validatePharmacy(Pharmacy pharmacy) {
         if (pharmacy == null) return false;
@@ -108,15 +94,13 @@ public class Validator {
     // Form Field Validations (for UI components)
     public static boolean validateMedicineForm(String name, String genericName, String brand, 
                                              String priceText, String quantityText, String expiryDate) {
-        // Check if all fields are filled
-        if (isNotEmpty(name) && isNotEmpty(genericName) && isNotEmpty(brand) && 
-            isNotEmpty(priceText) && isNotEmpty(quantityText) && isNotEmpty(expiryDate)) {
-            
-            // Validate numeric fields
-            if (isValidNumber(priceText, true) && isValidNumber(quantityText, true)) {
-                // Validate date format
-                return isValidDateFormat(expiryDate);
-            }
+
+        if (isNotEmpty(name) && isNotEmpty(genericName) && isNotEmpty(brand) &&
+                isValidNumber(priceText, true) && isValidNumber(quantityText, true)
+                && isValidDateFormat(expiryDate)) {
+
+            return true;
+
         }
         return false;
     }

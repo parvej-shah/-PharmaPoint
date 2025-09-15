@@ -39,7 +39,10 @@ public class PharmacySearchService {
         
         return result;
     }
-    
+
+
+        //for each pharmacy find how many of the medicines they have from all the patient searched
+        //make pharmacyAvailability object of each pharmacy to store that information
     private void createPharmacyAvailabilityList(Map<Pharmacy, Map<String, Object>> pharmacyData, 
                                                int totalMedicinesRequested, 
                                                List<PharmacyAvailability> allPharmacies) {
@@ -66,9 +69,11 @@ public class PharmacySearchService {
             allPharmacies.add(pharmacyInfo_obj);
         }
     }
-    
+
+
+
+        // Sort pharmacies according to how many medicines available from the medicines that patient searched
     private void sortPharmaciesByAvailability(List<PharmacyAvailability> allPharmacies) {
-        // Sort so best pharmacies come first
         for (int i = 0; i < allPharmacies.size() - 1; i++) {
             for (int j = i + 1; j < allPharmacies.size(); j++) {
                 PharmacyAvailability pharmacy1 = allPharmacies.get(i);
@@ -82,7 +87,7 @@ public class PharmacySearchService {
             }
         }
     }
-    
+
     private boolean shouldSwapPharmacies(PharmacyAvailability pharmacy1, PharmacyAvailability pharmacy2) {
         // First check: which has more medicines?
         if (pharmacy2.getAvailableCount() > pharmacy1.getAvailableCount()) {
@@ -95,7 +100,7 @@ public class PharmacySearchService {
             String name2 = pharmacy2.getPharmacy().getName().toLowerCase();
             return name2.compareTo(name1) < 0;
         }
-        
+
         return false;
     }
     
@@ -181,9 +186,8 @@ public class PharmacySearchService {
         }
         
         public double getAvailabilityPercentage() {
-            if (totalRequested == 0) {
+            if (totalRequested == 0)
                 return 0.0;
-            }
             return (double) availableCount / totalRequested * 100.0;
         }
         

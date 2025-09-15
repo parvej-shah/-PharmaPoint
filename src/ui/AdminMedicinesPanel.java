@@ -88,7 +88,7 @@ public class AdminMedicinesPanel extends JPanel {
         controlsPanel.add(sortLabel);
         controlsPanel.add(sortComboBox);
         
-        JButton refreshButton = new JButton("Refresh");
+        JButton refreshButton = new JButton("🔄 Refresh");
         styleButton(refreshButton, new Color(52, 152, 219));
         controlsPanel.add(refreshButton);
         
@@ -109,9 +109,9 @@ public class AdminMedicinesPanel extends JPanel {
         // Bottom panel with actions
         JPanel bottomPanel = new JPanel(new FlowLayout());
         
-        JButton viewDetailsButton = new JButton("View Details");
-        JButton lowStockButton = new JButton("Low Stock Alert");
-        JButton exportButton = new JButton("Export Data");
+        JButton viewDetailsButton = new JButton("👁 View Details");
+        JButton lowStockButton = new JButton("⚠ Low Stock Alert");
+        JButton exportButton = new JButton("📄 Export Data");
         
         styleButton(viewDetailsButton, new Color(155, 89, 182));
         styleButton(lowStockButton, new Color(231, 76, 60));

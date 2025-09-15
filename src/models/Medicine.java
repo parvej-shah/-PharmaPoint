@@ -34,6 +34,7 @@ public class Medicine {
         this.expiryDate = expiryDate;
     }
 
+    // Getters and setters
     public int getId() { return id; }
     public int getPharmacyId() { return pharmacyId; }
     public String getName() { return name; }
@@ -43,5 +44,12 @@ public class Medicine {
     public int getQuantity() { return quantity; }
     public String getExpiryDate() { return expiryDate; }
 
+    public void setId(int id) { this.id = id; }
+    public void setPharmacyId(int pharmacyId) { this.pharmacyId = pharmacyId; }
+    public void setName(String name) { this.name = name; }
+    public void setGenericName(String genericName) { this.genericName = genericName; }
+    public void setBrand(String brand) { this.brand = brand; }
+    public void setPrice(double price) { this.price = price; }
     public void setQuantity(int quantity) { this.quantity = quantity; }
+    public void setExpiryDate(String expiryDate) { this.expiryDate = expiryDate; }
 }
