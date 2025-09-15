@@ -6,7 +6,7 @@ cd /d "D:\PharmaPoint"
 
 REM Compile the Java files
 echo Compiling Java files...
-javac -cp "src\lib\*" -d "out" src\**\*.java
+javac -cp "src\lib\*" -d "out" src\Main.java src\dao\*.java src\models\*.java src\services\*.java src\ui\*.java src\utils\*.java
 
 if %ERRORLEVEL% neq 0 (
     echo Compilation failed!
