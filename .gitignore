@@ -29,5 +29,9 @@ bin/
 *.class
 **/*.class
 
+# Database files
+*.db
+src/db/*.db
+
 ### Mac OS ###
 .DS_Store
